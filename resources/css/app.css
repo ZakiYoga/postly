@@ -1,0 +1,61 @@
+@import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Benne&display=swap');
+@import "tailwindcss";
+@source '../../vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php';
+@source "../views";
+@import "flowbite/src/themes/default";
+@plugin "flowbite/plugin";
+@plugin "flowbite-typography";
+@custom-variant dark (&:where(.dark, .dark *));
+@source "../../node_modules/flowbite";
+
+@theme {
+    /* CONTAINER */
+    --container-sm: 40rem;
+    --container-md: 48rem;
+    --container-lg: 64rem;
+    --container-xl: 80rem;
+    --container-2xl: 86rem;
+    --container-8xl: 96rem;
+    --container-max: 120rem;
+
+    /* CUSTOM FONT */
+    --font-bebas-neue: "Bebas Neue", sans-serif;
+    --font-benne: "Benne", serif;
+
+    /* CUSTOM COLOR */
+    --color-primary: #48CFCB;
+    --color-background: #f5f5f5;
+    --color-background-foreground: #030712;
+}
+
+/* .benne-regular {
+    font-family: "Benne", serif;
+    font-weight: 400;
+    font-style: normal;
+  }
+  
+
+.bebas-neue-regular {
+    font-family: "Bebas Neue", sans-serif;
+    font-weight: 400;
+    font-style: normal;
+} */
+
+
+a:hover,
+button:hover {
+    cursor: pointer;
+}
+
+.shadow-gradient {
+    position: relative;
+    overflow: hidden;
+}
+
+.shadow-gradient::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to top, rgba(0, 0, 0, 0.8), rgba(0, 0, 0, 0));
+    pointer-events: none;
+}
