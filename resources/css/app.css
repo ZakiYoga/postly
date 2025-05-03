@@ -28,18 +28,18 @@
     --color-background-foreground: #030712;
 }
 
-/* .benne-regular {
+.benne-regular {
     font-family: "Benne", serif;
     font-weight: 400;
     font-style: normal;
-  }
-  
+}
+
 
 .bebas-neue-regular {
     font-family: "Bebas Neue", sans-serif;
     font-weight: 400;
     font-style: normal;
-} */
+}
 
 
 a:hover,
@@ -58,4 +58,25 @@ button:hover {
     inset: 0;
     background: linear-gradient(to top, rgba(0, 0, 0, 0.8), rgba(0, 0, 0, 0));
     pointer-events: none;
+}
+
+[x-cloak] {
+    display: none;
+}
+
+.scrollbar-none {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+}
+
+.scrollbar-none::-webkit-scrollbar {
+    display: none;
+}
+
+.cursor-grab {
+    cursor: grab;
+}
+
+.cursor-grab:active {
+    cursor: grabbing;
 }

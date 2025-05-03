@@ -3,12 +3,17 @@
 use App\Models\Post;
 use App\Models\User;
 use App\Models\Category;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\User\UserController;
+use App\Http\Controllers\Admin\AdminController;
 
 Route::get('/', function () {
     return view('homepage', [
         'title' => 'Homepage',
         'posts' => Post::latest()->get(),
+        'categories' => Category::all(),
     ]);
 });
 
@@ -23,7 +28,7 @@ Route::get('/posts', function () {
     return view('postspage', [
         'title' => 'Our Discover nice articles here',
         'description' => 'Welcome to our blog, a friendly space where we share stories and knowledge. Feel free to browse through our articles and find something that resonates with you.',
-        'posts' => Post::filter(request(['search', 'category', 'author']))->latest()->paginate(6)->withQueryString(),
+        'posts' => Post::filter(request(['search', 'category', 'author']))->latest()->paginate(9)->withQueryString(),
         'count' => Post::filter(request(['search', 'category', 'author']))->latest()->count(),
         'currentSearch' => request('search'),
         'currentAuthor' => request('author'),
@@ -55,4 +60,31 @@ Route::get('/contact', function () {
     return view('contactpage', [
         'title' => 'Contact'
     ]);
+});
+
+Route::middleware('auth')->group(function () {
+    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
+    Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
+    Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+});
+
+require __DIR__ . '/auth.php';
+
+// User Routes
+Route::middleware(['auth', 'userMiddleware'])->prefix('dashboard')->group(function () {
+    Route::get('/', [UserController::class, 'index'])->name('dashboard');
+    // Route::get('/posts/create', [UserController::class, 'create'])->name('posts.create');
+    // Route::get('/posts/edit/{id}', [UserController::class, 'edit'])->name('posts.edit');
+    Route::get('/drafts', [UserController::class, 'drafts'])->name('drafts');
+    Route::get('/trash', [UserController::class, 'trash'])->name('trash');
+});
+
+Route::middleware(['auth', 'userMiddleware'])->group(function () {
+    Route::get('/posts/create', [UserController::class, 'create'])->name('posts.create');
+    Route::get('/posts/edit/{id}', [UserController::class, 'edit'])->name('posts.edit');
+});
+
+// Admin Routes
+Route::middleware(['auth', 'adminMiddleware'])->group(function () {
+    Route::get('/admin/dashboard', [AdminController::class, 'index'])->name('admin.dashboard');
 });

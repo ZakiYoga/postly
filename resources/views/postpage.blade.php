@@ -33,14 +33,14 @@ URL: https://flowbite.com/docs/components/typography/
 
     <section class="w-full h-fit mt-4 mx-auto px-6 sm:px-8 md:px-10 lg:px-16">
         <div
-            class="mx-auto w-full text-center py-6 lg:py-8 px-4 lg:px-8 lg:mb-4 mb-2 shadow-md border border-gray-200 dark:bg-gray-900 dark:border-gray-700">
+            class="mx-auto w-full bg-white rounded-sm text-center py-6 lg:py-8 px-4 lg:px-8 lg:mb-4 mb-2 shadow-md border border-gray-200 dark:bg-gray-900 dark:border-gray-700">
             <h2
                 class="mb-2 text-2xl font-bebas-neue tracking-wider lg:text-4xl font-semibold text-gray-900 dark:text-white">
                 {{ $title }}
             </h2>
         </div>
         <div
-            class="flex justify-between px-4 mx-auto w-full shadow-md border  border-gray-200 dark:bg-gray-900 dark:border-gray-700">
+            class="flex justify-between rounded-sm bg-white px-4 mx-auto w-full shadow-md border  border-gray-200 dark:bg-gray-900 dark:border-gray-700">
             <article
                 class="flex flex-col mx-auto w-full min-h-[80vh] max-w-lg format format-sm sm:format-base lg:format-lg px-6 py-8 md:px-10 md:py-12 format-blue dark:format-invert">
                 <header class="mb-4 not-format">
@@ -82,7 +82,7 @@ URL: https://flowbite.com/docs/components/typography/
                 </div>
                 <div class="mt-auto not-format font-bebas-neue tracking-widest">
                     <a href="/posts"
-                        class="inline-flex items-center gap-2 px-3 py-2 bg-primary hover:bg-primary/80 text-gray-900 shadow-md">
+                        class="inline-flex gap-1.5 text-sm items-center p-2 text-black bg-primary hover:bg-primary/80 border dark:border-gray-900 shadow-[2px_2px_0px_#000] dark:shadow-[2px_2px_0px_#111827] active:translate-0.5 active:shadow-none ">
                         <x-fas-arrow-left class="w-4 h-4 pb-0.5" />
                         Back To All Posts
                     </a>

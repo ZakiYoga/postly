@@ -10,9 +10,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 class Post extends Model
 {
     use HasFactory;
-    protected $fillable = ['title', 'author', 'slug', 'body'];
-
-    protected $with = ['author', 'category'];
+    protected $fillable = ['title', 'author', 'slug', 'body', 'category',  'published_at', 'status', 'view_count', 'comment_count', 'like_count', 'dislike_count'];
 
     public function author(): BelongsTo
     {
