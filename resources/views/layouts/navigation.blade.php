@@ -49,7 +49,6 @@
                         </x-nav-link>
                     @endif
 
-
                 </div>
             </div>
 
@@ -58,16 +57,22 @@
                 <x-dropdown align="right" width="48" class="border-none">
                     <x-slot name="trigger">
                         <button
-                            class="inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md text-gray-500 dark:text-gray-400 bg-white dark:bg-gray-800 hover:text-gray-700 dark:hover:text-gray-300 focus:outline-none transition ease-in-out duration-150">
-                            <div>{{ Auth::user()->name }}</div>
+                            class="inline-flex items-center p-1 border border-transparent text-sm leading-4 font-medium rounded-md text-gray-500 dark:text-gray-400 bg-white dark:bg-gray-800 hover:text-gray-700 dark:hover:text-gray-300 focus:outline-none transition ease-in-out duration-150">
+                            <div class="flex items-center font-bebas-neue tracking-wider">
+                                @auth
+                                    {{ Auth::user()->name }}
 
-                            <div class="ms-1">
-                                <svg class="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg"
-                                    viewBox="0 0 20 20">
-                                    <path fill-rule="evenodd"
-                                        d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
-                                        clip-rule="evenodd" />
-                                </svg>
+                                    <div class="mx-0.5">
+                                        <svg class="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg"
+                                            viewBox="0 0 20 20">
+                                            <path fill-rule="evenodd"
+                                                d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
+                                                clip-rule="evenodd" />
+                                        </svg>
+                                    </div>
+
+                                    <img src="{{ $avatarUrl }}" alt="Avatar" class="w-8 h-8 rounded-sm">
+                                @endauth
                             </div>
                         </button>
                     </x-slot>
@@ -110,9 +115,43 @@
     <!-- Responsive Navigation Menu -->
     <div :class="{ 'block': open, 'hidden': !open }" class="hidden sm:hidden">
         <div class="pt-2 pb-3 space-y-1">
-            <x-responsive-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
+            <x-responsive-nav-link :href="Auth::user()->role == 'admin' ? route('admin.dashboard') : route('dashboard')" :active="Auth::user()->role == 'admin'
+                ? request()->routeIs('admin.dashboard')
+                : request()->routeIs('dashboard')">
                 {{ __('Dashboard') }}
             </x-responsive-nav-link>
+
+            {{-- Admin links --}}
+
+            @if (Auth::user()->role == 'admin')
+                <x-responsive-nav-link href="{{ url('admin/users') }}" :active="request()->routeIs('admin.users')">
+                    {{ __('User Account') }}
+                </x-responsive-nav-link>
+                <x-responsive-nav-link href="{{ url('admin/posts') }}" :active="request()->routeIs('admin.posts')">
+                    {{ __('Posts') }}
+                </x-responsive-nav-link>
+                <x-responsive-nav-link href="{{ url('admin/categories') }}" :active="request()->routeIs('admin.categories')">
+                    {{ __('Categories') }}
+                </x-responsive-nav-link>
+            @endif
+
+            {{-- User links --}}
+
+            @if (Auth::user()->role == 'user')
+                <x-responsive-nav-link href="{{ url('users/posts/create') }}" :active="request()->routeIs('users.create-post')">
+                    {{ __('Create New Posts') }}
+                </x-responsive-nav-link>
+                <x-responsive-nav-link href="{{ url('users/myposts') }}" :active="request()->routeIs('users.mypost')">
+                    {{ __('My Posts') }}
+                </x-responsive-nav-link>
+                <x-responsive-nav-link href="{{ url('users/draft') }}" :active="request()->routeIs('users.draft')">
+                    {{ __('Draft') }}
+                </x-responsive-nav-link>
+                <x-responsive-nav-link href="{{ url('users/trash') }}" :active="request()->routeIs('users.trash')">
+                    {{ __('Trash') }}
+                </x-responsive-nav-link>
+            @endif
+
         </div>
 
         <!-- Responsive Settings Options -->

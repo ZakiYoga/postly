@@ -61,7 +61,7 @@ button:hover {
 }
 
 [x-cloak] {
-    display: none;
+    display: none !important;
 }
 
 .scrollbar-none {
@@ -79,4 +79,17 @@ button:hover {
 
 .cursor-grab:active {
     cursor: grabbing;
+}
+
+.dropdown-fix {
+    position: relative;
+}
+
+.dropdown-fix .absolute {
+    right: auto;
+    left: -10px;
+}
+
+trix-toolbar [data-trix-button-group="file-tools"] {
+    display: none;
 }

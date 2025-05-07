@@ -26,7 +26,7 @@ return [
     'ascii' => false,
 
     // Image shape: circle or square
-    'shape' => 'circle',
+    'shape' => 'square',
 
     // Image width, in pixel
     'width' => 100,
@@ -44,14 +44,14 @@ return [
     'fontSize' => 48,
 
     // convert initial letter in uppercase
-    'uppercase' => false,
+    'uppercase' => true,
 
     // Right to Left (RTL)
     'rtl' => false,
 
     // Fonts used to render text.
     // If contains more than one fonts, randomly selected based on name supplied
-    'fonts' => [__DIR__ . '/../fonts/OpenSans-Bold.ttf', __DIR__ . '/../fonts/rockwell.ttf'],
+    'fonts' => [__DIR__ . '/../fonts/rockwell.ttf'],
 
     // List of foreground colors to be used, randomly selected based on name supplied
     'foregrounds' => [

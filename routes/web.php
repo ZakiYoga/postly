@@ -6,7 +6,7 @@ use App\Models\Category;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ProfileController;
-use App\Http\Controllers\User\UserController;
+use App\Http\Controllers\User\DashboardPostController;
 use App\Http\Controllers\Admin\AdminController;
 
 Route::get('/', function () {
@@ -70,18 +70,13 @@ Route::middleware('auth')->group(function () {
 
 require __DIR__ . '/auth.php';
 
+// Check Slug
+Route::get('/dashboard/posts/checkSlug', [DashboardPostController::class, 'checkSlug'])->middleware('auth');
+
 // User Routes
 Route::middleware(['auth', 'userMiddleware'])->prefix('dashboard')->group(function () {
-    Route::get('/', [UserController::class, 'index'])->name('dashboard');
-    // Route::get('/posts/create', [UserController::class, 'create'])->name('posts.create');
-    // Route::get('/posts/edit/{id}', [UserController::class, 'edit'])->name('posts.edit');
-    Route::get('/drafts', [UserController::class, 'drafts'])->name('drafts');
-    Route::get('/trash', [UserController::class, 'trash'])->name('trash');
-});
-
-Route::middleware(['auth', 'userMiddleware'])->group(function () {
-    Route::get('/posts/create', [UserController::class, 'create'])->name('posts.create');
-    Route::get('/posts/edit/{id}', [UserController::class, 'edit'])->name('posts.edit');
+    Route::get('/', [DashboardPostController::class, 'index'])->name('user.dashboard');
+    Route::resource('/posts', DashboardPostController::class);
 });
 
 // Admin Routes

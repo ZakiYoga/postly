@@ -61,7 +61,7 @@ URL: https://flowbite.com/docs/components/typography/
                             class="leading-tight font-semibold font-bebas-neue tracking-widest">
                             {{ $post->author->username }}
                         </a>
-                        <p class="leading-tight"> {{ $post->created_at->diffForHumans() }}</p>
+                        <p class="leading-tight">{{ $post->created_at->diffForHumans() }}</p>
                     </div>
                 </div>
 

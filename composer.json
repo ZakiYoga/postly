@@ -6,9 +6,12 @@
     "license": "MIT",
     "require": {
         "php": "^8.2",
+        "andreiio/blade-remix-icon": "*",
         "blade-ui-kit/blade-heroicons": "^2.6",
         "blade-ui-kit/blade-icons": "^1.8",
         "codeat3/blade-element-plus-icons": "^1.1",
+        "codeat3/blade-humbleicons": "^1.1",
+        "cviebrock/eloquent-sluggable": "^11.0",
         "davidhsianturi/blade-bootstrap-icons": "^2.0",
         "hasnayeen/blade-eva-icons": "^2.1",
         "khatabwedaa/blade-css-icons": "^1.5",
@@ -16,6 +19,7 @@
         "laravel/framework": "^11.0",
         "laravel/tinker": "^2.9",
         "laravolt/avatar": "^6.1",
+        "mallardduck/blade-lucide-icons": "^1.23",
         "mckenziearts/blade-untitledui-icons": "^1.4",
         "owenvoke/blade-fontawesome": "^2.9"
     },

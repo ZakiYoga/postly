@@ -8,7 +8,7 @@
     @yield('meta')
 
     {{-- Title --}}
-    @yield('title', config('app.name', 'Postly'))
+    @yield('title', default: config('app.name', 'Postly'))
 
     {{-- Fonts --}}
 
