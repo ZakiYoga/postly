@@ -1,4 +1,4 @@
-<div class="bg-primary/10 rounded-sm p-6 mb-6">
+<div class="bg-primary/20 rounded-sm p-6 mb-6 shadow-sm">
     <div
         class="flex items-center justify-between flex-col-reverse md:flex-row md:max-h-32 font-bebas-neue tracking-wider">
         <div class="space-y-2">

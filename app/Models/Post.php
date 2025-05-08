@@ -13,7 +13,7 @@ class Post extends Model
     use HasFactory;
     use Sluggable;
 
-    protected $fillable = ['title', 'author', 'slug', 'body', 'category',  'published_at', 'status', 'view_count', 'comment_count', 'like_count', 'dislike_count'];
+    protected $fillable = ['title', 'author_id', 'slug', 'body', 'category_id',  'published_at', 'status', 'view_count', 'comment_count', 'like_count', 'dislike_count'];
 
     public function author(): BelongsTo
     {
@@ -46,6 +46,10 @@ class Post extends Model
         );
     }
 
+    public function getRouteKeyName(): string
+    {
+        return 'slug';
+    }
     public function sluggable(): array
     {
         return [

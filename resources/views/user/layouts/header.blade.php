@@ -1,4 +1,4 @@
-<header class="bg-white shadow-md h-16">
+<header class="bg-white shadow-md h-16 border-b border-gray-200">
     <div class="flex items-center justify-between px-6 h-full font-benne">
         <!-- Left: Toggle Button & Title + Breadcrumb -->
         <div class="flex items-center space-x-4">

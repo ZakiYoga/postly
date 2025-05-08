@@ -7,7 +7,9 @@
 @section('content')
     {{-- Alert --}}
     @if (session('success'))
-        <x-alert type="success" :message="session('success')" />
+        <x-alert type="success" title="Success!">
+            {{ session('success') }}
+        </x-alert>
     @endif
 
     <!-- Welcome Section -->
@@ -32,24 +34,26 @@
 
     <!-- Projects Section -->
     <div class="bg-white dark:bg-background-foreground rounded-sm shadow p-6">
-        <h3 class="text-lg font-semibold text-gray-800 mb-2 font-bebas-neue tracking-wider">Recent Projects</h3>
+        <h3 class="text-lg font-semibold text-gray-800 font-bebas-neue tracking-wider mb-4">Recent Projects</h3>
 
-        @foreach ($posts as $post)
-            <!-- Project -->
-            <div class="border-b border-gray-200 pb-4 mb-4">
-                <div class="flex items-center justify-between">
+        <div class="space-y-2">
+            @foreach ($posts as $post)
+                <!-- Posts -->
+                <div
+                    class="flex border-b py-2 border-gray-200 items-center justify-between group hover:bg-gray-50/50 transition duration-200 ease-in-out">
                     <div class="flex items-start space-x-3">
                         <div class="h-30 max-w-40">
                             <img src="/images/article-1.png" alt="article-1" class="object-cover w-full h-full" />
                         </div>
-                        <div class="flex flex-col max-w-md">
+                        <div class="flex flex-col max-w-sm">
                             <p class="text-sm text-gray-500">{{ $post->created_at->diffForHumans() }}</p>
-                            <h4 class="font-medium text-lg text-gray-800 ">{{ $post->title }}</h4>
+                            <a href="/dashboard/posts/{{ $post->slug }}"
+                                class="font-medium text-lg text-gray-800 hover:text-[{{ $post->category->color }}]">{{ $post->title }}</a>
                             <p class="text-base text-gray-500 mt-1">
-                                {{ Str::limit($post->body, 110, '...') }}
+                                {{ Str::limit($post->body, 100, '...') }}
                             </p>
                             <span
-                                class="inline-flex w-fit text-sm mt-1 p-2 text-[{{ $post->category->color }}] bg-[{{ $post->category->color }}]/15 group-hover:bg-[{{ $post->category->color }}]">
+                                class="inline-flex w-fit text-sm mt-1 p-1.5 text-[{{ $post->category->color }}] bg-[{{ $post->category->color }}]/15 group-hover:text-white group-hover:bg-[{{ $post->category->color }}]">
                                 <x-css-tag class="w-4 h-4 mr-1.5" />
                                 {{ $post->category->name }}
                             </span>
@@ -69,24 +73,30 @@
                     <div class="flex items-center space-x-2">
                         <span
                             class="text-sm px-2 py-1 rounded cursor-default first-letter:uppercase
-                            {{ $post->status == 'published'
-                                ? 'bg-blue-100 text-blue-600'
-                                : ($post->status == 'draft'
-                                    ? 'bg-orange-100 text-orange-600'
-                                    : ($post->status == 'private'
-                                        ? 'bg-gray-100 text-gray-600'
-                                        : '')) }}">
+                                {{ $post->status == 'published'
+                                    ? 'bg-blue-100 text-blue-600'
+                                    : ($post->status == 'draft'
+                                        ? 'bg-orange-100 text-orange-600'
+                                        : ($post->status == 'private'
+                                            ? 'bg-gray-100 text-gray-600'
+                                            : '')) }}">
                             {{ ucfirst($post->status) }}
                         </span>
-                        <button class="text-gray-400 hover:text-gray-600">
+                        <a href="/dashboard/posts/{{ $post->slug }}/edit" class="text-gray-400 hover:text-yellow-400">
                             <x-far-pen-to-square class="h-6 w-6" />
-                        </button>
-                        <button class="text-gray-400 hover:text-gray-600">
-                            <x-heroicon-o-trash class="h-7 w-7" />
-                        </button>
+                        </a>
+                        <form action="/dashboard/posts/{{ $post->slug }}" method="POST" class="flex items-center">
+                            @csrf
+                            @method('DELETE')
+                            <button type="submit" onclick="return confirm('Are you sure?')"
+                                class="text-gray-400 hover:text-red-600">
+                                <x-heroicon-o-trash class="h-7 w-7" />
+                            </button>
+                        </form>
                     </div>
                 </div>
-            </div>
-        @endforeach
+                {{-- <hr class="flex w-full h-1 mb-2 text-gray-200" /> --}}
+            @endforeach
+        </div>
     </div>
 @endsection

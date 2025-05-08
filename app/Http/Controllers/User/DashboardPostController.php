@@ -46,7 +46,7 @@ class DashboardPostController extends Controller
             'category_id' => 'required|exists:categories,id',
         ]);
 
-        $validatedData['author_id'] = auth()->user()->id;
+        $validatedData['author_id'] = Auth::user()->id;
 
         Post::create($validatedData);
 
@@ -58,7 +58,9 @@ class DashboardPostController extends Controller
      */
     public function show(Post $post)
     {
-        //
+        return view('user.dashboard.show', [
+            'post' => $post,
+        ]);
     }
 
     /**
@@ -66,7 +68,10 @@ class DashboardPostController extends Controller
      */
     public function edit(Post $post)
     {
-        //
+        return view('user.dashboard.edit', [
+            'post' => $post,
+            'categories' => Category::all(),
+        ]);
     }
 
     /**
@@ -74,7 +79,23 @@ class DashboardPostController extends Controller
      */
     public function update(Request $request, Post $post)
     {
-        //
+        $rules = [
+            'title' => 'required|max:255',
+            'body' => 'required',
+            'status' => 'required|in:published,private,draft',
+            // 'cover_image' => 'image|file|max:1024',
+            'category_id' => 'required|exists:categories,id',
+        ];
+
+        if ($request->slug != $post->slug) {
+            $rules['slug'] = 'required|unique:posts,slug';
+        }
+
+        $validatedData = $request->validate($rules);
+
+        $validatedData['author_id'] = Auth::user()->id;
+        Post::where('id', $post->id)->update($validatedData);
+        return redirect('/dashboard')->with('success', 'Post has been updated!');
     }
 
     /**
@@ -82,7 +103,8 @@ class DashboardPostController extends Controller
      */
     public function destroy(Post $post)
     {
-        //
+        Post::destroy($post->id);
+        return redirect('/dashboard')->with('success', 'Post has been deleted!');
     }
 
     public function checkSlug(Request $request)

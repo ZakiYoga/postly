@@ -9,22 +9,23 @@
 @endsection
 
 @section('title')
-    Dashboard | Create Post
+    Dashboard - Edit Post
 @endsection
 
 @section('content')
     <div class="flex p-6 bg-white dark:bg-background-foreground rounded-sm shadow-md font-benne">
         <div class="flex flex-col w-full max-w-2xl mx-auto">
-            <h1 class="text-2xl font-semibold text-gray-800 mb-2 font-bebas-neue">Create New Post</h1>
+            <h1 class="text-2xl font-semibold text-gray-800 mb-2 font-bebas-neue">Edit Post</h1>
             <span class="inline-flex items-center gap-1 text-gray-500 mb-4">
                 <a href="/dashboard" class="hover:text-primary">
                     Dashboard
                 </a>
                 <x-ri-arrow-right-double-fill class="w-4 h-4 pb-1" />
-                Create Post
+                Edit Post
             </span>
 
-            <form method="post" action="/dashboard/posts" enctype="multipart/form-data">
+            <form method="post" action="/dashboard/posts/{{ $post->slug }}" enctype="multipart/form-data">
+                @method('PUT')
                 @csrf
                 <div class="flex flex-col gap-y-4 w-full dark:border-gray-700">
 
@@ -33,7 +34,7 @@
                         <div class="flex flex-col w-full max-w-md">
                             <x-input-label for="title" :value="__('Title')" class="" />
                             <x-text-input id="title" type="text" name="title" class="block mt-1 w-full"
-                                :has-error="$errors->has('title')" :value="old('title')" autofocus autocomplete="title" />
+                                :has-error="$errors->has('title')" :value="old('title', $post->title)" autofocus autocomplete="title" />
                             <x-input-error :messages="$errors->get('title')" class="mt-2" />
                         </div>
                     </div>
@@ -50,7 +51,7 @@
                                 </div>
                                 <div class="w-full">
                                     <x-text-input id="slug" type="text" name="slug"
-                                        class="ml-1 pl-1 rounded-s-none" :has-error="$errors->has('slug')" :value="old('slug')"
+                                        class="ml-1 pl-1 rounded-s-none" :has-error="$errors->has('slug')" :value="old('slug', $post->slug)"
                                         autocomplete="slug" />
                                 </div>
                             </div>
@@ -64,7 +65,7 @@
                     <div class="col-span-full">
                         <x-input-label for="body" :value="__('Content')" class="" />
                         <div class="mt-2">
-                            <input id="body" type="hidden" name="body" value="{{ old('body') }}">
+                            <input id="body" type="hidden" name="body" value="{{ old('body', $post->body) }}">
                             <trix-editor input="body"
                                 class="trix-content dark:bg-gray-800 dark:text-gray-100 dark:border-gray-600"></trix-editor>
                         </div>
@@ -106,7 +107,7 @@
                                 class="w-full appearance-none rounded-sm bg-white dark:bg-gray-800 py-1.5 pr-8 pl-3 text-base text-gray-900 dark:text-gray-100 outline-1 -outline-offset-1 outline-gray-300 dark:outline-gray-600 focus:outline-2 focus:-outline-offset-2 focus:outline-primary sm:text-sm/6">
                                 <option value="" disabled selected>Select a category</option>
                                 @foreach ($categories as $category)
-                                    @if (old('category_id') == $category->id)
+                                    @if (old('category_id', $post->category_id) == $category->id)
                                         <option value="{{ $category->id }}" selected>
                                             {{ $category->name }}
                                         </option>
@@ -134,7 +135,7 @@
                                 <div class="flex items-center gap-x-3">
                                     <input id="{{ $value }}" name="status" type="radio"
                                         value="{{ $value }}"
-                                        {{ old('status', 'published') === $value ? 'checked' : '' }}
+                                        {{ old('status', $post->status) === $value ? 'checked' : '' }}
                                         class="appearance-none h-4 w-4 checked:ring-primary checked:bg-primary checked:text-primary focus:ring-primary">
 
                                     <label for="{{ $value }}"
