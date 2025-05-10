@@ -17,7 +17,7 @@
             ])->merge() }} />
 
     @if ($hasError)
-        <div class="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none">
+        <div class="absolute inset-y-0 right-0 bottom-0 flex items-center pr-3 pointer-events-none">
             <x-heroicon-o-exclamation-triangle class="size-5 text-red-500 dark:text-red-400" />
         </div>
     @endif

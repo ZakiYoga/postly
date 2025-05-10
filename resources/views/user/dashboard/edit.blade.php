@@ -74,29 +74,43 @@
                         @enderror
                     </div>
 
-                    {{-- Field Upload Image Cover
-                    <div class="col-span-full flex flex-col max-w-sm">
-                        <x-input-label for="cover_image" :value="__('Cover Image')" class="" />
+                    {{-- File Upload Input with Preview --}}
+                    <div class="col-span-full">
+                        <x-input-label for="image" :value="__('Featured Image')" />
+                        <div class="mt-2 flex flex-col items-start">
+                            {{-- Hidden actual file input --}}
+                            <input type="file" id="image" name="image" accept="image/*" class="hidden"
+                                onchange="previewImage()" />
 
-                        <div
-                            class="mt-2 flex justify-center rounded-lg border-2 border-dashed border-gray-900/25 dark:border-gray-600 px-6 py-10">
-                            <div class="text-center">
-                                <svg class="mx-auto size-12 text-gray-300 dark:text-gray-600" viewBox="0 0 24 24"
-                                    fill="currentColor" aria-hidden="true">
-                                    <path fill-rule="evenodd" d="..." clip-rule="evenodd" />
-                                </svg>
-                                <div class="mt-4 flex text-sm/6 text-gray-600 dark:text-gray-400">
-                                    <label for="cover_image"
-                                        class="relative cursor-pointer rounded-sm bg-white dark:bg-gray-800 font-semibold text-primary hover:text-primary/80">
-                                        <span>Upload a file</span>
-                                        <input id="cover_image" name="cover_image" type="file" class="sr-only">
-                                    </label>
-                                    <p class="pl-1">or drag and drop</p>
+                            {{-- Custom upload button --}}
+                            <button type="button" onclick="document.getElementById('image').click()"
+                                class="rounded-md bg-white dark:bg-gray-800 px-4 py-2 text-sm font-semibold text-gray-700 dark:text-gray-200 shadow-sm ring-1 ring-inset ring-gray-300 dark:ring-gray-700 hover:bg-gray-50 dark:hover:bg-gray-700">
+                                Select Image
+                            </button>
+
+                            {{-- File name display --}}
+                            <p id="file-name" class="mt-2 text-sm text-gray-500 dark:text-gray-400">No file selected</p>
+
+                            {{-- Preview container --}}
+                            <div id="preview-container" class="mt-4 hidden w-full max-w-lg">
+                                <div class="relative">
+                                    {{-- Remove button --}}
+                                    <button type="button" onclick="removeImage()"
+                                        class="absolute -right-2 -top-2 flex h-6 w-6 items-center justify-center rounded-full bg-red-500 text-white focus:outline-none"
+                                        aria-label="Remove image">
+                                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                                            stroke-width="1.5" stroke="currentColor" class="w-4 h-4">
+                                            <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+                                        </svg>
+                                    </button>
+
+                                    {{-- Preview image --}}
+                                    <img id="preview-image" src="#" alt="Image preview"
+                                        class="h-auto w-full rounded-lg border border-gray-200 dark:border-gray-700 object-cover shadow-sm" />
                                 </div>
-                                <p class="text-xs/5 text-gray-600 dark:text-gray-400">PNG, JPG, GIF max size 1MB</p>
                             </div>
                         </div>
-                    </div> --}}
+                    </div>
 
                     {{-- Field Category --}}
                     <div class="col-span-full flex flex-col w-fit">

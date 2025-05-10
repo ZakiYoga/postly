@@ -11,7 +11,7 @@
     </title>
 
     <!-- Scripts -->
-    @yield('script')
+    @yield(section: 'scripts')
     @yield('style')
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
@@ -35,5 +35,7 @@
         </div>
     </div>
 </body>
+
+@yield(section: 'script')
 
 </html>

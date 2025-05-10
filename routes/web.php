@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\User\DashboardPostController;
+use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\Admin\AdminController;
 
 Route::get('/', function () {
@@ -75,7 +76,7 @@ Route::get('/dashboard/posts/checkSlug', [DashboardPostController::class, 'check
 
 // User Routes
 Route::middleware(['auth', 'userMiddleware'])->prefix('dashboard')->group(function () {
-    Route::get('/', [DashboardPostController::class, 'index'])->name('user.dashboard');
+    Route::get('/', [UserController::class, 'index'])->name('user.dashboard');
     Route::resource('/posts', DashboardPostController::class);
 });
 

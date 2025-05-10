@@ -24,11 +24,11 @@ return new class extends Migration
                 indexName: 'posts_category_id'
             );
 
+            $table->string('cover_image')->nullable();
             $table->string('slug')->unique();
             $table->text('body');
             $table->text('published_at')->nullable();
-            $table->enum('status', ['published', 'draft', 'private'])->default('draft');
-
+            $table->enum('status', ['published', 'draft', 'private'])->default('published');
 
             $table->unsignedInteger('view_count')->default(0);
             $table->unsignedInteger('comment_count')->default(0);

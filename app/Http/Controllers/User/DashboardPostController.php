@@ -16,7 +16,7 @@ class DashboardPostController extends Controller
      */
     public function index()
     {
-        return view('user.dashboard', [
+        return view('user.dashboard.posts', [
             'posts' => Post::where('author_id', Auth::user()->id)->get(),
         ]);
     }
@@ -26,9 +26,11 @@ class DashboardPostController extends Controller
      */
     public function create()
     {
+        // Store the previous URL in session for the cancel button
+        session(['previous_url' => url()->previous()]);
+
         return view('user.dashboard.create', [
             'categories' => Category::all(),
-
         ]);
     }
 
@@ -42,12 +44,15 @@ class DashboardPostController extends Controller
             'slug' => 'required|unique:posts,slug',
             'body' => 'required',
             'status' => 'required|in:published,private,draft',
-            // 'cover_image' => 'image|file|max:1024',
+            'cover_image' => 'image|file|max:1024',
             'category_id' => 'required|exists:categories,id',
         ]);
 
-        $validatedData['author_id'] = Auth::user()->id;
+        if ($request->file('cover_image')) {
+            $validatedData['cover_image'] = $request->file('cover_image')->store('cover-images');
+        }
 
+        $validatedData['author_id'] = Auth::user()->id;
         Post::create($validatedData);
 
         return redirect('/dashboard')->with('success', 'New Post has been added!');

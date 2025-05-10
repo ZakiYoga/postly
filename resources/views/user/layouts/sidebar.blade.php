@@ -16,15 +16,15 @@
 
     <!-- Menu Items -->
     <div class="py-6">
-        <nav class="font-bebas-neue tracking-wider text-base">
+        <nav class="font-bebas-neue tracking-wider text-base px-4">
 
             <!-- Create Post Menu -->
             <div class="mb-4"
                 :class="sidebarOpen ?
-                    'bg-primary/20 shadow-sm border border-gray-200 mx-4' :
+                    'bg-primary/20 shadow-sm border border-gray-200' :
                     'bg-transparent shadow-none border-none mx-0'">
-                <x-nav-link-sidebar href="/dashboard/posts/create" :active="request()->is('dashboard/posts*')"
-                    class="flex items-center justify-center px-4 rounded-xs text-gray-700 hover:bg-primary/35 transition-all duration-150">
+                <x-nav-link-sidebar href="/dashboard/posts/create" :active="request()->is('dashboard/posts/create')"
+                    class="flex items-center justify-center rounded-xs text-gray-700 hover:bg-primary/35 transition-all duration-150">
                     <span x-show="sidebarOpen" class="mr-4 leading-5 tracking-widest">Create <br>New Post</span>
                     <span
                         class="inline-flex items-center justify-center h-8 w-8 border border-gray-200 bg-primary rounded-xs p-1">
@@ -34,54 +34,53 @@
             </div>
 
             <!-- Dashboard Menu -->
-            <x-nav-link-sidebar href="/dashboard" :active="request()->is('dashboard')" class="">
+            <x-nav-link-sidebar href="/dashboard" :active="request()->is('dashboard/posts')" class="">
                 <span class="inline-flex items-center justify-center h-10 w-10">
                     <x-eva-grid-outline class="h-6 w-6" />
                 </span>
                 <span x-show="sidebarOpen" class="ml-3">Dashboard</span>
             </x-nav-link-sidebar>
 
-            {{-- <!-- Editor Menu -->
-            <a href="#"
-                class="flex items-center px-4 py-3 text-gray-700 hover:bg-primary/10 hover:text-primary">
+            <!-- Editor Menu -->
+            <x-nav-link-sidebar href="/dashboard/post" :active="request()->is('dashboard')" class="">
                 <span class="inline-flex items-center justify-center h-10 w-10">
                     <x-far-pen-to-square class="h-5 w-5" />
                 </span>
-                <span x-show="sidebarOpen" class="ml-3">Editor</span>
-            </a> --}}
+                <span x-show="sidebarOpen" class="ml-3">MyPosts</span>
+            </x-nav-link-sidebar>
 
             {{-- <!-- User Menu -->
-            <a href="#"
-                class="flex items-center px-4 py-3 text-gray-700 hover:bg-primary/10 hover:text-primary">
+            <x-nav-link-sidebar href="#"
+                class="">
                 <span class="inline-flex items-center justify-center h-10 w-10">
                     <x-heroicon-o-user-group class="h-6 w-7" />
                 </span>
                 <span x-show="sidebarOpen" class="ml-3">Draft</span>
-            </a> --}}
+            </x-nav-link-sideb> --}}
 
-            <!-- Leads Menu -->
-            <a href="#" class="flex items-center px-4 py-3 text-gray-700 hover:bg-primary/10 hover:text-primary">
+            <!-- Draft Menu -->
+            <x-nav-link-sidebar href="#" class="">
                 <span class="inline-flex items-center justify-center h-10 w-10">
                     <x-eva-archive-outline class="h-6 w-6" />
                 </span>
                 <span x-show="sidebarOpen" class="ml-3">Draft</span>
-            </a>
+            </x-nav-link-sidebar>
 
             <!-- Trash Menu -->
-            <a href="#" class="flex items-center px-4 py-3 text-gray-700 hover:bg-primary/10 hover:text-primary">
+            <x-nav-link-sidebar href="#" class="">
                 <span class="inline-flex items-center justify-center h-10 w-10">
                     <x-heroicon-o-trash class="h-6 w-6" />
                 </span>
                 <span x-show="sidebarOpen" class="ml-3">Trash</span>
-            </a>
+            </x-nav-link-sidebar>
 
             <!-- Settings Menu -->
-            <a href="#" class="flex items-center px-4 py-3 text-gray-700 hover:bg-primary/10 hover:text-primary">
+            <x-nav-link-sidebar href="#" class="">
                 <span class="inline-flex items-center justify-center h-10 w-10">
                     <x-elemplus-setting class="h-6 w-6" />
                 </span>
                 <span x-show="sidebarOpen" class="ml-3">Settings</span>
-            </a>
+            </x-nav-link-sidebar>
         </nav>
     </div>
 </div>

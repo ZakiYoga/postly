@@ -5,7 +5,7 @@
 @endsection
 
 @section('content')
-    {{-- Alert --}}
+    {{-- Alert Success --}}
     @if (session('success'))
         <x-alert type="success" title="Success!">
             {{ session('success') }}
@@ -34,7 +34,10 @@
 
     <!-- Projects Section -->
     <div class="bg-white dark:bg-background-foreground rounded-sm shadow p-6">
-        <h3 class="text-lg font-semibold text-gray-800 font-bebas-neue tracking-wider mb-4">Recent Projects</h3>
+        <div class="flex flex-col gap-y-1 w-fit">
+            <span class="bg-primary w-[20%] h-1"></span>
+            <h3 class="text-xl font-semibold text-gray-800 font-bebas-neue tracking-wider mb-4">My Post</h3>
+        </div>
 
         <div class="space-y-2">
             @foreach ($posts as $post)
@@ -95,7 +98,6 @@
                         </form>
                     </div>
                 </div>
-                {{-- <hr class="flex w-full h-1 mb-2 text-gray-200" /> --}}
             @endforeach
         </div>
     </div>
