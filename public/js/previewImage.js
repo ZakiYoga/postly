@@ -1,5 +1,5 @@
 function previewImage() {
-    const input = document.getElementById("image");
+    const input = document.getElementById("cover_image");
     const fileName = document.getElementById("file-name");
     const previewContainer = document.getElementById("preview-container");
     const previewImage = document.getElementById("preview-image");
@@ -21,7 +21,7 @@ function previewImage() {
 }
 
 function removeImage() {
-    const input = document.getElementById("image");
+    const input = document.getElementById("cover_image");
     const fileName = document.getElementById("file-name");
     const previewContainer = document.getElementById("preview-container");
 

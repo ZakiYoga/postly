@@ -61,6 +61,70 @@
                         </div>
                     </div>
 
+                    {{-- File Upload Input with Preview --}}
+                    <div class="col-span-full max-w-sm">
+                        <x-input-label for="cover_image" :value="__('Cover Post Image')" />
+                        <div class="mt-2 flex flex-col items-start">
+                            {{-- Old Image --}}
+                            <input type="hidden" name="oldCover_Image" value="{{ $post->cover_image }}">
+
+                            {{-- Hidden actual file input --}}
+                            <input type="file" id="cover_image" name="cover_image" accept="image/*" class="hidden"
+                                onchange="previewImage()" />
+
+                            <div class="inline-flex items-center gap-2">
+
+                                {{-- Custom upload button --}}
+                                <button type="button" onclick="document.getElementById('cover_image').click()"
+                                    class="inline-flex items-center gap-0.5 rounded-sm bg-white dark:bg-gray-800 px-4 py-2 text-sm font-semibold text-gray-700 dark:text-gray-200 shadow-sm ring-1 ring-inset ring-gray-300 dark:ring-gray-700 hover:bg-gray-50 dark:hover:bg-gray-700">
+                                    <x-heroicon-c-arrow-up-tray class="w-5 h-5 pb-1" />
+                                    @if ($post->cover_image)
+                                        Change Cover Image
+                                    @else
+                                        Select Cover Image
+                                    @endif
+                                </button>
+
+                                {{-- File name display --}}
+                                <p id="file-name" class="text-sm text-gray-500 dark:text-gray-400">No file selected</p>
+                            </div>
+
+                            {{-- Preview container --}}
+                            <div id="preview-container" class="mt-4 w-full hidden">
+                                <div class="relative group overflow-hidden">
+                                    {{-- Remove button --}}
+                                    <div
+                                        class="absolute w-full h-full hidden items-center justify-center inset-shadow-neutral-500 bg-black/30 z-10 rounded-sm group-hover:flex">
+                                        <button type="button" onclick="removeImage()"
+                                            class="hidden z-10 absolute px-3 py-2 group-hover:inline-flex -translate-x-1/2 -translate-y-1/2 top-1/2 left-1/2 items-center justify-center rounded-xs bg-red-500 text-white focus:outline-none hover:bg-red-600 transition-all ease-in-out duration-300"
+                                            aria-label="Remove image">
+                                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                                                stroke-width="1.5" stroke="currentColor" class="w-4 h-4">
+                                                <path stroke-linecap="round" stroke-linejoin="round"
+                                                    d="M6 18L18 6M6 6l12 12" />
+                                            </svg>
+                                            remove image
+                                        </button>
+                                    </div>
+
+                                    {{-- Preview image - --}}
+                                    @if ($post->cover_image)
+                                        <img id="preview-image" src="{{ asset('storage/' . $post->cover_image) }}"
+                                            alt="Image preview"
+                                            class="max-h-72 h-auto w-full scale-100 group-hover:scale-110 transition-all ease-in-out duration-300 rounded-sm border border-gray-200 dark:border-gray-700 object-cover shadow-sm" />
+                                    @else
+                                        <img id="preview-image" alt="Image preview"
+                                            class="max-h-72 h-auto w-full scale-100 group-hover:scale-110 transition-all ease-in-out duration-300 rounded-sm border border-gray-200 dark:border-gray-700 object-cover shadow-sm" />
+                                    @endif
+                                </div>
+                            </div>
+                            @error('cover_image')
+                                <x-input-error :messages="$errors->get('cover_image')" class="mt-2" />
+                            @enderror
+                        </div>
+                    </div>
+
+
                     {{-- Field Body with trix editor --}}
                     <div class="col-span-full">
                         <x-input-label for="body" :value="__('Content')" class="" />
@@ -72,44 +136,6 @@
                         @error('body')
                             <x-input-error :messages="$errors->get('body')" class="mt-2" />
                         @enderror
-                    </div>
-
-                    {{-- File Upload Input with Preview --}}
-                    <div class="col-span-full">
-                        <x-input-label for="image" :value="__('Featured Image')" />
-                        <div class="mt-2 flex flex-col items-start">
-                            {{-- Hidden actual file input --}}
-                            <input type="file" id="image" name="image" accept="image/*" class="hidden"
-                                onchange="previewImage()" />
-
-                            {{-- Custom upload button --}}
-                            <button type="button" onclick="document.getElementById('image').click()"
-                                class="rounded-md bg-white dark:bg-gray-800 px-4 py-2 text-sm font-semibold text-gray-700 dark:text-gray-200 shadow-sm ring-1 ring-inset ring-gray-300 dark:ring-gray-700 hover:bg-gray-50 dark:hover:bg-gray-700">
-                                Select Image
-                            </button>
-
-                            {{-- File name display --}}
-                            <p id="file-name" class="mt-2 text-sm text-gray-500 dark:text-gray-400">No file selected</p>
-
-                            {{-- Preview container --}}
-                            <div id="preview-container" class="mt-4 hidden w-full max-w-lg">
-                                <div class="relative">
-                                    {{-- Remove button --}}
-                                    <button type="button" onclick="removeImage()"
-                                        class="absolute -right-2 -top-2 flex h-6 w-6 items-center justify-center rounded-full bg-red-500 text-white focus:outline-none"
-                                        aria-label="Remove image">
-                                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
-                                            stroke-width="1.5" stroke="currentColor" class="w-4 h-4">
-                                            <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
-                                        </svg>
-                                    </button>
-
-                                    {{-- Preview image --}}
-                                    <img id="preview-image" src="#" alt="Image preview"
-                                        class="h-auto w-full rounded-lg border border-gray-200 dark:border-gray-700 object-cover shadow-sm" />
-                                </div>
-                            </div>
-                        </div>
                     </div>
 
                     {{-- Field Category --}}
@@ -163,8 +189,9 @@
                         <button type="button"
                             class="text-sm/6 font-semibold text-gray-900 dark:text-gray-100">Cancel</button>
                         <button type="submit"
-                            class="rounded-sm bg-primary px-3 py-2 text-sm font-semibold text-white shadow-xs hover:bg-primary/80 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary">Create
-                            Post</button>
+                            class="rounded-sm bg-primary px-3 py-2 text-sm font-semibold text-white shadow-xs hover:bg-primary/80 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary">
+                            Edit Post
+                        </button>
                     </div>
                 </div>
             </form>
@@ -172,32 +199,9 @@
         </div>
     </div>
 
-    <script>
-        const title = document.querySelector('#title');
-        const slug = document.querySelector('#slug');
-
-        title.addEventListener('change', function() {
-            fetch('/dashboard/posts/checkSlug?title=' + encodeURIComponent(title.value))
-                .then(response => response.json())
-                .then(data => slug.value = data.slug)
-                .catch(error => console.error('Error:', error));
-        });
-
-        document.addEventListener('trix-file-accept', function(e) {
-            e.preventDefault();
-        });
-
-        // document.addEventListener('trix-file-accept', function(e) {
-        //     const acceptedTypes = ['image/jpg', 'image/jpeg', 'image/png'];
-        //     if (!acceptedTypes.includes(e.file.type)) {
-        //         e.preventDefault();
-        //         alert('Only JPEG, JPG and PNG files are allowed.');
-        //     }
-        // });
-
-        // if (e.file.size > 2 * 1024 * 1024) {
-        //     e.preventDefault();
-        //     alert('Ukuran file maksimal adalah 2MB!');
-        // }
-    </script>
+@section('script')
+    <script src="/js/checkSlug.js"></script>
+    <script src="/js/previewImage.js"></script>
+    <script src="/js/showImageEdit.js"></script>
+@endsection
 @endsection

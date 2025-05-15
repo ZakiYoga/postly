@@ -7,6 +7,7 @@ use App\Models\Category;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Storage;
 use Cviebrock\EloquentSluggable\Services\SlugService;
 
 class DashboardPostController extends Controller
@@ -40,7 +41,7 @@ class DashboardPostController extends Controller
     public function store(Request $request)
     {
         $validatedData = $request->validate([
-            'title' => 'required|max:255',
+            'title' => 'required|min:3|max:255',
             'slug' => 'required|unique:posts,slug',
             'body' => 'required',
             'status' => 'required|in:published,private,draft',
@@ -49,10 +50,11 @@ class DashboardPostController extends Controller
         ]);
 
         if ($request->file('cover_image')) {
-            $validatedData['cover_image'] = $request->file('cover_image')->store('cover-images');
+            $validatedData['cover_image'] = $request->file('cover_image')->store('cover_images');
         }
 
         $validatedData['author_id'] = Auth::user()->id;
+
         Post::create($validatedData);
 
         return redirect('/dashboard')->with('success', 'New Post has been added!');
@@ -88,8 +90,8 @@ class DashboardPostController extends Controller
             'title' => 'required|max:255',
             'body' => 'required',
             'status' => 'required|in:published,private,draft',
-            // 'cover_image' => 'image|file|max:1024',
             'category_id' => 'required|exists:categories,id',
+            'cover_image' => 'image|file|max:1024',
         ];
 
         if ($request->slug != $post->slug) {
@@ -97,6 +99,18 @@ class DashboardPostController extends Controller
         }
 
         $validatedData = $request->validate($rules);
+
+        if ($request->file('cover_image')) {
+            if ($request->oldCover_Image) {
+                Storage::delete($request->oldCover_Image);
+            }
+            $validatedData['cover_image'] = $request->file('cover_image')->store('cover_images');
+        } elseif ($request->cover_image == "") {
+            if ($request->oldCover_Image) {
+                Storage::delete($request->oldCover_Image);
+            }
+            $validatedData['cover_image'] = null;
+        }
 
         $validatedData['author_id'] = Auth::user()->id;
         Post::where('id', $post->id)->update($validatedData);
@@ -108,6 +122,10 @@ class DashboardPostController extends Controller
      */
     public function destroy(Post $post)
     {
+        if ($post->cover_image) {
+            Storage::delete($post->cover_image);
+        }
+
         Post::destroy($post->id);
         return redirect('/dashboard')->with('success', 'Post has been deleted!');
     }

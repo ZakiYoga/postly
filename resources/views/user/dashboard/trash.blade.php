@@ -1,7 +1,7 @@
 @extends('user.layouts.app')
 
 @section('title')
-    Dashboard - MyPosts
+    Dashboard - Trash
 @endsection
 
 @section('content')
@@ -16,11 +16,11 @@
     <div class="bg-white dark:bg-background-foreground rounded-sm shadow p-6">
         <div class="flex flex-col gap-y-1 w-fit">
             <span class="bg-primary w-[20%] h-1"></span>
-            <h3 class="text-xl font-semibold text-gray-800 font-bebas-neue tracking-wider mb-4">My Posts</h3>
+            <h3 class="text-xl font-semibold text-gray-800 font-bebas-neue tracking-wider mb-4">Trash</h3>
         </div>
 
         <div class="space-y-2">
-            @foreach ($posts as $post)
+            {{-- @foreach ($posts as $post)
                 <!-- Posts -->
                 <div
                     class="flex border-b py-2 border-gray-200 items-center justify-between group hover:bg-gray-50/50 transition duration-200 ease-in-out">
@@ -78,7 +78,7 @@
                         </form>
                     </div>
                 </div>
-            @endforeach
+            @endforeach --}}
         </div>
     </div>
 @endsection

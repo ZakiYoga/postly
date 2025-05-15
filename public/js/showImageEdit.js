@@ -3,12 +3,8 @@ document.addEventListener("DOMContentLoaded", function () {
     const previewImage = document.getElementById("preview-image");
     const fileName = document.getElementById("file-name");
 
-    // Set the preview image to the existing image
-    previewImage.src = "{{ Storage::url($post->image) }}";
-    previewContainer.classList.remove("hidden");
-
-    // Extract and display the file name from the path
-    const path = "{{ $post->image }}";
-    const name = path.split("/").pop();
-    fileName.textContent = name;
+    if (previewImage.src) {
+        previewContainer.classList.remove("hidden");
+        fileName.textContent = "cover_image.jpg";
+    }
 });

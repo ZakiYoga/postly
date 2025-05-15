@@ -19,63 +19,85 @@
         <nav class="font-bebas-neue tracking-wider text-base px-4">
 
             <!-- Create Post Menu -->
-            <div class="mb-4"
-                :class="sidebarOpen ?
-                    'bg-primary/20 shadow-sm border border-gray-200' :
-                    'bg-transparent shadow-none border-none mx-0'">
-                <x-nav-link-sidebar href="/dashboard/posts/create" :active="request()->is('dashboard/posts/create')"
-                    class="flex items-center justify-center rounded-xs text-gray-700 hover:bg-primary/35 transition-all duration-150">
-                    <span x-show="sidebarOpen" class="mr-4 leading-5 tracking-widest">Create <br>New Post</span>
-                    <span
-                        class="inline-flex items-center justify-center h-8 w-8 border border-gray-200 bg-primary rounded-xs p-1">
-                        <x-heroicon-o-plus class="h-6 w-6 pb-0.5 text-gray-800" />
-                    </span>
-                </x-nav-link-sidebar>
-            </div>
+            @if (Auth::user()->role == 'user')
+                <div class="mb-4"
+                    :class="sidebarOpen ?
+                        'bg-primary/20 shadow-sm border border-gray-200' :
+                        'bg-transparent shadow-none border-none mx-0'">
+                    <x-nav-link-sidebar href="/dashboard/posts/create" :active="request()->is('dashboard/posts/create')"
+                        class="flex items-center justify-center rounded-xs text-gray-700 hover:bg-primary/35 transition-all duration-150">
+                        <span x-show="sidebarOpen" class="mr-4 leading-5 tracking-widest">Create <br>New Post</span>
+                        <span
+                            class="inline-flex items-center justify-center h-8 w-8 border border-gray-200 bg-primary rounded-xs p-1">
+                            <x-heroicon-o-plus class="h-6 w-6 pb-0.5 text-gray-800" />
+                        </span>
+                    </x-nav-link-sidebar>
+                </div>
+            @endif
 
             <!-- Dashboard Menu -->
-            <x-nav-link-sidebar href="/dashboard" :active="request()->is('dashboard/posts')" class="">
+            <x-nav-link-sidebar href="{{ Auth::user()->role == 'admin' ? '/admin/dashboard' : '/dashboard' }}"
+                :active="Auth::user()->role == 'admin'
+                    ? request()->is('admin/dashboard')
+                    : request()->is('dashboard')">
                 <span class="inline-flex items-center justify-center h-10 w-10">
                     <x-eva-grid-outline class="h-6 w-6" />
                 </span>
                 <span x-show="sidebarOpen" class="ml-3">Dashboard</span>
             </x-nav-link-sidebar>
 
-            <!-- Editor Menu -->
-            <x-nav-link-sidebar href="/dashboard/post" :active="request()->is('dashboard')" class="">
-                <span class="inline-flex items-center justify-center h-10 w-10">
-                    <x-far-pen-to-square class="h-5 w-5" />
-                </span>
-                <span x-show="sidebarOpen" class="ml-3">MyPosts</span>
-            </x-nav-link-sidebar>
+            <!-- User Menus -->
+            @if (Auth::user()->role == 'user')
+                <!-- Editor Menu -->
+                <x-nav-link-sidebar href="/dashboard/posts" :active="request()->is('dashboard/posts*')" class="">
+                    <span class="inline-flex items-center justify-center h-10 w-10">
+                        <x-far-pen-to-square class="h-5 w-5" />
+                    </span>
+                    <span x-show="sidebarOpen" class="ml-3">MyPosts</span>
+                </x-nav-link-sidebar>
 
-            {{-- <!-- User Menu -->
-            <x-nav-link-sidebar href="#"
-                class="">
-                <span class="inline-flex items-center justify-center h-10 w-10">
-                    <x-heroicon-o-user-group class="h-6 w-7" />
-                </span>
-                <span x-show="sidebarOpen" class="ml-3">Draft</span>
-            </x-nav-link-sideb> --}}
+                <!-- Draft Menu -->
+                <x-nav-link-sidebar href="/dashboard/drafts" :active="request()->is('dashboard/drafts*')" class="">
+                    <span class="inline-flex items-center justify-center h-10 w-10">
+                        <x-eva-archive-outline class="h-6 w-6" />
+                    </span>
+                    <span x-show="sidebarOpen" class="ml-3">Draft</span>
+                </x-nav-link-sidebar>
 
-            <!-- Draft Menu -->
-            <x-nav-link-sidebar href="#" class="">
-                <span class="inline-flex items-center justify-center h-10 w-10">
-                    <x-eva-archive-outline class="h-6 w-6" />
-                </span>
-                <span x-show="sidebarOpen" class="ml-3">Draft</span>
-            </x-nav-link-sidebar>
+                <!-- Trash Menu -->
+                <x-nav-link-sidebar href="/dashboard/trash" :active="request()->is('dashboard/trash*')" class="">
+                    <span class="inline-flex items-center justify-center h-10 w-10">
+                        <x-heroicon-o-trash class="h-6 w-6" />
+                    </span>
+                    <span x-show="sidebarOpen" class="ml-3">Trash</span>
+                </x-nav-link-sidebar>
+            @else
+                <!-- Admin Menus -->
 
-            <!-- Trash Menu -->
-            <x-nav-link-sidebar href="#" class="">
-                <span class="inline-flex items-center justify-center h-10 w-10">
-                    <x-heroicon-o-trash class="h-6 w-6" />
-                </span>
-                <span x-show="sidebarOpen" class="ml-3">Trash</span>
-            </x-nav-link-sidebar>
+                <!-- Add Category Menu -->
+                <x-nav-link-sidebar href="/admin/dahsbord/add_category" :active="request()->is('dashboard/posts*')" class="">
+                    <span class="inline-flex items-center justify-center h-10 w-10">
+                        <x-far-pen-to-square class="h-5 w-5" />
+                    </span>
+                    <span x-show="sidebarOpen" class="ml-3">Add Category</span>
+                </x-nav-link-sidebar>
+
+                <!-- User Menu -->
+                <x-nav-link-sidebar href="/admin/dahsbord/users" class="">
+                    <span class="inline-flex items-center justify-center h-10 w-10">
+                        <x-heroicon-o-user-group class="h-6 w-7" />
+                    </span>
+                    <span x-show="sidebarOpen" class="ml-3">All Users</span>
+                    </x-nav-link-sideb>
+            @endif
 
             <!-- Settings Menu -->
-            <x-nav-link-sidebar href="#" class="">
+            <x-nav-link-sidebar
+                href="{{ Auth::user()->role == 'admin' ? '/admin/dashboard/settings' : '/dashboard/settings' }}"
+                :active="Auth::user()->role == 'admin'
+                    ? request()->is('admin/dashboard/settings')
+                    : request()->is('dashboard/settings')" class="">
+
                 <span class="inline-flex items-center justify-center h-10 w-10">
                     <x-elemplus-setting class="h-6 w-6" />
                 </span>

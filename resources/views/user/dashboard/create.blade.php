@@ -1,13 +1,5 @@
 @extends('user.layouts.app')
 
-@section('style')
-    <style>
-        trix-toolbar [data-trix-button-group="file-tools"] {
-            display: none;
-        }
-    </style>
-@endsection
-
 @section('title')
     Dashboard | Create Post
 @endsection
@@ -65,14 +57,14 @@
 
                     {{-- File Upload Input with Preview --}}
                     <div class="col-span-full max-w-sm">
-                        <x-input-label for="image" :value="__('Cover Post Image')" />
+                        <x-input-label for="cover_image" :value="__('Cover Post Image')" />
                         <div class="mt-2 flex flex-col items-start">
                             {{-- Hidden actual file input --}}
-                            <input type="file" id="image" name="image" accept="image/*" class="hidden"
+                            <input type="file" id="cover_image" name="cover_image" accept="image/*" class="hidden"
                                 onchange="previewImage()" />
 
                             {{-- Custom upload button --}}
-                            <button type="button" onclick="document.getElementById('image').click()"
+                            <button type="button" onclick="document.getElementById('cover_image').click()"
                                 class="rounded-sm bg-white dark:bg-gray-800 px-4 py-2 text-sm font-semibold text-gray-700 dark:text-gray-200 shadow-sm ring-1 ring-inset ring-gray-300 dark:ring-gray-700 hover:bg-gray-50 dark:hover:bg-gray-700">
                                 Select Cover Image
                             </button>
@@ -103,6 +95,9 @@
                                         class="max-h-72 h-auto w-full scale-100 group-hover:scale-110 transition-all ease-in-out duration-300 rounded-sm border border-gray-200 dark:border-gray-700 object-cover shadow-sm" />
                                 </div>
                             </div>
+                            @error('cover_image')
+                                <x-input-error :messages="$errors->get('cover_image')" class="mt-2" />
+                            @enderror
                         </div>
                     </div>
 

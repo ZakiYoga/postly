@@ -32,23 +32,28 @@
         <x-stat-card value="2.9k" label="Total Comment" color="pink" />
     </div>
 
-    <!-- Projects Section -->
-    <div class="bg-white dark:bg-background-foreground rounded-sm shadow p-6">
+    <!-- Posts Section -->
+    <div class="bg-white dark:bg-background-foreground rounded-sm shadow p-6 pb-2">
         <div class="flex flex-col gap-y-1 w-fit">
             <span class="bg-primary w-[20%] h-1"></span>
-            <h3 class="text-xl font-semibold text-gray-800 font-bebas-neue tracking-wider mb-4">My Post</h3>
+            <h3 class="text-xl font-semibold text-gray-800 font-bebas-neue tracking-wider mb-4">Latest My Post</h3>
         </div>
 
         <div class="space-y-2">
             @foreach ($posts as $post)
                 <!-- Posts -->
                 <div
-                    class="flex border-b py-2 border-gray-200 items-center justify-between group hover:bg-gray-50/50 transition duration-200 ease-in-out">
-                    <div class="flex items-start space-x-3">
-                        <div class="h-30 max-w-40">
-                            <img src="/images/article-1.png" alt="article-1" class="object-cover w-full h-full" />
+                    class="flex border-b py-2 w-full border-gray-200 items-center flex-col md:flex-row justify-start md:justify-between group hover:bg-gray-50/50 transition duration-200 ease-in-out">
+                    <div class="flex w-full flex-col md:flex-row items-start space-x-3">
+                        <div class="md:h-30 md:max-w-40">
+                            @if ($post->cover_image)
+                                <img src="{{ asset('storage/' . $post->cover_image) }}" alt="article-1"
+                                    class="object-cover w-full h-full" />
+                            @else
+                                <img src="/images/article-1.png" alt="article-1" class="object-cover w-full h-full" />
+                            @endif
                         </div>
-                        <div class="flex flex-col max-w-sm">
+                        <div class="flex w-full flex-col max-w-sm">
                             <p class="text-sm text-gray-500">{{ $post->created_at->diffForHumans() }}</p>
                             <a href="/dashboard/posts/{{ $post->slug }}"
                                 class="font-medium text-lg text-gray-800 hover:text-[{{ $post->category->color }}]">{{ $post->title }}</a>
@@ -60,20 +65,18 @@
                                 <x-css-tag class="w-4 h-4 mr-1.5" />
                                 {{ $post->category->name }}
                             </span>
-                            <div class="inline-flex gap-2">
-                                <div class="flex items-center font-sans gap-1 text-gray-500 mt-2">
-                                    <x-heroicon-o-hand-thumb-up class="w-6 h-6" />
-                                    {{ $post->likes_count ?? 0 }}
-                                </div>
-                                <div class="flex items-center font-sans gap-1 text-gray-500 mt-2">
-                                    <x-heroicon-o-chat-bubble-left-ellipsis class="w-6 h-6" />
-                                    {{ $post->comments_count ?? 0 }}
-                                </div>
-                            </div>
                         </div>
                     </div>
 
-                    <div class="flex items-center space-x-2">
+                    <div class="flex w-full items-center md:max-w-fit space-x-2 mt-2 md:mt-0">
+                        <div class="flex items-center font-sans gap-1 text-gray-500">
+                            <x-heroicon-o-hand-thumb-up class="w-6 h-6" />
+                            {{ $post->likes_count ?? 0 }}
+                        </div>
+                        <div class="flex items-center font-sans gap-1 text-gray-500">
+                            <x-heroicon-o-chat-bubble-left-ellipsis class="w-6 h-6" />
+                            {{ $post->comments_count ?? 0 }}
+                        </div>
                         <span
                             class="text-sm px-2 py-1 rounded cursor-default first-letter:uppercase
                                 {{ $post->status == 'published'
@@ -85,20 +88,14 @@
                                             : '')) }}">
                             {{ ucfirst($post->status) }}
                         </span>
-                        <a href="/dashboard/posts/{{ $post->slug }}/edit" class="text-gray-400 hover:text-yellow-400">
-                            <x-far-pen-to-square class="h-6 w-6" />
-                        </a>
-                        <form action="/dashboard/posts/{{ $post->slug }}" method="POST" class="flex items-center">
-                            @csrf
-                            @method('DELETE')
-                            <button type="submit" onclick="return confirm('Are you sure?')"
-                                class="text-gray-400 hover:text-red-600">
-                                <x-heroicon-o-trash class="h-7 w-7" />
-                            </button>
-                        </form>
                     </div>
                 </div>
             @endforeach
+            <div class="flex justify-center mt-2">
+                <a href="/dashboard/posts"
+                    class="inline-flex items-center font-medium px-4 py-2 text-sm text-gray-600 hover:text-primary focus:outline-none focus:ring-2 focus:ring-offset-2 focus:text-primary">
+                    View All Posts ({{ $postCount }})</a>
+            </div>
         </div>
     </div>
 @endsection
