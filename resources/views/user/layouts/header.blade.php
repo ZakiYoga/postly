@@ -34,7 +34,7 @@
                             class="inline-flex items-center p-1 border border-transparent text-sm leading-4 font-medium rounded-md text-gray-500 dark:text-gray-400 bg-white dark:bg-gray-800 hover:text-gray-700 dark:hover:text-gray-300 focus:outline-none transition ease-in-out duration-150">
                             <div class="flex items-center gap-1">
                                 @auth
-                                    <div class="font-bebas-neue tracking-wide uppercase">
+                                    <div class="hidden sm:block font-bebas-neue tracking-wide uppercase">
                                         {{ Auth::user()->name }}
                                     </div>
 

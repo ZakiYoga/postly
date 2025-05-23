@@ -5,6 +5,7 @@
     'show' => true,
     'title' => null,
     'icon' => null,
+    'duration' => null,
 ])
 
 @php
@@ -48,7 +49,12 @@
     $style = $alertStyles[$type];
 @endphp
 
-<div x-data="{ open: {{ $show ? 'true' : 'false' }} }" x-show="open" x-transition:enter="transition ease-out duration-300"
+<div x-data="{
+    open: {{ $show ? 'true' : 'false' }},
+    init() {
+        @if ($duration) setTimeout(() => this.open = false, {{ $duration }}); @endif
+    }
+}" x-init="init()" x-show="open" x-transition:enter="transition ease-out duration-300"
     x-transition:enter-start="opacity-0 transform -translate-y-2"
     x-transition:enter-end="opacity-100 transform translate-y-0" x-transition:leave="transition ease-in duration-300"
     x-transition:leave-start="opacity-100 transform translate-y-0"

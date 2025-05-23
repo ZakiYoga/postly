@@ -15,26 +15,20 @@ return new class extends Migration
             $table->id();
             $table->string('title');
 
-            $table->foreignId('author_id')->constrained(
-                table: 'users',
-                indexName: 'posts_author_id'
-            );
+            $table->foreignId('author_id')->constrained('users');
+
             $table->foreignId('category_id')->constrained(
                 table: 'categories',
                 indexName: 'posts_category_id'
             );
 
             $table->string('cover_image')->nullable();
+            $table->string('unsplash_image_url')->nullable();
+
             $table->string('slug')->unique();
             $table->text('body');
             $table->text('published_at')->nullable();
-            $table->enum('status', ['published', 'draft', 'private'])->default('published');
-
-            $table->unsignedInteger('view_count')->default(0);
-            $table->unsignedInteger('comment_count')->default(0);
-            $table->unsignedInteger('like_count')->default(0);
-            $table->unsignedInteger('dislike_count')->default(0);
-
+            $table->enum('visibility', ['public', 'private'])->default('public');
             $table->softDeletes();
             $table->timestamps();
         });

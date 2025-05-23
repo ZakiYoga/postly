@@ -29,13 +29,6 @@ class User extends Authenticatable
         'avatar',
     ];
 
-    // protected $guarded = [
-    //     'id',
-    //     'created_at',
-    // ];
-
-
-
     /**
      * The attributes that should be hidden for serialization.
      *
@@ -59,11 +52,6 @@ class User extends Authenticatable
         ];
     }
 
-    public function posts(): HasMany
-    {
-        return $this->hasMany(Post::class, 'author_id');
-    }
-
     public function getAvatarUrlAttribute()
     {
         if ($this->avatar && Storage::disk('public')->exists($this->avatar)) {
@@ -71,5 +59,37 @@ class User extends Authenticatable
         }
 
         return Avatar::create($this->name)->toBase64();
+    }
+
+    // Relation dengan Post
+    public function posts()
+    {
+        return $this->hasMany(Post::class, 'author_id');
+    }
+
+    // Relation dengan Comment
+    public function comments()
+    {
+        return $this->hasMany(Comment::class);
+    }
+
+    // Relation dengan Like
+    public function likes()
+    {
+        return $this->hasMany(Like::class);
+    }
+
+    // Relation dengan PostView
+    public function views()
+    {
+        return $this->hasMany(PostView::class);
+    }
+
+    // Method untuk like/unlike post
+    public function toggleLike(Post $post)
+    {
+        return $this->likes()->where('post_id', $post->id)->exists()
+            ? $this->likes()->where('post_id', $post->id)->delete()
+            : $this->likes()->create(['post_id' => $post->id]);
     }
 }

@@ -63,11 +63,6 @@ Route::get('/contact', function () {
     ]);
 });
 
-Route::middleware('auth')->group(function () {
-    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
-    Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
-    Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
-});
 
 require __DIR__ . '/auth.php';
 
@@ -78,14 +73,21 @@ Route::get('/dashboard/posts/checkSlug', [DashboardPostController::class, 'check
 Route::middleware(['auth', 'userMiddleware'])->prefix('dashboard')->group(function () {
     Route::get('/', [UserController::class, 'index'])->name('user.dashboard');
     Route::resource('/posts', DashboardPostController::class);
+    Route::post('/posts/fetch-unsplash', [DashboardPostController::class, 'fetchUnsplash'])->name('posts.fetchUnsplash');
+
     Route::get('/settings', [ProfileController::class, 'edit'])->name('settings.edit');
     Route::patch('/settings', [ProfileController::class, 'update'])->name('settings.update');
     Route::delete('/settings', [ProfileController::class, 'destroy'])->name('settings.destroy');
-    Route::get('/drafts', [UserController::class, 'drafts'])->name('user.dashboard.drafts');
+
+    Route::get('/private-posts', [UserController::class, 'private'])->name('user.dashboard.private');
     Route::get('/trash', [UserController::class, 'trash'])->name('user.dashboard.trash');
 });
 
 // Admin Routes
-Route::middleware(['auth', 'adminMiddleware'])->group(function () {
-    Route::get('/admin/dashboard', [AdminController::class, 'index'])->name('admin.dashboard');
+Route::middleware(['auth', 'adminMiddleware'])->prefix('admin/dashboard')->group(function () {
+    Route::get('/', [AdminController::class, 'index'])->name('admin.dashboard');
+
+    Route::get('/settings', [ProfileController::class, 'edit'])->name('profile.edit');
+    Route::patch('/settings', [ProfileController::class, 'update'])->name('profile.update');
+    Route::delete('/settings', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });

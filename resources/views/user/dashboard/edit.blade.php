@@ -13,17 +13,18 @@
 @endsection
 
 @section('content')
+    <x-breadcrumb :items="[
+        ['label' => 'Dashboard', 'url' => '/dashboard'],
+        ['label' => 'Posts', 'url' => '/dashboard/posts'],
+        ['label' => 'Edit Post'],
+    ]" />
+
     <div class="flex p-6 bg-white dark:bg-background-foreground rounded-sm shadow-md font-benne">
         <div class="flex flex-col w-full max-w-2xl mx-auto">
-            <h1 class="text-2xl font-semibold text-gray-800 mb-2 font-bebas-neue">Edit Post</h1>
-            <span class="inline-flex items-center gap-1 text-gray-500 mb-4">
-                <a href="/dashboard" class="hover:text-primary">
-                    Dashboard
-                </a>
-                <x-ri-arrow-right-double-fill class="w-4 h-4 pb-1" />
+            <x-heading>
                 Edit Post
-            </span>
 
+            </x-heading>
             <form method="post" action="/dashboard/posts/{{ $post->slug }}" enctype="multipart/form-data">
                 @method('PUT')
                 @csrf
@@ -34,7 +35,7 @@
                         <div class="flex flex-col w-full max-w-md">
                             <x-input-label for="title" :value="__('Title')" class="" />
                             <x-text-input id="title" type="text" name="title" class="block mt-1 w-full"
-                                :has-error="$errors->has('title')" :value="old('title', $post->title)" autofocus autocomplete="title" />
+                                :has-error="$errors->has('title')" :value="old('title', $post->title)" autocomplete="title" />
                             <x-input-error :messages="$errors->get('title')" class="mt-2" />
                         </div>
                     </div>
@@ -66,7 +67,8 @@
                         <x-input-label for="cover_image" :value="__('Cover Post Image')" />
                         <div class="mt-2 flex flex-col items-start">
                             {{-- Old Image --}}
-                            <input type="hidden" name="oldCover_Image" value="{{ $post->cover_image }}">
+                            <input type="hidden" name="oldCover_Image"
+                                value="{{ $post->cover_image ?? ($post->unsplash_image_url ?? '') }}">
 
                             {{-- Hidden actual file input --}}
                             <input type="file" id="cover_image" name="cover_image" accept="image/*" class="hidden"
@@ -75,22 +77,23 @@
                             <div class="inline-flex items-center gap-2">
 
                                 {{-- Custom upload button --}}
-                                <button type="button" onclick="document.getElementById('cover_image').click()"
-                                    class="inline-flex items-center gap-0.5 rounded-sm bg-white dark:bg-gray-800 px-4 py-2 text-sm font-semibold text-gray-700 dark:text-gray-200 shadow-sm ring-1 ring-inset ring-gray-300 dark:ring-gray-700 hover:bg-gray-50 dark:hover:bg-gray-700">
-                                    <x-heroicon-c-arrow-up-tray class="w-5 h-5 pb-1" />
-                                    @if ($post->cover_image)
-                                        Change Cover Image
-                                    @else
-                                        Select Cover Image
-                                    @endif
+                                <button id="btn-upload" type="button"
+                                    onclick="document.getElementById('cover_image').click()"
+                                    class="inline-flex justify-center items-center gap-0.5 rounded-sm bg-white dark:bg-gray-800 px-4 py-2 text-sm font-semibold text-gray-700 dark:text-gray-200 shadow-sm ring-1 ring-inset ring-gray-300 dark:ring-gray-700 hover:bg-gray-50 dark:hover:bg-gray-700">
+                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                                        stroke-width="1.8" stroke="#2F3A4A" class="w-5 h-5 pb-0.5">
+                                        <path stroke-linecap="round" stroke-linejoin="round"
+                                            d="M12 16V4m0 0l-5 5m5-5l5 5M4 16v4a1 1 0 001 1h14a1 1 0 001-1v-4" />
+                                    </svg>
+                                    <span class="text-sm/6 pt-1">Select Image</span>
                                 </button>
-
-                                {{-- File name display --}}
-                                <p id="file-name" class="text-sm text-gray-500 dark:text-gray-400">No file selected</p>
                             </div>
 
+                            {{-- File name display --}}
+                            <p id="file-name" class="text-sm text-gray-500 dark:text-gray-400 mt-2">No file selected</p>
+
                             {{-- Preview container --}}
-                            <div id="preview-container" class="mt-4 w-full hidden">
+                            <div id="preview-container" class="mt-2 w-full hidden">
                                 <div class="relative group overflow-hidden">
                                     {{-- Remove button --}}
                                     <div
@@ -112,12 +115,19 @@
                                         <img id="preview-image" src="{{ asset('storage/' . $post->cover_image) }}"
                                             alt="Image preview"
                                             class="max-h-72 h-auto w-full scale-100 group-hover:scale-110 transition-all ease-in-out duration-300 rounded-sm border border-gray-200 dark:border-gray-700 object-cover shadow-sm" />
+                                    @elseif ($post->unsplash_image_url)
+                                        <img id="preview-image" src="{{ $post->unsplash_image_url }}" alt="Image preview"
+                                            class="max-h-72 h-auto w-full scale-100 group-hover:scale-110 transition-all ease-in-out duration-300 rounded-sm border border-gray-200 dark:border-gray-700 object-cover shadow-sm" />
                                     @else
                                         <img id="preview-image" alt="Image preview"
                                             class="max-h-72 h-auto w-full scale-100 group-hover:scale-110 transition-all ease-in-out duration-300 rounded-sm border border-gray-200 dark:border-gray-700 object-cover shadow-sm" />
                                     @endif
                                 </div>
                             </div>
+
+                            <img id="preview-image" src="{{ old('cover_image') }}" class="w-64 mt-2"
+                                style="display: {{ old('cover_image') ? 'block' : 'none' }};">
+
                             @error('cover_image')
                                 <x-input-error :messages="$errors->get('cover_image')" class="mt-2" />
                             @enderror
@@ -165,17 +175,17 @@
                         </div>
                     </div>
 
-                    {{-- Field Status --}}
+                    {{-- Field visibility --}}
                     <div class="col-span-full">
-                        <x-input-label for="status" :value="__('Status')" class="" />
+                        <x-input-label for="visibility" :value="__('Visibility')" class="" />
                         <p class="mt-1 text-sm/6 text-gray-600 dark:text-gray-400">Set the visibility of your post.
                         </p>
                         <div class="mt-6 space-y-6">
-                            @foreach (['published' => 'Public', 'private' => 'Private', 'draft' => 'Draft'] as $value => $label)
+                            @foreach (['public' => 'Public', 'private' => 'Private'] as $value => $label)
                                 <div class="flex items-center gap-x-3">
-                                    <input id="{{ $value }}" name="status" type="radio"
+                                    <input id="{{ $value }}" name="visibility" type="radio"
                                         value="{{ $value }}"
-                                        {{ old('status', $post->status) === $value ? 'checked' : '' }}
+                                        {{ old('visibility', $post->visibility) === $value ? 'checked' : '' }}
                                         class="appearance-none h-4 w-4 checked:ring-primary checked:bg-primary checked:text-primary focus:ring-primary">
 
                                     <label for="{{ $value }}"

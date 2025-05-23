@@ -43,6 +43,17 @@
             </div>
 
             <div class="flex flex-col gap-y-4 mb-4">
+                <div class="h-30 max-w-40">
+                    @if ($post->cover_image)
+                        <img src="{{ asset('storage/' . $post->cover_image) }}" alt="{{ $post->title }}"
+                            class="object-cover w-full h-full" />
+                    @elseif (isset($imageUrl))
+                        <img src="{{ $imageUrl }}" alt="unsplashAPI-{{ $post->category->name }}"
+                            class="object-cover w-full h-full" />
+                    @else
+                        <p>image not found or error fetch api unsplash</p>
+                    @endif
+                </div>
                 <div class="flex flex-col gap-0.5">
                     <h2 class="text-base font-bebas-neue tracking-wider font-medium text-gray-800">Title</h2>
                     <p class="text-gray-600">{{ $post->title }}</p>

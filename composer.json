@@ -8,7 +8,7 @@
         "php": "^8.2",
         "andreiio/blade-remix-icon": "*",
         "blade-ui-kit/blade-heroicons": "^2.6",
-        "blade-ui-kit/blade-icons": "^1.8",
+        "codeat3/blade-carbon-icons": "^2.34",
         "codeat3/blade-element-plus-icons": "^1.1",
         "codeat3/blade-humbleicons": "^1.1",
         "cviebrock/eloquent-sluggable": "^11.0",
@@ -21,7 +21,9 @@
         "laravolt/avatar": "^6.1",
         "mallardduck/blade-lucide-icons": "^1.23",
         "mckenziearts/blade-untitledui-icons": "^1.4",
-        "owenvoke/blade-fontawesome": "^2.9"
+        "mews/purifier": "^3.4",
+        "owenvoke/blade-fontawesome": "^2.9",
+        "unsplash/unsplash": "^3.2"
     },
     "require-dev": {
         "fakerphp/faker": "^1.23",

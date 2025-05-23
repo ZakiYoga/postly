@@ -1,7 +1,7 @@
 @extends('user.layouts.app')
 
 @section('title')
-    Dashboard - Drafts
+    Dashboard - Private Posts
 @endsection
 
 @section('content')
@@ -12,12 +12,12 @@
         </x-alert>
     @endif
 
+    <x-breadcrumb :items="[['label' => 'Dashboard', 'url' => '/dashboard'], ['label' => 'Private']]" />
 
     <div class="bg-white dark:bg-background-foreground rounded-sm shadow p-6">
-        <div class="flex flex-col gap-y-1 w-fit">
-            <span class="bg-primary w-[20%] h-1"></span>
-            <h3 class="text-xl font-semibold text-gray-800 font-bebas-neue tracking-wider mb-4">Drafts</h3>
-        </div>
+        <x-heading>
+            My Private Posts
+        </x-heading>
 
         <div class="space-y-2">
             {{-- @foreach ($posts as $post)

@@ -5,16 +5,17 @@
 @endsection
 
 @section('content')
+    <x-breadcrumb :items="[
+        ['label' => 'Dashboard', 'url' => '/dashboard'],
+        ['label' => 'Posts', 'url' => '/dashboard/posts'],
+        ['label' => 'Create Post'],
+    ]" />
+
     <div class="flex p-6 bg-white dark:bg-background-foreground rounded-sm shadow-md font-benne">
         <div class="flex flex-col w-full max-w-2xl mx-auto">
-            <h1 class="text-2xl font-semibold text-gray-800 mb-2 font-bebas-neue">Create New Post</h1>
-            <span class="inline-flex items-center gap-1 text-gray-500 mb-4">
-                <a href="/dashboard" class="hover:text-primary focus:text-primary">
-                    Dashboard
-                </a>
-                <x-ri-arrow-right-double-fill class="w-4 h-4 pb-1" />
+            <x-heading>
                 Create Post
-            </span>
+            </x-heading>
 
             <form method="post" action="/dashboard/posts" enctype="multipart/form-data">
                 @csrf
@@ -147,18 +148,18 @@
                         </div>
                     </div>
 
-                    {{-- Field Status --}}
+                    {{-- Field visibility --}}
                     <div class="col-span-full">
-                        <x-input-label for="status" :value="__('Status')" class="" />
+                        <x-input-label for="visibility" :value="__('Visibility')" class="" />
                         <small class="text-muted dark:text-gray-400">
                             Set the visibility of your post.
                         </small>
                         <div class="mt-6 space-y-6">
-                            @foreach (['published' => 'Public', 'private' => 'Private', 'draft' => 'Draft'] as $value => $label)
+                            @foreach (['public' => 'Public', 'private' => 'Private'] as $value => $label)
                                 <div class="flex items-center gap-x-3">
-                                    <input id="{{ $value }}" name="status" type="radio"
+                                    <input id="{{ $value }}" name="visibility" type="radio"
                                         value="{{ $value }}"
-                                        {{ old('status', 'published') === $value ? 'checked' : '' }}
+                                        {{ old('visibility', 'public') === $value ? 'checked' : '' }}
                                         class="appearance-none h-4 w-4 checked:ring-primary checked:bg-primary checked:text-primary focus:ring-primary">
 
                                     <label for="{{ $value }}"

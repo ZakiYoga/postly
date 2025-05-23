@@ -1,5 +1,5 @@
 <!-- Sidebar -->
-<div x-cloak :class="sidebarOpen ? 'w-56' : 'w-20'"
+<div x-cloak :class="sidebarOpen ? 'w-56' : 'w-24'"
     class="bg-white transition-all duration-300 shadow-lg overflow-x-hidden ">
 
     <!-- Logo -->
@@ -51,17 +51,17 @@
                 <!-- Editor Menu -->
                 <x-nav-link-sidebar href="/dashboard/posts" :active="request()->is('dashboard/posts*')" class="">
                     <span class="inline-flex items-center justify-center h-10 w-10">
-                        <x-far-pen-to-square class="h-5 w-5" />
+                        <x-heroicon-o-pencil-square class="h-6 w-6" />
                     </span>
                     <span x-show="sidebarOpen" class="ml-3">MyPosts</span>
                 </x-nav-link-sidebar>
 
-                <!-- Draft Menu -->
-                <x-nav-link-sidebar href="/dashboard/drafts" :active="request()->is('dashboard/drafts*')" class="">
+                <!-- Private Posts -->
+                <x-nav-link-sidebar href="/dashboard/private" :active="request()->is('dashboard/private*')" class="">
                     <span class="inline-flex items-center justify-center h-10 w-10">
-                        <x-eva-archive-outline class="h-6 w-6" />
+                        <x-carbon-document-protected class="h-6 w-6" />
                     </span>
-                    <span x-show="sidebarOpen" class="ml-3">Draft</span>
+                    <span x-show="sidebarOpen" class="ml-3">Private Posts</span>
                 </x-nav-link-sidebar>
 
                 <!-- Trash Menu -->
@@ -77,7 +77,7 @@
                 <!-- Add Category Menu -->
                 <x-nav-link-sidebar href="/admin/dahsbord/add_category" :active="request()->is('dashboard/posts*')" class="">
                     <span class="inline-flex items-center justify-center h-10 w-10">
-                        <x-far-pen-to-square class="h-5 w-5" />
+                        <x-heroicon-o-pencil-square class="h-5 w-5" />
                     </span>
                     <span x-show="sidebarOpen" class="ml-3">Add Category</span>
                 </x-nav-link-sidebar>
@@ -88,7 +88,15 @@
                         <x-heroicon-o-user-group class="h-6 w-7" />
                     </span>
                     <span x-show="sidebarOpen" class="ml-3">All Users</span>
-                    </x-nav-link-sideb>
+                </x-nav-link-sidebar>
+
+                <!-- Report Menu -->
+                <x-nav-link-sidebar href="/admin/dahsbord/users" class="">
+                    <span class="inline-flex items-center justify-center h-10 w-10">
+                        <x-heroicon-o-exclamation-circle class="h-6 w-6" />
+                    </span>
+                    <span x-show="sidebarOpen" class="ml-3">Report</span>
+                </x-nav-link-sidebar>
             @endif
 
             <!-- Settings Menu -->

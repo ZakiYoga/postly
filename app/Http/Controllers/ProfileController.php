@@ -36,17 +36,6 @@ class ProfileController extends Controller
         $user = $request->user();
         $user->fill($request->validated());
 
-        if ($request->hasFile('avatar') && $request->file('avatar')->isValid()) {
-            // Hapus avatar lama jika ada
-            if ($user->avatar) {
-                Storage::disk('public')->delete($user->avatar);
-            }
-
-            // Simpan avatar baru
-            $path = $request->file('avatar')->store('avatars', 'public');
-            $user->avatar = $path;
-        }
-
         if ($user->isDirty('email')) {
             $user->email_verified_at = null;
         }

@@ -13,7 +13,21 @@ class Post extends Model
     use HasFactory;
     use Sluggable;
 
-    protected $fillable = ['title', 'author_id', 'slug', 'cover_image', 'body', 'category_id',  'published_at', 'status', 'view_count', 'comment_count', 'like_count', 'dislike_count'];
+    protected $fillable = [
+        'title',
+        'author_id',
+        'slug',
+        'cover_image',
+        'unsplash_image_url',
+        'body',
+        'category_id',
+        'visibility',
+        'published_at',
+    ];
+
+    protected $casts = [
+        'published_at' => 'datetime',
+    ];
 
     public function author(): BelongsTo
     {
@@ -25,6 +39,39 @@ class Post extends Model
         return $this->belongsTo(Category::class);
     }
 
+    public function comments()
+    {
+        return $this->hasMany(Comment::class);
+    }
+
+    public function likes()
+    {
+        return $this->hasMany(Like::class);
+    }
+
+    public function views()
+    {
+        return $this->hasMany(PostView::class);
+    }
+
+    public function getCommentsCountAttribute(): int
+    {
+        return $this->attributes['comments_count'] ?? $this->comments()->count();
+    }
+
+    public function getLikesCountAttribute(): int
+    {
+        return $this->attributes['likes_count'] ?? $this->likes()->count();
+    }
+    public function getViewsCountAttribute(): int
+    {
+        return $this->attributes['views_count'] ?? $this->views()->count();
+    }
+
+    public function isLikedByUser(User $user)
+    {
+        return $this->likes()->where('user_id', $user->id)->exists();
+    }
     public function scopeFilter(Builder $query, array $filters): void
     {
         $query->when(
