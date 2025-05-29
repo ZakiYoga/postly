@@ -28,7 +28,8 @@
         };
 @endphp
 
-<div class="{{ $bgClass }} rounded-sm p-4 shadow-sm">
+<div
+    class="{{ $bgClass }} rounded-sm p-4 shadow-sm group hover:-translate-y-1 hover:cursor-pointer transition-all duration-200">
     <div class="flex items-center justify-between">
         <div>
             <div class="text-3xl font-bold text-gray-800 font-bebas-neue tracking-wide">{{ $value }}</div>

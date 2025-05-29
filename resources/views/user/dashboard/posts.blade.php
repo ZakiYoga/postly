@@ -5,13 +5,6 @@
 @endsection
 
 @section('content')
-    {{-- Alert Success --}}
-    @if (session('success'))
-        <x-alert type="success" title="Sukses!" :duration="3000">
-            {{ session(key: 'success') }}
-        </x-alert>
-    @endif
-
     <x-breadcrumb :items="[['label' => 'Dashboard', 'url' => '/dashboard'], ['label' => 'My Posts']]" />
 
     <div class="bg-white dark:bg-background-foreground rounded-sm shadow p-4 md:p-6">
@@ -37,7 +30,7 @@
                     <!-- Posts -->
                     <div
                         class="flex flex-col md:flex-row border-b py-2 border-gray-200 items-center justify-between group hover:bg-gray-50/50 transition duration-200 ease-in-out">
-                        <div class="block md:flex items-start space-x-4">
+                        <div class="flex w-full flex-col md:flex-row items-start space-x-4">
                             <div class="min-w-36 h-32 lg:min-w-44 max-w-44">
                                 @if ($post->cover_image)
                                     <img src="{{ asset('storage/' . $post->cover_image) }}" alt="{{ $post->title }}"
@@ -52,8 +45,8 @@
                                     </div>
                                 @endif
                             </div>
-                            <div class="flex flex-col max-w-sm">
-                                <p class="text-sm text-gray-500">{{ $post->created_at->diffForHumans() }}</p>
+                            <div class="flex flex-col w-full">
+                                <p class=" w-full text-sm text-gray-500">{{ $post->created_at->diffForHumans() }}</p>
                                 <a href="/dashboard/posts/{{ $post->slug }}"
                                     class="font-medium text-lg text-gray-800 hover:text-[{{ $post->category->color }}]">{{ $post->title }}</a>
                                 <p class="text-base text-gray-500 mt-1">
@@ -78,12 +71,31 @@
                         </div>
 
                         <div
-                            class="flex w-full items-center space-x-2 mt-4 justify-between md:justify-items-start md:mt-0 ">
-                            <span
-                                class="text-sm px-2 py-1 rounded cursor-default first-letter:uppercase
-                                {{ $post->visibility == 'public' ? 'bg-blue-100 text-blue-600' : 'bg-orange-100 text-orange-600' }}">
-                                {{ ucfirst($post->visibility) }}
-                            </span>
+                            class="flex w-fit items-center space-x-2 mt-4 md:justify-between md:justify-items-start md:mt-0 ">
+                            <form method="POST" action="{{ route('posts.visibility', $post) }}" x-data="{ visibility: '{{ $post->visibility }}' }"
+                                class="flex items-center">
+                                @csrf
+                                @method('PATCH')
+
+                                <input type="hidden" name="visibility" :value="visibility === 'public' ? '0' : '1'">
+
+                                <button type="submit"
+                                    @click.prevent="visibility = visibility === 'public' ? 'private' : 'public'; $el.form.submit();"
+                                    class="relative overflow-hidden shadow-inner inline-flex items-center justify-center rounded-full w-20 h-8 text-sm font-medium transition-colors duration-300"
+                                    :class="visibility === 'public' ?
+                                        'bg-blue-100 text-blue-500' :
+                                        'bg-orange-100 text-orange-600'">
+
+                                    <span class="absolute right-3 pt-0.5 transition-all duration-300 opacity-0"
+                                        :class="visibility === 'public' ? 'opacity-100' : 'opacity-0'">Public</span>
+                                    <span class="absolute left-3 pt-0.5 transition-all duration-300 opacity-0"
+                                        :class="visibility === 'private' ? 'opacity-100' : 'opacity-0'">Private</span>
+
+                                    <span
+                                        class="absolute left-1/2 w-6 h-6 bg-white rounded-full shadow transform transition-transform duration-300"
+                                        :class="visibility === 'public' ? '-translate-x-9' : 'translate-x-3'"></span>
+                                </button>
+                            </form>
                             <div class="inline-flex gap-2">
                                 <a href="/dashboard/posts/{{ $post->slug }}/edit"
                                     class="text-gray-400 hover:text-yellow-400">
@@ -104,6 +116,6 @@
                 @endforeach
             </div>
         @endif
-
     </div>
+    {{ $posts->links() }}
 @endsection

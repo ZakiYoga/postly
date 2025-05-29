@@ -13,7 +13,7 @@
                     {{ $item['label'] }}
                 </a>
             @else
-                <span class="text-gray-500">{{ $item['label'] }}</span>
+                <span class="text-gray-500 first-letter:uppercase">{{ $item['label'] }}</span>
             @endif
         @endforeach
     </span>

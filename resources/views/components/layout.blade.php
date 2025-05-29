@@ -14,7 +14,7 @@
 <body class="bg-background dark:bg-background-foreground font-benne">
     <x-navbar.header>{{ $title ?? 'Postly' }}</x-navbar.header>
 
-    <main class="@container">
+    <main class="@container mb-4">
         {{ $slot }}
     </main>
 

@@ -58,20 +58,63 @@
 
                     {{-- File Upload Input with Preview --}}
                     <div class="col-span-full max-w-sm">
-                        <x-input-label for="cover_image" :value="__('Cover Post Image')" />
-                        <div class="mt-2 flex flex-col items-start">
+                        <label
+                            class="block font-medium text-sm font-bebas-neue text-gray-700 dark:text-gray-300 tracking-wider">
+                            Cover Post Image
+                        </label>
+                        <small class="text-muted leading-6 dark:text-gray-400">
+                            Toggle <span class="font-medium">ON</span> to auto-generate an image from Unsplash based on
+                            the
+                            category.
+                        </small>
+                        <div x-data="{ generate_unsplash: true }" class="mt-2 flex flex-col items-start">
                             {{-- Hidden actual file input --}}
                             <input type="file" id="cover_image" name="cover_image" accept="image/*" class="hidden"
                                 onchange="previewImage()" />
 
                             {{-- Custom upload button --}}
-                            <button type="button" onclick="document.getElementById('cover_image').click()"
-                                class="rounded-sm bg-white dark:bg-gray-800 px-4 py-2 text-sm font-semibold text-gray-700 dark:text-gray-200 shadow-sm ring-1 ring-inset ring-gray-300 dark:ring-gray-700 hover:bg-gray-50 dark:hover:bg-gray-700">
-                                Select Cover Image
-                            </button>
+                            <div class="mb-4">
+                                <!-- Toggle Switch -->
+                                <div class="flex items-center gap-3">
+                                    <label class="relative inline-flex cursor-pointer">
+                                        <!-- Hidden Checkbox untuk Form Submission -->
+                                        <input type="checkbox" id="generate_unsplash" name="generate_unsplash"
+                                            x-model="generate_unsplash" @change="handleToggleChange($event)"
+                                            class="sr-only">
 
-                            {{-- File name display --}}
-                            <p id="file-name" class="mt-2 text-sm text-gray-500 dark:text-gray-400">No file selected</p>
+                                        <!-- Custom Toggle Design -->
+                                        <div :class="generate_unsplash ? 'bg-primary' : 'bg-gray-300'"
+                                            class="relative inline-flex h-6 w-14 items-center rounded-full transition-colors duration-200 ease-in-out focus-within:ring-2 focus-within:ring-primary focus-within:ring-offset-2">
+                                            <span :class="generate_unsplash ? 'translate-x-9' : 'translate-x-1'"
+                                                class="inline-block h-4 w-4 transform rounded-full bg-white transition-transform duration-200 ease-in-out shadow-lg">
+                                            </span>
+                                            <span :class="generate_unsplash ? 'left-2 text-white' : 'right-2 text-gray-400'"
+                                                class="absolute text-xs font-semibold transition-all duration-200"
+                                                x-text="generate_unsplash ? 'ON' : 'OFF' ">
+                                            </span>
+                                        </div>
+                                    </label>
+                                </div>
+                            </div>
+
+                            <div x-show="!generate_unsplash" x-transition:enter="transition ease-out duration-300 transform"
+                                x-transition:enter-start="opacity-0 -translate-y-4"
+                                x-transition:enter-end="opacity-100 translate-y-0"
+                                x-transition:leave="transition ease-in duration-200 transform"
+                                x-transition:leave-start="opacity-100 translate-y-0"
+                                x-transition:leave-end="opacity-0 -translate-y-4"
+                                class="w-full inline-flex items-center gap-2">
+
+                                <button type="button" id="btn-upload"
+                                    onclick="document.getElementById('cover_image').click()"
+                                    class="inline-flex item-center gap-0.5 rounded-sm px-4 py-2 text-sm font-semibold text-gray-600 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50 transition-colors duration-150">
+                                    Select Cover Image
+                                </button>
+
+                                {{-- File name display --}}
+                                <p id="file-name" class="mt-2 text-sm text-gray-500 dark:text-gray-400">No file selected</p>
+                            </div>
+
 
                             {{-- Preview container --}}
                             <div id="preview-container" class="mt-4 hidden w-full">
@@ -171,7 +214,7 @@
                     </div>
 
                     <div class="mt-6 flex items-center justify-end gap-x-4">
-                        <a href="{{ route('user.dashboard') }}"
+                        <a href="{{ route('posts.index') }}"
                             class="rounded-sm bg-transparent px-3 py-2 text-sm font-semibold text-gray-900 shadow-xs hover:bg-gray-50 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gray-300 border border-gray-300">Cancel</a>
                         <button type="submit"
                             class="rounded-sm bg-primary px-3 py-2 text-sm font-semibold text-white shadow-xs hover:bg-primary/80 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary">Create
@@ -182,14 +225,13 @@
         </div>
     </div>
 
-@section('script')
-    <script src="/js/checkSlug.js"></script>
-    <script src="/js/previewImage.js"></script>
-@endsection
-
-<script>
-    document.addEventListener('trix-file-accept', function(e) {
-        e.preventDefault();
-    });
-</script>
+    @push('script')
+        <script src="/js/checkSlug.js"></script>
+        <script src="/js/previewImage.js"></script>
+        <script>
+            document.addEventListener('trix-file-accept', function(e) {
+                e.preventDefault();
+            });
+        </script>
+    @endpush
 @endsection

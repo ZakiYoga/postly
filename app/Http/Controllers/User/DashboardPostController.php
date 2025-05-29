@@ -19,10 +19,13 @@ class DashboardPostController extends Controller
      */
     public function index()
     {
+        $posts = Post::with(['category', 'author'])
+            ->where('author_id', Auth::id())
+            ->latest()
+            ->paginate(6);
 
-        Post::with(['category', 'author'])->latest()->get();
         return view('user.dashboard.posts', [
-            'posts' => Post::where('author_id', Auth::user()->id)->get(),
+            'posts' => $posts,
         ]);
     }
 
@@ -50,12 +53,17 @@ class DashboardPostController extends Controller
             'body' => 'required',
             'visibility' => 'required|in:public,private',
             'cover_image' => 'image|file|max:1024',
+            'generated_unsplash' => 'nullable|in:on,off',
             'category_id' => 'required|exists:categories,id',
         ]);
 
+        $validatedData['generate_unsplash'] = $request->input('generate_unsplash') === 'on' ? true : false;
+
         if ($request->file('cover_image')) {
             $validatedData['cover_image'] = $request->file('cover_image')->store('cover_images');
-        } else {
+        }
+
+        if ($validatedData['generate_unsplash']) {
             $category = Category::find($request->category_id);
             $response = Http::withHeaders([
                 'Authorization' => 'Client-ID ' . env('UNSPLASH_ACCESS_KEY'),
@@ -70,6 +78,7 @@ class DashboardPostController extends Controller
                 return redirect()->back()->with('error', 'Failed to fetch image from Unsplash.');
             }
         }
+
 
         $cleanBody = Purifier::clean($request->body);
         $validatedData['body'] = $cleanBody;
@@ -113,7 +122,7 @@ class DashboardPostController extends Controller
             'body' => 'required',
             'visibility' => 'required|in:public,private',
             'category_id' => 'required|exists:categories,id',
-            'cover_image' => 'image|file|max:1024',
+            'cover_image' => 'nullable|image|file|max:1024',
         ];
 
         if ($request->slug != $post->slug) {
@@ -122,23 +131,35 @@ class DashboardPostController extends Controller
 
         $validatedData = $request->validate($rules);
 
-        if ($request->file('cover_image')) {
-            if ($request->oldCover_Image) {
-                $validatedData['unsplash_image_url'] = null;
-                Storage::delete($request->oldCover_Image);
+        // Handle cover image logic
+        if ($request->hasFile('cover_image')) {
+            // New image uploaded - replace existing image
+
+            // Delete old cover image if exists
+            if ($post->cover_image) {
+                Storage::delete($post->cover_image);
             }
 
+            // Store new image
             $validatedData['cover_image'] = $request->file('cover_image')->store('cover_images');
-        } elseif ($request->cover_image == "") {
-            if ($request->oldCover_Image) {
-                $validatedData['unsplash_image_url'] = null;
-                Storage::delete($request->oldCover_Image);
+            $validatedData['unsplash_image_url'] = null;
+        } elseif ($request->has('remove_image') && $request->remove_image == '1') {
+
+            // Delete old cover image if exists
+            if ($post->cover_image) {
+                Storage::delete($post->cover_image);
             }
+
             $validatedData['cover_image'] = null;
+            $validatedData['unsplash_image_url'] = null;
+        } else {
+            // No new image uploaded and not removed - keep existing values
+            unset($validatedData['cover_image']); // Don't update cover_image field
         }
 
         $validatedData['author_id'] = Auth::user()->id;
         Post::where('id', $post->id)->update($validatedData);
+
         return redirect('/dashboard/posts')->with('success', 'Post has been updated!');
     }
 
@@ -159,5 +180,14 @@ class DashboardPostController extends Controller
     {
         $slug = SlugService::createSlug(Post::class, 'slug', $request->title);
         return response()->json(['slug' => $slug]);
+    }
+
+    public function updateVisibility(Post $post, Request $request)
+    {
+        $post->update([
+            'visibility' => $request->boolean('visibility') ? 'public' : 'private',
+        ]);
+
+        return back(); // atau response json jika pakai AJAX
     }
 }

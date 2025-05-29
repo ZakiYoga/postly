@@ -5,7 +5,6 @@ document.addEventListener("DOMContentLoaded", function () {
 
     if (previewImage.src) {
         previewContainer.classList.remove("hidden");
-        fileName.textContent = "cover_image.jpg";
         updateUploadButton("Change Image");
     }
 });

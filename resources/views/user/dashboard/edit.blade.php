@@ -1,12 +1,12 @@
 @extends('user.layouts.app')
 
-@section('style')
+@push('style')
     <style>
         trix-toolbar [data-trix-button-group="file-tools"] {
             display: none;
         }
     </style>
-@endsection
+@endpush
 
 @section('title')
     Dashboard - Edit Post
@@ -66,6 +66,7 @@
                     <div class="col-span-full max-w-sm">
                         <x-input-label for="cover_image" :value="__('Cover Post Image')" />
                         <div class="mt-2 flex flex-col items-start">
+                            <input type="hidden" id="remove_image" name="remove_image" value="0">
                             {{-- Old Image --}}
                             <input type="hidden" name="oldCover_Image"
                                 value="{{ $post->cover_image ?? ($post->unsplash_image_url ?? '') }}">
@@ -73,7 +74,6 @@
                             {{-- Hidden actual file input --}}
                             <input type="file" id="cover_image" name="cover_image" accept="image/*" class="hidden"
                                 onchange="previewImage()" />
-
                             <div class="inline-flex items-center gap-2">
 
                                 {{-- Custom upload button --}}
@@ -90,7 +90,13 @@
                             </div>
 
                             {{-- File name display --}}
-                            <p id="file-name" class="text-sm text-gray-500 dark:text-gray-400 mt-2">No file selected</p>
+                            <p id="file-name" class="text-sm text-gray-500 dark:text-gray-400 mt-2">
+                                @if ($post->cover_image || $post->unsplash_image_url)
+                                    Current image loaded
+                                @else
+                                    No file selected
+                                @endif
+                            </p>
 
                             {{-- Preview container --}}
                             <div id="preview-container" class="mt-2 w-full hidden">
@@ -196,8 +202,10 @@
                         </div>
                     </div>
                     <div class="mt-6 flex items-center justify-end gap-x-6">
-                        <button type="button"
-                            class="text-sm/6 font-semibold text-gray-900 dark:text-gray-100">Cancel</button>
+                        <a href="{{ route('posts.index') }}"
+                            class="rounded-sm bg-transparent px-3 py-2 text-sm font-semibold text-gray-900 shadow-xs hover:bg-gray-50 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gray-300 border border-gray-300">
+                            Cancel
+                        </a>
                         <button type="submit"
                             class="rounded-sm bg-primary px-3 py-2 text-sm font-semibold text-white shadow-xs hover:bg-primary/80 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary">
                             Edit Post
@@ -209,9 +217,9 @@
         </div>
     </div>
 
-@section('script')
-    <script src="/js/checkSlug.js"></script>
-    <script src="/js/previewImage.js"></script>
-    <script src="/js/showImageEdit.js"></script>
-@endsection
+    @push('script')
+        <script src="/js/checkSlug.js"></script>
+        <script src="/js/previewImage.js"></script>
+        <script src="/js/showImageEdit.js"></script>
+    @endpush
 @endsection

@@ -5,20 +5,18 @@
 @endsection
 
 @section('content')
+    <x-breadcrumb :items="[
+        ['label' => 'Dashboard', 'url' => '/dashboard'],
+        ['label' => 'My Posts', 'url' => '/dashboard/posts'],
+        ['label' => $post->slug],
+    ]" />
+
     <div class="flex p-6 bg-white dark:bg-background-foreground rounded-sm shadow-md font-benne">
         <div class="flex flex-col w-full max-w-2xl mx-auto">
-            <h1 class="text-2xl font-semibold text-gray-800 mb-2 font-bebas-neue tracking-wider">Single Post</h1>
-            <span class="inline-flex items-center gap-1 text-gray-500 mb-4">
-                <a href="/dashboard" class="hover:text-primary">
-                    Dashboard
-                </a>
-                <x-ri-arrow-right-double-fill class="w-4 h-4 pb-1" />
-                <a href="/dashboard/posts" class="hover:text-primary">
-                    Posts
-                </a>
-                <x-ri-arrow-right-double-fill class="w-4 h-4 pb-1" />
-                {{ $post->title }}
-            </span>
+
+            <x-heading>
+                My Private Posts
+            </x-heading>
 
             <div class="flex items-center mb-4 gap-x-2 font-medium text-sm text-gray-800">
                 <a href="/dashboard/posts"
@@ -43,15 +41,17 @@
             </div>
 
             <div class="flex flex-col gap-y-4 mb-4">
-                <div class="h-30 max-w-40">
+                <div class="w-full max-w-sm aspect-video max-h-48 md:max-h-64 md:max-w-lg">
                     @if ($post->cover_image)
                         <img src="{{ asset('storage/' . $post->cover_image) }}" alt="{{ $post->title }}"
-                            class="object-cover w-full h-full" />
-                    @elseif (isset($imageUrl))
-                        <img src="{{ $imageUrl }}" alt="unsplashAPI-{{ $post->category->name }}"
-                            class="object-cover w-full h-full" />
+                            class="object-cover object-center w-full h-full" />
+                    @elseif ($post->unsplash_image_url)
+                        <img src="{{ $post->unsplash_image_url }}" alt="unsplashAPI-{{ $post->category->name }}"
+                            class="object-cover object-center w-full h-full" />
                     @else
-                        <p>image not found or error fetch api unsplash</p>
+                        <div class="w-full h-full object-cover bg-gray-200 text-gray-500 flex items-center justify-center">
+                            <span class="font-bebas-neue text-lg tracking-wider">No Preview Image</span>
+                        </div>
                     @endif
                 </div>
                 <div class="flex flex-col gap-0.5">
@@ -60,7 +60,8 @@
                 </div>
                 <div class="flex flex-col gap-0.5">
                     <h2 class="text-base font-bebas-neue tracking-wider font-medium text-gray-800">Created At</h2>
-                    <p class="text-gray-600">{{ $post->created_at->diffForHumans() }}</p>
+                    <p class="text-gray-600">
+                        {{ $post->created_at->diffForHumans() }}</p>
                 </div>
                 <div class="flex flex-col gap-0.5">
                     <h2 class="text-base font-bebas-neue tracking-wider font-medium text-gray-800">Content</h2>
@@ -71,8 +72,12 @@
                     <p class="text-gray-600">{{ $post->category->name }}</p>
                 </div>
                 <div class="flex flex-col gap-0.5">
-                    <h2 class="text-base font-bebas-neue tracking-wider font-medium text-gray-800">Status</h2>
-                    <p class="text-gray-600 first-letter:uppercase">{{ $post->status }}</p>
+                    <h2 class="text-base font-bebas-neue tracking-wider font-medium text-gray-800">Visibility</h2>
+                    <p class="text-gray-600 first-letter:uppercase">{{ $post->visibility }}</p>
+                </div>
+                <div class="flex flex-col gap-0.5">
+                    <h2 class="text-base font-bebas-neue tracking-wider font-medium text-gray-800">Like Count</h2>
+                    <p class="text-gray-600 first-letter:uppercase">{{ $post->like_count }}</p>
                 </div>
             </div>
         </div>

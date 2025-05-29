@@ -64,6 +64,7 @@ button:hover {
     display: none !important;
 }
 
+
 .scrollbar-none {
     -ms-overflow-style: none;
     scrollbar-width: none;
@@ -92,4 +93,17 @@ button:hover {
 
 trix-toolbar [data-trix-button-group="file-tools"] {
     display: none;
+}
+
+.custom-scrollbar::-webkit-scrollbar {
+    width: 4px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb {
+    background-color: #f0f0f0;
+    border-radius: 8px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-track {
+    background: transparent;
 }

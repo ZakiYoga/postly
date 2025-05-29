@@ -5,13 +5,6 @@
 @endsection
 
 @section('content')
-    {{-- Alert Success --}}
-    @if (session('success'))
-        <x-alert type="success" title="Success!">
-            {{ session('success') }}
-        </x-alert>
-    @endif
-
     <x-breadcrumb :items="[['label' => 'Dashboard', 'url' => '/dashboard'], ['label' => 'Private']]" />
 
     <div class="bg-white dark:bg-background-foreground rounded-sm shadow p-6">

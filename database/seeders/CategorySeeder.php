@@ -38,6 +38,18 @@ class CategorySeeder extends Seeder
         ]);
 
         Category::create([
+            'name' => 'Space',
+            'slug' => 'space',
+            'color' => '#FFC107',
+        ]);
+
+        Category::create([
+            'name' => 'Biotech',
+            'slug' => 'biotech',
+            'color' => '#FFC107',
+        ]);
+
+        Category::create([
             'name' => 'Artificial Intelligence',
             'slug' => 'artificial-intelligence',
             'color' => '#6F42C1',
@@ -64,6 +76,18 @@ class CategorySeeder extends Seeder
         Category::create([
             'name' => 'Hardware',
             'slug' => 'hardware',
+            'color' => '#6C757D',
+        ]);
+
+        Category::create([
+            'name' => 'Programming',
+            'slug' => 'programming',
+            'color' => '#6C757D',
+        ]);
+
+        Category::create([
+            'name' => 'UI/UX',
+            'slug' => 'UI-UX',
             'color' => '#6C757D',
         ]);
     }

@@ -13,12 +13,14 @@ class UserController extends Controller
 {
     public function index()
     {
+        $postLimit = 3;
         $posts = Post::where('author_id', Auth::id())
             ->orderBy('created_at', 'desc')
-            ->take(3)
+            ->take($postLimit)
             ->get();
         $postCount = Post::where('author_id', Auth::id())->count();
-        return view('user.dashboard', compact('posts', 'postCount'));
+
+        return view('user.dashboard', compact('posts', 'postCount', 'postLimit'));
     }
 
     public function private()

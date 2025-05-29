@@ -5,13 +5,14 @@ use App\Models\User;
 use App\Models\Category;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\NewsletterController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\User\DashboardPostController;
 use App\Http\Controllers\User\UserController;
 use App\Http\Controllers\Admin\AdminController;
 
 Route::get('/', function () {
-    return view('homepage', [
+    return view('front.homepage', [
         'title' => 'Homepage',
         'posts' => Post::latest()->get(),
         'categories' => Category::all(),
@@ -19,14 +20,14 @@ Route::get('/', function () {
 });
 
 Route::get('/about', function () {
-    return view('aboutpage', [
+    return view('front.aboutpage', [
         'title' => 'About',
         'nama' => 'Zaki Satria'
     ]);
 });
 
 Route::get('/posts', function () {
-    return view('postspage', [
+    return view('front.postspage', [
         'title' => 'Our Discover nice articles here',
         'description' => 'Welcome to our blog, a friendly space where we share stories and knowledge. Feel free to browse through our articles and find something that resonates with you.',
         'posts' => Post::filter(request(['search', 'category', 'author']))->latest()->paginate(9)->withQueryString(),
@@ -38,22 +39,17 @@ Route::get('/posts', function () {
 });
 
 Route::get('/posts/{post:slug}', function (Post $post) {
-    return view('postpage ', ['title' => 'Single Post', 'post' => $post]);
+    return view('front.postpage ', ['title' => 'Single Post', 'post' => $post]);
 });
 
 Route::get('/authors/{user:username}', function (User $user) {
-    return view('postspage ', [
+    $posts = Post::with(['category', 'author'])
+        ->latest()
+        ->paginate(6);
+    return view('front.postspage ', [
         'title' => 'Article by ' . $user->name,
         'description' => 'Found ' . count($user->posts) . ' article by ' . $user->name,
-        'posts' => $user->posts
-    ]);
-});
-
-Route::get('/categories/{category:slug}', function (Category $category) {
-    return view('postspage ', [
-        'title' => 'Article in ' . $category->name,
-        'description' => 'Found ' . count($category->posts) . ' article in ' . $category->name,
-        'posts' => $category->posts
+        'posts' => $posts
     ]);
 });
 
@@ -62,6 +58,8 @@ Route::get('/contact', function () {
         'title' => 'Contact'
     ]);
 });
+
+Route::post('/newsletter/subscribe', [NewsletterController::class, 'store'])->name('newsletter.subscribe');
 
 
 require __DIR__ . '/auth.php';
@@ -72,8 +70,17 @@ Route::get('/dashboard/posts/checkSlug', [DashboardPostController::class, 'check
 // User Routes
 Route::middleware(['auth', 'userMiddleware'])->prefix('dashboard')->group(function () {
     Route::get('/', [UserController::class, 'index'])->name('user.dashboard');
-    Route::resource('/posts', DashboardPostController::class);
+    Route::resource('/posts', DashboardPostController::class)->names([
+        'index' => 'posts.index',
+        'create' => 'posts.create',
+        'store' => 'posts.store',
+        'show' => 'posts.show',
+        'edit' => 'posts.edit',
+        'update' => 'posts.update',
+        'destroy' => 'posts.destroy'
+    ]);
     Route::post('/posts/fetch-unsplash', [DashboardPostController::class, 'fetchUnsplash'])->name('posts.fetchUnsplash');
+    Route::patch('/posts/{post}/visibility', [DashboardPostController::class, 'updateVisibility'])->name('posts.visibility');
 
     Route::get('/settings', [ProfileController::class, 'edit'])->name('settings.edit');
     Route::patch('/settings', [ProfileController::class, 'update'])->name('settings.update');
