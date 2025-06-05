@@ -1,0 +1,91 @@
+<?php
+
+namespace App\Http\Controllers;
+
+use App\Models\Post;
+use App\Models\Category;
+use App\Models\User;
+use Illuminate\Http\Request;
+
+class FrontPostController extends Controller
+{
+    public function homepage()
+    {
+        $posts = Post::where('visibility', 'public')
+            ->latest()
+            ->take(3)
+            ->get();
+
+        $categories = Category::all();
+
+        return view('front.homepage', [
+            'title' => 'Homepage',
+            'posts' => $posts,
+            'categories' => $categories,
+        ]);
+    }
+
+    public function about()
+    {
+        return view('front.aboutpage', [
+            'title' => 'About',
+            'about' => 'Website blog sederhana ...'
+        ]);
+    }
+
+    public function index(Request $request)
+    {
+        $posts = Post::where('visibility', 'public')
+            ->filter($request->only(['search', 'category', 'author']))
+            ->latest()
+            ->paginate(9)
+            ->withQueryString();
+
+        return view('front.postspage', [
+            'title' => 'Our Discover nice articles here',
+            'heading' => 'Discover Nice Articles Here',
+            'description' => 'Welcome to our blog, a friendly space where we share stories and knowledge. Feel free to browse through our articles and find something that resonates with you.',
+            'posts' => $posts,
+            'count' => $posts->total(),
+            'currentSearch' => $request->search,
+            'currentAuthor' => $request->author,
+            'currentCategory' => $request->category,
+        ]);
+    }
+
+    public function show(Post $post)
+    {
+        return view('front.postpage', [
+            'title' => 'Single Post',
+            'post' => $post
+        ]);
+    }
+
+    public function author(User $user)
+    {
+        $posts = Post::where('visibility', 'public')
+            ->where('user_id', $user->id)
+            ->with(['category', 'author'])
+            ->latest()
+            ->paginate(6)
+            ->withQueryString();
+
+        return view('front.postspage', [
+            'title' => 'Article by ' . $user->name,
+            'heading' => 'Posts by ' . $user->name,
+            'description' => 'Found ' . $posts->total() . ' article(s) by ' . $user->name,
+            'posts' => $posts,
+            'count' => $posts->total(),
+            'currentAuthor' => $user->username,
+            'currentCategory' => null,
+            'currentSearch' => null
+        ]);
+    }
+
+    public function contact()
+    {
+        return view('contactpage', [
+            'title' => 'Contact'
+        ]);
+    }
+}

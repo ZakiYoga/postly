@@ -1,3 +1,5 @@
+@props(['title', 'nav-link'])
+
 <!doctype html>
 <html>
 
@@ -14,7 +16,7 @@
 <body class="bg-background dark:bg-background-foreground font-benne">
     <x-navbar.header>{{ $title ?? 'Postly' }}</x-navbar.header>
 
-    <main class="@container mb-4">
+    <main class="@container">
         {{ $slot }}
     </main>
 

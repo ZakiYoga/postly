@@ -5,59 +5,20 @@ use App\Models\User;
 use App\Models\Category;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\NewsletterController;
+use App\Http\Controllers\FrontPostController;
 use App\Http\Controllers\ProfileController;
-use App\Http\Controllers\User\DashboardPostController;
 use App\Http\Controllers\User\UserController;
+use App\Http\Controllers\NewsletterController;
 use App\Http\Controllers\Admin\AdminController;
+use App\Http\Controllers\User\DashboardPostController;
 
-Route::get('/', function () {
-    return view('front.homepage', [
-        'title' => 'Homepage',
-        'posts' => Post::latest()->get(),
-        'categories' => Category::all(),
-    ]);
-});
+Route::get('/', [FrontPostController::class, 'homepage']);
+Route::get('/about', [FrontPostController::class, 'about']);
+Route::get('/contact', [FrontPostController::class, 'contact']);
 
-Route::get('/about', function () {
-    return view('front.aboutpage', [
-        'title' => 'About',
-        'nama' => 'Zaki Satria'
-    ]);
-});
-
-Route::get('/posts', function () {
-    return view('front.postspage', [
-        'title' => 'Our Discover nice articles here',
-        'description' => 'Welcome to our blog, a friendly space where we share stories and knowledge. Feel free to browse through our articles and find something that resonates with you.',
-        'posts' => Post::filter(request(['search', 'category', 'author']))->latest()->paginate(9)->withQueryString(),
-        'count' => Post::filter(request(['search', 'category', 'author']))->latest()->count(),
-        'currentSearch' => request('search'),
-        'currentAuthor' => request('author'),
-        'currentCategory' => request('category'),
-    ]);
-});
-
-Route::get('/posts/{post:slug}', function (Post $post) {
-    return view('front.postpage ', ['title' => 'Single Post', 'post' => $post]);
-});
-
-Route::get('/authors/{user:username}', function (User $user) {
-    $posts = Post::with(['category', 'author'])
-        ->latest()
-        ->paginate(6);
-    return view('front.postspage ', [
-        'title' => 'Article by ' . $user->name,
-        'description' => 'Found ' . count($user->posts) . ' article by ' . $user->name,
-        'posts' => $posts
-    ]);
-});
-
-Route::get('/contact', function () {
-    return view('contactpage', [
-        'title' => 'Contact'
-    ]);
-});
+Route::get('/posts', [FrontPostController::class, 'index']);
+Route::get('/posts/{post:slug}', [FrontPostController::class, 'show']);
+Route::get('/authors/{user:username}', [FrontPostController::class, 'author']);
 
 Route::post('/newsletter/subscribe', [NewsletterController::class, 'store'])->name('newsletter.subscribe');
 

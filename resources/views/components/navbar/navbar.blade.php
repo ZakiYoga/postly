@@ -15,20 +15,18 @@
             <label for="search" class="sr-only">Search</label>
             <input type="search" id="search" name="search"
                 class="font-bebas-neue block w-full p-2 pt-2.5 pl-9 text-sm text-gray-900 border-transparent bg-transparent focus:ring-gray-500 focus:border-primary-500 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
-                placeholder="SEARCH article" autocomplete="off" />
+                placeholder="search article" autocomplete="off" />
         </div>
     </form>
-    {{-- bg-amber-100 sm:bg-red-500 md:bg-violet-500 lg:bg-sky-800 --}}
+
     <div class="inline-flex items-center flex-wrap justify-center lg:justify-end gap-x-2 w-full text-sm/6 uppercase">
+        @foreach ($categories as $category)
+            <x-nav-link href="/posts?category={{ $category->slug }}" :active="request()->is('posts') && request('category') === $category->slug"
+                class="font-bebas-neue font-thin border-none hover:bg-gray-100 dark:hover:bg-gray-900">
+                {{ $category->name }}
+            </x-nav-link>
+        @endforeach
         <x-nav-link href="/" :active="request()->is('news')" class="">News</x-nav-link>
-        <x-nav-link href="/about" :active="request()->is('about')" class="">Robotics</x-nav-link>
-        <x-nav-link href="/contact" :active="request()->is('contact')" class="">Space</x-nav-link>
-        <x-nav-link href="/contact" :active="request()->is('contact')" class="">Biotech</x-nav-link>
-        <x-nav-link href="/contact" :active="request()->is('contact')" class="">AI</x-nav-link>
-        <x-nav-link href="/contact" :active="request()->is('contact')" class="">Science</x-nav-link>
-        <x-nav-link href="/contact" :active="request()->is('contact')" class="">Culture</x-nav-link>
-        <x-nav-link href="/contact" :active="request()->is('contact')" class="">Travel</x-nav-link>
-        <x-nav-link href="/contact" :active="request()->is('contact')" class="">Programming</x-nav-link>
         <div class="relative">
             <button type="button" @click="menuOpen = !menuOpen"
                 class="flex items-center font-bebas-neue uppercase gap-x-1 text-gray-500 hover:text-gray-700 group dark:text-gray-400 dark:hover:text-gray-300 active:text-primary"

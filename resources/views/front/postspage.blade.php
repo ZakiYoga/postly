@@ -7,31 +7,33 @@
             <h2
                 class="mb-2 text-2xl font-bebas-neue tracking-wider lg:text-4xl font-semibold text-gray-900 dark:text-white">
                 @if (request('category') || request('search') || request('author'))
-                    <p class="dark:text-white my-4 leading-4">
-                        @if (request('category'))
-                            Category : {{ request('category') }}
-                        @elseif(request('author'))
-                            All Posts for "{{ request('author') }}"
-                        @elseif(request('search'))
-                            Search "{{ request('search') }}"
-                        @endif
-                    </p>
+                    @if (request('category'))
+                        Category : {{ request('category') }}
+                    @elseif(request('author'))
+                        All Posts for "{{ request('author') }}"
+                    @elseif(request('search'))
+                        Search "{{ request('search') }}"
+                    @endif
                 @else
-                    Our Discover nice articles here
+                    {{ $heading }}
                 @endif
             </h2>
             @if (request('search') || request('category') || request('author'))
-                <p class="font-light capitalize mt-4 text-gray-500 text-sm dark:text-gray-400">
-                    <a href="/" class="text-primary">
+                <p class="inline-flex items-center mt-4 text-gray-500 dark:text-gray-400 first-letter:uppercase">
+                    <a href="/" class="hover:text-primary focus:text-primary">
                         Homepage
                     </a>
-                    &raquo;&nbsp;
+                    <x-ri-arrow-right-double-fill class="w-4 h-4 pb-1" />
+                    <a href="/posts" class="hover:text-primary focus:text-primary">
+                        Posts
+                    </a>
+                    <x-ri-arrow-right-double-fill class="w-4 h-4 pb-1" />
                     @if (request('category'))
-                        category&nbsp;&raquo; {{ request('category') }}
+                        {{ ucfirst(request('category')) }}
                     @elseif (request('author'))
-                        author&nbsp;&raquo; {{ request('author') }}
+                        {{ ucfirst(request('author')) }}
                     @elseif (request('search'))
-                        search
+                        Search
                     @endif
                 </p>
             @else
@@ -68,13 +70,14 @@
                     class="p-6 bg-white border border-gray-200 shadow-md dark:bg-gray-900 dark:border-gray-700 group relative overflow-hidden hover:cursor-pointer">
 
                     <div
-                        class="absolute top-0 left-0 w-full h-0 group-hover:h-[100%] transition-all duration-500 ease-in-out overflow-hidden">
+                        class="absolute top-0 left-0 w-full h-[30%] group-hover:h-[100%] transition-all duration-500 ease-in-out overflow-hidden">
                         <div class="shadow-gradient">
-                            <img src="/images/article-1.png" alt="article" class="w-full h-auto">
+                            <img src="/images/article-1.png" alt="article"
+                                class="w-full h-auto group-hover:scale-110 transition-transform duration-500 ease-in-out">
                         </div>
                     </div>
 
-                    <div class="relative z-10 transition-all duration-500 group-hover:mt-[calc(50%-1rem)]">
+                    <div class="relative z-10 transition-all duration-500 mt-[35%] group-hover:mt-[calc(50%-1rem)]">
                         <div class="flex justify-between items-center mb-5 text-gray-500 mt-2 ">
                             <a href="/posts?category={{ $post->category->slug }}"
                                 class="text-[{{ $post->category->color }}] bg-[{{ $post->category->color }}]/15 group-hover:bg-[{{ $post->category->color }}] group-hover:text-white hover:underline shadow-inner transition-all duration-500 text-xs font-medium font-bebas-neue tracking-widest inline-flex items-center px-2.5 py-2 dark:bg-primary-200 dark:text-primary-800">
@@ -91,7 +94,7 @@
                             </h2>
                         </a>
                         <p class="mb-5 font-light text-gray-500 dark:text-gray-400">
-                            {{ Str::limit($post->body, 150) }}
+                            {!! Str::limit($post->body, 150) !!}
                         </p>
                         <div class="flex justify-between items-center">
                             <a href="/posts?author={{ $post->author->username }}"
@@ -115,13 +118,18 @@
 
             @empty
                 <div
-                    class="flex flex-col items-start justify-start col-span-3 p-6 min-h-[30vh] bg-white border border-gray-200 shadow-md dark:bg-gray-900 dark:border-gray-700">
-                    <h1 class="text-2xl text-gray-900 dark:text-white">Article not found!</h1>
-                    <a href="/posts"
-                        class="inline-flex mt-auto font-bebas-neue items-center gap-2 px-3 py-2 bg-primary hover:bg-primary/80 text-gray-900 shadow-md">
-                        <x-fas-arrow-left class="w-4 h-4 pb-0.5" />
-                        Back to All Posts
-                    </a>
+                    class="flex flex-col items-center justify-center col-span-3 p-6 min-h-[30vh] bg-white border border-gray-200 shadow-md dark:bg-gray-900 dark:border-gray-700">
+                    <p class="text-xl text-gray-800 dark:text-white">
+                        Stay tuned for upcoming posts!
+                    </p>
+                    @if (request('search') || request('category') || request('author'))
+                        <a href="/posts"
+                            class="inline-flex justify-start mt-auto mr-auto font-bebas-neue items-center gap-2 px-3 py-2 bg-primary hover:bg-primary/80 text-gray-900 shadow-md">
+                            <x-fas-arrow-left class="w-4 h-4 pb-0.5" />
+                            Back to All Posts
+                        </a>
+                    @endif
+
                 </div>
             @endforelse
         </div>

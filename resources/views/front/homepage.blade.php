@@ -1,9 +1,3 @@
-@php
-    $limitedPosts = $posts->take(7);
-    $totalLimitedPost = $limitedPosts->count();
-    $latest3 = $posts->slice(0, 3);
-@endphp
-
 <x-layout>
     <x-slot:title>{{ $title ?? 'postly' }}</x-slot:title>
     <section class="h-fit mt-4 px-4 sm:px-6 md:px-8 lg:px-16">
@@ -44,7 +38,7 @@
 
             <!-- Latest 3 articles - Full width on mobile, 40% on desktop -->
             <div class="flex flex-col justify-between items-start w-full lg:w-[40%] h-full space-y-4 lg:space-y-0">
-                @foreach ($latest3 as $index => $post)
+                @foreach ($posts as $index => $post)
                     @if ($index == 1)
                         <hr class="w-full h-1.5 text-gray-300" />
                         <x-article-post :post="$post" />
@@ -68,8 +62,8 @@
                     </h1>
                 </div>
                 <div class="flex flex-col gap-y-2 mt-4">
-                    @foreach ($limitedPosts as $index => $post)
-                        @if ($index < $totalLimitedPost - 3)
+                    @foreach ($posts as $index => $post)
+                        @if ($index < $posts->count() - 3)
                             <article class="flex flex-col sm:flex-row py-2 rounded-xs gap-4 sm:gap-2 group w-full">
                                 <div class="space-y-2 w-full h-full group">
                                     <div class="inline-flex items-center text-sm/normal gap-2 font-bebas-neue">
