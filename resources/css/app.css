@@ -107,3 +107,28 @@ trix-toolbar [data-trix-button-group="file-tools"] {
 .custom-scrollbar::-webkit-scrollbar-track {
     background: transparent;
 }
+
+@keyframes scroll-step {
+    0% {
+        transform: translateY(0);
+    }
+
+    50% {
+        transform: translateY(-33.33%);
+    }
+
+    100% {
+        transform: translateY(-67%);
+    }
+
+}
+
+.animate-scroll-step {
+    animation: scroll-step 8s infinite;
+}
+
+.group:hover .pause-on-hover {
+    animation-play-state: paused;
+}
+
+/* -------------------------------------- */

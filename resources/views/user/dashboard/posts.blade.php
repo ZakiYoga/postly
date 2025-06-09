@@ -16,8 +16,8 @@
             <!-- Posts -->
             <div class="space-y-2">
                 <div
-                    class="flex flex-col border-b py-2 border-gray-200 items-center justify-between group hover:bg-gray-50/50 transition duration-200 ease-in-out">
-                    <div class="flex w-full flex-col items-start md:flex-row md:items-center space-x-4">
+                    class="flex flex-col md:flex-row border-b py-2 border-gray-200 items-center justify-between group hover:bg-gray-50/50 transition duration-200 ease-in-out">
+                    <div class="flex w-full flex-col md:flex-row items-start md:items-center space-x-4">
                         <div class="w-full h-32 lg:min-w-44 md:max-w-44">
                             @if ($post->cover_image)
                                 <img src="{{ asset('storage/' . $post->cover_image) }}" alt="{{ $post->title }}"

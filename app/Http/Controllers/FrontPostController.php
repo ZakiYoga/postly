@@ -16,12 +16,9 @@ class FrontPostController extends Controller
             ->take(3)
             ->get();
 
-        $categories = Category::all();
-
         return view('front.homepage', [
             'title' => 'Homepage',
             'posts' => $posts,
-            'categories' => $categories,
         ]);
     }
 
@@ -35,14 +32,14 @@ class FrontPostController extends Controller
 
     public function index(Request $request)
     {
-        $posts = Post::where('visibility', 'public')
+        $posts = Post::with(['category'])->where('visibility', 'public')
             ->filter($request->only(['search', 'category', 'author']))
             ->latest()
             ->paginate(9)
             ->withQueryString();
 
         return view('front.postspage', [
-            'title' => 'Our Discover nice articles here',
+            'title' => 'Blog',
             'heading' => 'Discover Nice Articles Here',
             'description' => 'Welcome to our blog, a friendly space where we share stories and knowledge. Feel free to browse through our articles and find something that resonates with you.',
             'posts' => $posts,
@@ -84,7 +81,7 @@ class FrontPostController extends Controller
 
     public function contact()
     {
-        return view('contactpage', [
+        return view('front.contactpage', [
             'title' => 'Contact'
         ]);
     }

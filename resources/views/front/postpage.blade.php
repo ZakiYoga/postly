@@ -1,36 +1,5 @@
 <x-layout>
     <x-slot:title>{{ $title }}</x-slot:title>
-
-    {{-- <div class="min-h-screen w-full lg:p-[2rem] flex item-center justify-start flex-col gap-4">
-        <h3 class="font-bold text-2xl">Sigle Post</h3>
-
-        <div class="flex flex-wrap flex-col gap-8">
-            <article class="max-w-sm bg-gray-200/30 h-fit rounded-lg p-4 flex flex-col gap-2 shadow-lg">
-                <h2 class="font-bold text-xl font-oxanium">
-                    {{ $post['title'] }}
-                </h2>
-                <div class="flex">
-                    <a href="/authors/{{ $post->author->username }}" class="hover:text-primary">
-                        {{ $post->author->name }} </a> &nbsp; | 22 maret 2025
-                </div>
-                <p>
-                    {{ $post['body'] }}
-                </p>
-                <a href="/categories/{{ $post->category->slug }}"
-                    class="px-2 py-1.5 bg-gray-300 w-fit rounded-md inline-flex items-center text-sm">
-                    <x-untitledui-tag-02 class="w-4 h-4" />&nbsp;{{ $post->category->name }}
-                </a>
-                <a href="/posts" class="bg-primary w-fit px-3 py-2 rounded-lg mt-4">
-                    &laquo; Back to all posts</a>
-            </article>
-        </div>
-    </div> --}}
-    <!--
-Install the "flowbite-typography" NPM package to apply styles and format the article content:
-
-URL: https://flowbite.com/docs/components/typography/
--->
-
     <section class="w-full h-fit mt-4 mx-auto px-6 sm:px-8 md:px-10 lg:px-16">
         <div
             class="mx-auto w-full bg-white rounded-sm text-center py-6 lg:py-8 px-4 lg:px-8 lg:mb-4 mb-2 shadow-md border border-gray-200 dark:bg-gray-900 dark:border-gray-700">

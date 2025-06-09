@@ -1,12 +1,34 @@
 <x-layout>
-    <x-slot:title>{{ $title ?? 'postly' }}</x-slot:title>
-    <section class="h-fit mt-4 px-4 sm:px-6 md:px-8 lg:px-16">
+
+    <x-slot:title>{{ $title }}</x-slot:title>
+    <section
+        class="h-fit mt-2 px-4 sm:px-6 md:px-8 lg:px-16 w-full border rounded-xs border-gray-300 dark:border-gray-700 text-white bg-red-500">
+        <div class="flex items-center gap-2 h-8">
+            <x-heroicon-o-fire class="w-6 h-6 pb-0.5" />
+            <h1 class="text-sm font-bebas-neue min-w-fit tracking-wide">Trending Topic</h1>
+
+            <div class="relative group h-8 w-full ml-2  overflow-hidden">
+                <div class="absolute animate-scroll-step pause-on-hover">
+                    <div class="flex flex-col">
+                        @foreach ($posts as $post)
+                            <a href="{{ route('posts.show', $post) }}"
+                                class="text-sm h-8 py-2 flex items-center font-benne hover:underline">
+                                {{ $post->title }}
+                            </a>
+                        @endforeach
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="h-fit px-4 sm:px-6 md:px-8 lg:px-16">
         <div class="w-full flex flex-col lg:flex-row items-start justify-between gap-8 lg:h-[70vh] py-4">
             <!-- Main featured article - Full width on mobile, 60% on desktop -->
             <div class="w-full lg:w-[60%] h-full mb-8 lg:mb-0">
                 <article class="relative w-full h-full">
                     <div
-                        class="rounded-xs shadow-[0px_-8px_0px_#f5f5f5] drop-shadow-[4px_4px_0px_#f5f5f5] dark:shadow-[0px_-8px_0px_#030712] dark:drop-shadow-[4px_4px_0px_#030712] relative lg:absolute top-auto lg:top-0 lg:-left-2 w-full lg:w-[45%] h-fit bg-background border border-gray-300 dark:border-gray-700 dark:bg-gray-900 z-10 space-y-2 p-4 mb-4 lg:mb-0">
+                        class="rounded-xs shadow-[0px_-8px_0px_#f5f5f5] drop-shadow-[4px_4px_0px_#f5f5f5] dark:shadow-[0px_-8px_0px_#030712] dark:drop-shadow-[4px_4px_0px_#030712] relative lg:absolute top-auto lg:top-0 lg:left-0 w-full lg:w-[45%] h-fit bg-background border border-gray-300 dark:border-gray-700 dark:bg-gray-900 z-10 space-y-2 p-4 mb-4 lg:mb-0">
                         <div
                             class="inline-flex items-center gap-2 font-bebas-neue text-sm/6 text-gray-800 dark:text-gray-200">
                             <a href="#" class="tracking-wider p-0.5 px-1.5 dark:bg-[#050708]">Gadget</a>
@@ -189,8 +211,8 @@
                             <div
                                 class="slider-item flex items-center gap-2 p-2 border shadow-[2px_2px_0px_#000] flex-shrink-0 snap-start bg-white dark:bg-gray-800 hover:border-primary cursor-pointer transition-all">
                                 @if ($category->image)
-                                    <img src="{{ asset('storage/' . $category->image) }}" alt="{{ $category->name }}"
-                                        class="w-8 h-8 object-cover">
+                                    <img src="{{ asset('storage/' . $category->image) }}"
+                                        alt="{{ $category->name }}" class="w-8 h-8 object-cover">
                                 @else
                                     <div class="w-8 h-8 bg-gray-200 dark:bg-gray-700 flex items-center justify-center">
                                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
@@ -262,5 +284,4 @@
 
     <!-- Subscribe Section -->
     <x-subscribe-form></x-subscribe-form>
-
 </x-layout>

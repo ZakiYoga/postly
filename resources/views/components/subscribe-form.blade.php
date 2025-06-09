@@ -1,4 +1,4 @@
-<section id="subscribe" class="h-fit mt-8">
+<section id="subscribe" class="w-full h-fit">
     <div class="flex item-center justify-center p-12 gap-4 w-full h-fit bg-slate-800 dark:bg-gray-900">
         <div class="flex flex-col w-full items-center gap-y-6 px-4 max-w-sm md:max-w-md lg:max-w-lg">
             <div class="flex flex-col max-w-fit items-center">

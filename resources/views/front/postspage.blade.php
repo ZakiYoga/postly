@@ -1,7 +1,6 @@
 <x-layout>
-    <x-slot:title>{{ $title }}</x-slot:title>
-
-    <section class="h-fit mt-4 mx-auto px-6 sm:px-8 md:px-10 lg:px-16">
+    <x-slot:title>{{ $title ?? 'title' }}</x-slot:title>
+    <section class="h-fit mt-4 mx-auto pb-6 px-6 sm:px-8 md:px-10 lg:px-16 ">
         <div
             class="mx-auto w-full text-center py-6 lg:py-8 px-4 lg:px-8 lg:mb-4 mb-2 bg-white border border-gray-200 shadow-md dark:bg-gray-900 dark:border-gray-700">
             <h2
@@ -23,7 +22,7 @@
                     <a href="/" class="hover:text-primary focus:text-primary">
                         Homepage
                     </a>
-                    <x-ri-arrow-right-double-fill class="w-4 h-4 pb-1" />
+                    <x-ri-arrow-right-double-fill class="w-4 h-4 pb-0.5" />
                     <a href="/posts" class="hover:text-primary focus:text-primary">
                         Posts
                     </a>
@@ -67,18 +66,19 @@
                         window.location.href = '/posts/{{ $post->slug }}';
                     }
                 }" x-on:click="navigateToPost()"
-                    class="p-6 bg-white border border-gray-200 shadow-md dark:bg-gray-900 dark:border-gray-700 group relative overflow-hidden hover:cursor-pointer">
+                    class="p-6 h-full max-h-fit bg-white border border-gray-200 shadow-md dark:bg-gray-900 dark:border-gray-700 group relative hover:cursor-pointer">
 
                     <div
                         class="absolute top-0 left-0 w-full h-[30%] group-hover:h-[100%] transition-all duration-500 ease-in-out overflow-hidden">
                         <div class="shadow-gradient">
                             <img src="/images/article-1.png" alt="article"
-                                class="w-full h-auto group-hover:scale-110 transition-transform duration-500 ease-in-out">
+                                class="w-full h-auto group-hover:scale-105 transition-transform duration-500 ease-in-out">
                         </div>
                     </div>
 
-                    <div class="relative z-10 transition-all duration-500 mt-[35%] group-hover:mt-[calc(50%-1rem)]">
-                        <div class="flex justify-between items-center mb-5 text-gray-500 mt-2 ">
+                    <div
+                        class="relative flex flex-col h-64 z-10 transition-all duration-500 mt-[35%] mb-4 group-hover:mt-[45%]">
+                        <div class="flex justify-between items-center mb-5 text-gray-500 mt-2 group-hover:mt-0">
                             <a href="/posts?category={{ $post->category->slug }}"
                                 class="text-[{{ $post->category->color }}] bg-[{{ $post->category->color }}]/15 group-hover:bg-[{{ $post->category->color }}] group-hover:text-white hover:underline shadow-inner transition-all duration-500 text-xs font-medium font-bebas-neue tracking-widest inline-flex items-center px-2.5 py-2 dark:bg-primary-200 dark:text-primary-800">
                                 {{ $post->category->name }}
@@ -94,9 +94,9 @@
                             </h2>
                         </a>
                         <p class="mb-5 font-light text-gray-500 dark:text-gray-400">
-                            {!! Str::limit($post->body, 150) !!}
+                            {!! Str::limit($post->body, 120) !!}
                         </p>
-                        <div class="flex justify-between items-center">
+                        <div class="flex mt-auto justify-between items-center">
                             <a href="/posts?author={{ $post->author->username }}"
                                 class="font-medium tracking-wide dark:text-white font-bebas-neue text-sm hover:-translate-y-1 transition-all duration-500">
                                 <div class="flex items-center gap-x-2">

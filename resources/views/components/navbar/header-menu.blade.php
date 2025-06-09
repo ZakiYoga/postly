@@ -1,9 +1,9 @@
-<div x-show="isOpen" x-cloak x-transition:enter="transition ease-out duration-300 opacity-100"
-    x-transition:enter-start="opacity-0 -translate-x-full" x-transition:enter-end="opacity-100 translate-x-0"
-    x-transition:leave="transition ease-in duration-300" x-transition:leave-start="opacity-0 translate-x-0"
-    x-transition:leave-end="opacity-100 -translate-x-full" @click.outside="isOpen = false"
-    class="fixed inset-y-0 left-0 w-72 h-screen bg-white dark:bg-background-foreground/80 backdrop-blur-xl shadow-lg transform transition-transform duration-300 ease-in-out z-[52]"
-    :class="isOpen ? 'translate-x-0' : '-translate-x-full'">
+<div x-show="isOpen" x-cloak @click.outside="isOpen = false"
+    x-transition:enter="transition ease-out duration-300 transform" x-transition:enter-start="-translate-x-full opacity-0"
+    x-transition:enter-end="translate-x-0 opacity-100" x-transition:leave="transition ease-in duration-300 transform"
+    x-transition:leave-start="translate-x-0 opacity-100" x-transition:leave-end="-translate-x-full opacity-0"
+    class="fixed inset-y-0 left-0 w-72 h-screen bg-white dark:bg-background-foreground/80 backdrop-blur-xl shadow-lg z-[52]">
+
     <!-- Close Button -->
     <button @click="isOpen = false" class="absolute top-4 right-4 text-gray-600 hover:text-gray-900">
         <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24"
@@ -24,7 +24,7 @@
                     class="font-bebas-neue text-lg font-thin border-none hover:bg-gray-100 dark:hover:bg-gray-900">
                     Homepage
                 </x-nav-link>
-                <x-nav-link href="/posts" :active="request()->is('posts')"
+                <x-nav-link href="/posts" :active="request()->is('posts*')"
                     class="font-bebas-neue font-thin border-none hover:bg-gray-100 dark:hover:bg-gray-900">
                     Blog
                 </x-nav-link>

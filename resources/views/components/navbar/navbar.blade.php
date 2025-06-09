@@ -20,13 +20,19 @@
     </form>
 
     <div class="inline-flex items-center flex-wrap justify-center lg:justify-end gap-x-2 w-full text-sm/6 uppercase">
-        @foreach ($categories as $category)
-            <x-nav-link href="/posts?category={{ $category->slug }}" :active="request()->is('posts') && request('category') === $category->slug"
-                class="font-bebas-neue font-thin border-none hover:bg-gray-100 dark:hover:bg-gray-900">
-                {{ $category->name }}
-            </x-nav-link>
-        @endforeach
         <x-nav-link href="/" :active="request()->is('news')" class="">News</x-nav-link>
+        @php
+            $total = $categories->count(); // Karena $categories adalah Collection
+        @endphp
+
+        @foreach ($categories as $index => $category)
+            @if ($index < $total - 3)
+                <x-nav-link href="/posts?category={{ $category->slug }}" :active="request()->is('posts') && request('category') === $category->slug">
+                    {{ $category->name }}
+                </x-nav-link>
+            @endif
+        @endforeach
+
         <div class="relative">
             <button type="button" @click="menuOpen = !menuOpen"
                 class="flex items-center font-bebas-neue uppercase gap-x-1 text-gray-500 hover:text-gray-700 group dark:text-gray-400 dark:hover:text-gray-300 active:text-primary"
@@ -48,20 +54,14 @@
                 class="absolute top-full -left-12 z-10 mt-3 overflow-hidden bg-white ring-1 dark:bg-gray-900 shadow-lg ring-gray-900/5 border border-gray-300">
                 <div class="p-4">
                     <ul class="space-y-2 my-0.5 w-full text-sm">
-                        <li><x-nav-link href="/about"
-                                class="w-full border-none p-0.5 hover:bg-gray-100 dark:hover:bg-">Culture</x-nav-link>
-                        </li>
-                        <li><x-nav-link href="/about"
-                                class="w-full border-none p-0.5 hover:bg-gray-100 dark:hover:bg-">Travel</x-nav-link>
-                        </li>
-                        <li><x-nav-link href="/about"
-                                class="w-full border-none p-0.5 hover:bg-gray-100 dark:hover:bg-">Programming</x-nav-link>
-                        </li>
-                        <li><x-nav-link href="/about"
-                                class="w-full border-none p-0.5 hover:bg-gray-100 dark:hover:bg-">Lifestyle</x-nav-link>
-                        </li>
-                        <li><x-nav-link href="/about"
-                                class="w-full border-none p-0.5 hover:bg-gray-100 dark:hover:bg-">Sport</x-nav-link>
+                        <li>
+                            @foreach ($categories as $index => $category)
+                                @if ($index > $total - 4)
+                                    <x-nav-link href="/posts?category={{ $category->slug }}" :active="request()->is('posts') && request('category') === $category->slug">
+                                        {{ $category->name }}
+                                    </x-nav-link>
+                                @endif
+                            @endforeach
                         </li>
                     </ul>
                 </div>

@@ -52,6 +52,6 @@
             </x-primary-button>
         </div>
     </div>
-    <x-navbar.navbar></x-navbar.navbar>
+    <x-navbar.navbar />
     </div>
 </header>
