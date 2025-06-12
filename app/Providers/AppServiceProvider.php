@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Facades\Auth;
 use Laravolt\Avatar\Facade as Avatar;
+use Illuminate\Support\Facades\Blade;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -34,6 +35,10 @@ class AppServiceProvider extends ServiceProvider
 
                 $view->with('avatarUrl', $avatarUrl);
             }
+        });
+
+        Blade::directive('hexToRgba', function ($expression) {
+            return "<?php echo \\App\\Helpers\\ColorHelper::hexToRgba($expression); ?>";
         });
     }
 }

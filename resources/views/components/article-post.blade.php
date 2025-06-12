@@ -7,13 +7,15 @@
     </div>
     <div class="space-y-2 w-full h-full group">
         <div class="inline-flex items-center text-sm/normal gap-2 font-bebas-neue dark:text-gray-200">
-            <a href="#"
-                class="tracking-wider rounded-xs p-0.5 px-1.5 text-[{{ $post->category->color }}] bg-[{{ $post->category->color }}]/15 group-hover:bg-[{{ $post->category->color }}] group-hover:text-white shadow-inner transition-all duration-500">{{ $post->category->name }}</a>
+            <a href="/posts?category={{ $post->category->slug }}"
+                class="tracking-wider rounded-xs p-0.5 px-1.5 text-[{{ $post->category->color }}] bg-[{{ $post->category->color }}]/15 group-hover:bg-[{{ $post->category->color }}] group-hover:text-white shadow-inner transition-all duration-500">
+                {{ $post->category->name }}
+            </a>
             <div class="w-5 h-0.5 bg-gray-200"></div>
             <p class="tracking-wider text-gray-400">{{ $post->created_at->diffForHumans() }}</p>
         </div>
         <div class="text-lg font-semibold dark:text-white">
-            <a href="#" class="hover:text-[{{ $post->category->color }}]">
+            <a href="/posts/{{ $post->slug }}" class="hover:text-[{{ $post->category->color }}]">
                 {{ Str::limit($post->title, 60) }}
             </a>
         </div>

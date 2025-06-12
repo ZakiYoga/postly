@@ -132,3 +132,12 @@ trix-toolbar [data-trix-button-group="file-tools"] {
 }
 
 /* -------------------------------------- */
+
+/* Category Tag */
+.custom-category-bg {
+    background-color: var(--category-color);
+}
+
+.custom-category-color {
+    color: var(--category-color);
+}

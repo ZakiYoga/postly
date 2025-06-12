@@ -1,6 +1,6 @@
 <x-layout>
     <x-slot:title>{{ $title ?? 'title' }}</x-slot:title>
-    <section class="h-fit mt-4 mx-auto pb-6 px-6 sm:px-8 md:px-10 lg:px-16 ">
+    <section class="h-fit mt-4 mx-auto pb-6 px-4 py-6 lg:px-8 lg:py-12">
         <div
             class="mx-auto w-full text-center py-6 lg:py-8 px-4 lg:px-8 lg:mb-4 mb-2 bg-white border border-gray-200 shadow-md dark:bg-gray-900 dark:border-gray-700">
             <h2
@@ -78,12 +78,14 @@
 
                     <div
                         class="relative flex flex-col h-64 z-10 transition-all duration-500 mt-[35%] mb-4 group-hover:mt-[45%]">
-                        <div class="flex justify-between items-center mb-5 text-gray-500 mt-2 group-hover:mt-0">
-                            <a href="/posts?category={{ $post->category->slug }}"
-                                class="text-[{{ $post->category->color }}] bg-[{{ $post->category->color }}]/15 group-hover:bg-[{{ $post->category->color }}] group-hover:text-white hover:underline shadow-inner transition-all duration-500 text-xs font-medium font-bebas-neue tracking-widest inline-flex items-center px-2.5 py-2 dark:bg-primary-200 dark:text-primary-800">
+                        <div
+                            class="flex justify-between items-center mb-5 mt-2 group-hover:mt-0 text-gray-500 dark:text-gray-400">
+                            <a id="categoryTag" href="/posts?category={{ $post->category->slug }}"
+                                style="--bg-category: @hexToRgba($post->category->color, 0.1); --bg-category-hover: {{ $post->category->color }}"
+                                class="group-hover:bg-[var(--bg-category-hover)] bg-[var(--bg-category)] group-hover:text-white hover:underline shadow-inner transition-all duration-500 text-xs font-medium font-bebas-neue tracking-widest inline-flex items-center px-2.5 py-2">
                                 {{ $post->category->name }}
                             </a>
-                            <span class="text-sm font-bebas-neue group-hover:text-white">
+                            <span class="text-sm font-bebas-neue transition-all duration-500 group-hover:text-white">
                                 {{ $post->created_at->diffForHumans() }}
                             </span>
                         </div>
