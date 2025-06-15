@@ -8,15 +8,11 @@
 
     <title>{{ config('app.name', 'Laravel') }}</title>
 
-    <!-- Fonts -->
-    <link rel="preconnect" href="https://fonts.bunny.net">
-    <link href="https://fonts.bunny.net/css?family=figtree:400,500,600&display=swap" rel="stylesheet" />
-
     <!-- Scripts -->
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
 
-<body class="min-h-screen w-full flex items-center justify-center text-gray-900 antialiased">
+<body class="min-h-screen w-full flex items-center justify-center text-gray-900 antialiased font-lora">
     <div
         class="w-full max-w-6xl my-6 mx-4 mr-2 h-auto sm:h-[90vh] flex flex-col sm:flex-row items-center justify-center bg-white dark:bg-gray-950 shadow-md rounded-sm overflow-hidden">
         <div class="flex items-center justify-center w-full sm:w-1/2 h-[40vh] sm:h-full relative bg-primary/10">

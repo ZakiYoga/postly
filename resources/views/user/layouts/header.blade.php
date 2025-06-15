@@ -1,5 +1,5 @@
 <header class="bg-white shadow-md h-16 border-b border-gray-100">
-    <div class="flex items-center justify-between px-6 h-full font-benne">
+    <div class="flex items-center justify-between px-6 h-full">
         <!-- Left: Toggle Button & Title + Breadcrumb -->
         <div class="flex items-center space-x-4">
             <!-- Toggle Button -->

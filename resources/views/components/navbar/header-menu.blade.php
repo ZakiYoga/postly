@@ -20,23 +20,23 @@
                     <span class="h-[1px] w-6 bg-primary"></span>
                     Menu
                 </div>
-                <x-nav-link href="/" :active="request()->is('/')"
+                <x-nav-link @click="isOpen = !isOpen" href="/" :active="request()->is('/')"
                     class="font-bebas-neue text-lg font-thin border-none hover:bg-gray-100 dark:hover:bg-gray-900">
                     Homepage
                 </x-nav-link>
-                <x-nav-link href="/posts" :active="request()->is('posts*')"
+                <x-nav-link @click="isOpen = !isOpen" href="/posts" :active="request()->is('posts*')"
                     class="font-bebas-neue font-thin border-none hover:bg-gray-100 dark:hover:bg-gray-900">
                     Blog
                 </x-nav-link>
-                <x-nav-link href="/about" :active="request()->is('about')"
+                <x-nav-link @click="isOpen = !isOpen" href="/about" :active="request()->is('about')"
                     class="font-bebas-neue font-thin border-none hover:bg-gray-100 dark:hover:bg-gray-900">
                     About
                 </x-nav-link>
-                <x-nav-link href="/contact" :active="request()->is('contact')"
+                <x-nav-link @click="isOpen = !isOpen" href="/contact" :active="request()->is('contact')"
                     class="font-bebas-neue font-thin border-none hover:bg-gray-100 dark:hover:bg-gray-900">
                     Contact
                 </x-nav-link>
-                <x-nav-link href="/" :active="request()->is('#subscribe')"
+                <x-nav-link @click="isOpen = !isOpen" href="/" :active="request()->is('#subscribe')"
                     class="flex sm:hidden font-bebas-neue font-thin border-none hover:bg-gray-100 dark:hover:bg-gray-900">
                     Subcribe
                 </x-nav-link>
@@ -48,15 +48,18 @@
                         <span class="h-[1px] w-6 bg-primary"></span>
                         Dashboard
                     </div>
-                    <x-nav-link href="/" :active="request()->is('/')"
+                    <x-nav-link @click="isOpen = !isOpen"
+                        href="{{ Auth::user()->role == 'admin' ? '/admin/dashboard' : '/dashboard' }}" :active="Auth::user()->role == 'admin'
+                            ? request()->is('admin/dashboard')
+                            : request()->is('dashboard')"
                         class="font-bebas-neue text-lg font-thin border-none hover:bg-gray-100 dark:hover:bg-gray-900">
-                        Profile
+                        Dashboard
                     </x-nav-link>
-                    <x-nav-link href="/posts" :active="request()->is('posts')"
-                        class="font-bebas-neue font-thin border-none hover:bg-gray-100 dark:hover:bg-gray-900">
-                        My Blog
-                    </x-nav-link>
-                    <x-nav-link href="/about" :active="request()->is('about')"
+                    <x-nav-link @click="isOpen = !isOpen"
+                        href="{{ Auth::user()->role == 'admin' ? '/admin/dashboard/settings' : '/dashboard/settings' }}"
+                        :active="Auth::user()->role == 'admin'
+                            ? request()->is('admin/dashboard/settings')
+                            : request()->is('dashboard/settings')"
                         class="font-bebas-neue font-thin border-none hover:bg-gray-100 dark:hover:bg-gray-900">
                         settings
                     </x-nav-link>

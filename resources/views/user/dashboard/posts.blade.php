@@ -8,7 +8,7 @@
     <x-breadcrumb :items="[['label' => 'Dashboard', 'url' => '/dashboard'], ['label' => 'My Posts']]" />
 
     <div class="bg-white dark:bg-background-foreground rounded-sm shadow p-4 md:p-6">
-        <x-heading>
+        <x-heading textClass="text-xl lg:text-2xl">
             My Posts
         </x-heading>
 
@@ -17,7 +17,7 @@
             <div class="space-y-2">
                 <div
                     class="flex flex-col md:flex-row border-b py-2 border-gray-200 items-center justify-between group hover:bg-gray-50/50 transition duration-200 ease-in-out">
-                    <div class="flex w-full flex-col md:flex-row items-start md:items-center space-x-4">
+                    <div class="flex w-full flex-col md:flex-row space-x-4">
                         <div class="w-full h-32 lg:min-w-44 md:max-w-44">
                             @if ($post->cover_image)
                                 <img src="{{ asset('storage/' . $post->cover_image) }}" alt="{{ $post->title }}"
@@ -33,24 +33,27 @@
                             @endif
                         </div>
                         <div class="flex flex-col w-full">
-                            <p class=" w-full text-sm text-gray-500">{{ $post->created_at->diffForHumans() }}</p>
+                            <div class="inline-flex gap-2 items-center font-bebas-neue traking-wide text-sm text-gray-500">
+                                <span class="inline-flex w-fit">
+                                    <x-css-tag class="w-4 h-4 mr-1.5" />
+                                    {{ $post->category->name }}
+                                </span>
+                                -
+                                <p class=" w-full text-gray-500">{{ $post->created_at->diffForHumans() }}</p>
+                            </div>
                             <a href="/dashboard/posts/{{ $post->slug }}"
                                 class="font-medium text-lg text-gray-800 hover:text-[{{ $post->category->color }}]">{{ $post->title }}</a>
                             <p class="text-base text-gray-500 mt-1">
                                 {!! Str::limit($post->body, 100, '...') !!}
                             </p>
-                            <span
-                                class="inline-flex w-fit text-sm mt-1 p-1.5 text-[{{ $post->category->color }}] bg-[{{ $post->category->color }}]/15 group-hover:text-white group-hover:bg-[{{ $post->category->color }}]">
-                                <x-css-tag class="w-4 h-4 mr-1.5" />
-                                {{ $post->category->name }}
-                            </span>
                             <div class="inline-flex gap-2">
                                 <div class="flex items-center font-sans gap-1 text-gray-500 mt-2">
-                                    <x-heroicon-o-hand-thumb-up class="w-6 h-6" />
-                                    {{ $post->likes_count ?? 0 }}
+                                    <x-eva-heart
+                                        class="w-4 h-4 {{ $post->likes_count > 0 ? 'text-red-500' : 'text-gray-500' }}" />
+                                    <span>{{ $post->likes_count ?? 0 }}</span>
                                 </div>
                                 <div class="flex items-center font-sans gap-1 text-gray-500 mt-2">
-                                    <x-heroicon-o-chat-bubble-left-ellipsis class="w-6 h-6" />
+                                    <x-eva-message-square-outline class="w-4 h-4" />
                                     {{ $post->comments_count ?? 0 }}
                                 </div>
                             </div>
@@ -58,7 +61,7 @@
                     </div>
 
                     <div
-                        class="flex w-full md:w-fit items-center space-x-2 mt-4 justify-between md:justify-items-start md:mt-0 ">
+                        class="flex w-full md:w-fit font-bebas-neue tracking-wider text-sm items-center space-x-2 mt-4 justify-between md:justify-items-start md:mt-0 ">
                         <form method="POST" action="{{ route('posts.visibility', $post) }}" x-data="{ visibility: '{{ $post->visibility }}' }"
                             class="flex items-center">
                             @csrf

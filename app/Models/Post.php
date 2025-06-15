@@ -29,6 +29,8 @@ class Post extends Model
         'published_at' => 'datetime',
     ];
 
+    protected $withCount = ['likes', 'comments', 'views'];
+
     public function author(): BelongsTo
     {
         return $this->belongsTo(User::class);
@@ -68,10 +70,21 @@ class Post extends Model
         return $this->attributes['views_count'] ?? $this->views()->count();
     }
 
-    public function isLikedByUser(User $user)
+    public function isLikedByUser(?User $user = null): bool
     {
+        if (!$user) {
+            return false;
+        }
+
         return $this->likes()->where('user_id', $user->id)->exists();
     }
+
+    public function likedByUsers()
+    {
+        return $this->belongsToMany(User::class, 'likes', 'post_id', 'user_id')
+            ->withTimestamps();
+    }
+
     public function scopeFilter($query, array $filters)
     {
         $query->when($filters['search'] ?? false, function ($query, $search) {
@@ -92,6 +105,21 @@ class Post extends Model
                 $query->where('username', $author);
             });
         });
+    }
+
+    public function scopePublished($query)
+    {
+        return $query->where('published_at', '<=', now())
+            ->where('visibility', 'public');
+    }
+
+    // Scope untuk post populer berdasarkan likes
+    public function scopePopular($query, $days = 30)
+    {
+        return $query->withCount(['likes' => function ($query) use ($days) {
+            $query->where('created_at', '>=', now()->subDays($days));
+        }])
+            ->orderBy('likes_count', 'desc');
     }
 
     public function getRouteKeyName(): string

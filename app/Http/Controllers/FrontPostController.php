@@ -33,6 +33,7 @@ class FrontPostController extends Controller
     public function index(Request $request)
     {
         $posts = Post::with(['category'])->where('visibility', 'public')
+            ->withCount('comments')
             ->filter($request->only(['search', 'category', 'author']))
             ->latest()
             ->paginate(9)
@@ -52,9 +53,24 @@ class FrontPostController extends Controller
 
     public function show(Post $post)
     {
+        $comments = $post->comments()
+            ->with([
+                'user',
+                'replies' => function ($query) {
+                    $query->with('user')
+                        ->approved()
+                        ->orderBy('created_at', 'asc');
+                }
+            ])
+            ->whereNull('parent_id')
+            ->approved()
+            ->orderBy('created_at', 'desc')
+            ->get();
+
         return view('front.postpage', [
             'title' => 'Single Post',
-            'post' => $post
+            'post' => $post,
+            'comments' => $comments
         ]);
     }
 

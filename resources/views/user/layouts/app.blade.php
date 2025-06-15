@@ -16,7 +16,7 @@
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
 
-<body class="bg-primary/20 font-benne antialiased text-gray-900 dark:bg-gray-900 dark:text-gray-100">
+<body class="bg-primary/20 font-lora antialiased text-gray-900 dark:bg-gray-900 dark:text-gray-100">
     <div x-data="{
         sidebarOpen: JSON.parse(localStorage.getItem('sidebarOpen')) || false,
         toggleSidebar() {

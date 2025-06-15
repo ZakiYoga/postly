@@ -1,11 +1,11 @@
 <x-layout>
-    <x-slot:title>{{ $title }}</x-slot:title>
+    <x-slot:title>{{ $post->title }}</x-slot:title>
 
     <x-headingPost title="Blog" :items="[['label' => 'Home', 'url' => '/'], ['label' => 'Posts', 'url' => '/posts']]" />
 
     <section
-        class="flex justify-between gap-4 lg:gap-6 w-full h-fit mx-auto pb-4 px-4 py-6 lg:px-8 lg:py-12 shadow-sm bg-white dark:bg-gray-900">
-        <div class="flex w-full flex-col gap-y-4 ">
+        class="flex justify-between gap-4 lg:gap-6 w-full h-fit mx-auto mb-4 px-4 py-6 lg:px-8 lg:py-12 shadow-sm bg-white dark:bg-gray-900">
+        <div class="flex w-full flex-col gap-y-8">
             <article
                 class="flex flex-col py-2 px-4 lg:px-8 mx-auto w-full md:h-[calc(100vh-6rem)] max-w-lg lg:max-w-xl border-b border-gray-200 dark:border-gray-700">
                 @if ($post->cover_image || $post->unsplash_image_url)
@@ -21,20 +21,20 @@
                         @endif
                     </div>
                 @endif
-                <header class="mb-4">
+                <header class="mb-2">
                     <h1 class="text-3xl font-extrabold leading-tight text-gray-900 lg:text-4xl dark:text-white">
                         {{ $post->title }}
                     </h1>
-                    <p class="text-gray-500 dark:text-gray-700">
-                        By
+                    <p class="inline-flex items-center text-sm text-gray-500 dark:text-gray-700">
+                        By&nbsp;
                         <a href="/posts?author={{ $post->author->username }}"
-                            class="hover:text-primary hover:underline">
+                            class="text-gray-600 hover:text-primary hover:underline">
                             {{ $post->author->name }}
                         </a>
-                        in
+                        &nbsp;in&nbsp;
                         <a href="/posts?category={{ $post->category->slug }}"
-                            class="hover:text-primary hover:underline">
-                            {{ $post->category->name }},
+                            class="text-gray-600 hover:text-primary hover:underline">
+                            {{ $post->category->name }},&nbsp;
                         </a>
                         {{ $post->created_at->diffForHumans() }}
                     </p>
@@ -47,56 +47,101 @@
                     <h5 class="pl-2 leading-6 border-l-4 border-primary font-bebas-neue tracking-wider mr-2">
                         SHARE
                     </h5>
+
                     {{-- Facebook --}}
                     <a href="#"
-                        class="grid place-content-center hover:cursor-pointer hover:-translate-y-0.5 transition-all duration-150 p-1 rounded-sm bg-blue-700">
-                        <svg class="w-4 h-4 text-gray-100 fill-current" viewBox="0 0 50 50">
-                            <path
-                                d="M32,11h5c0.552,0,1-0.448,1-1V3.263c0-0.524-0.403-0.96-0.925-0.997C35.484,2.153,32.376,2,30.141,2C24,2,20,5.68,20,12.368 V19h-7c-0.552,0-1,0.448-1,1v7c0,0.552,0.448,1,1,1h7v19c0,0.552,0.448,1,1,1h7c0.552,0,1-0.448,1-1V28h7.222 c0.51,0,0.938-0.383,0.994-0.89l0.778-7C38.06,19.518,37.596,19,37,19h-8v-5C29,12.343,30.343,11,32,11z" />
-                        </svg>
+                        class="grid place-content-center hover:cursor-pointer hover:-translate-y-0.5 transition-all duration-150">
+                        <x-fab-facebook-f class="w-6 h-6" />
                     </a>
-
 
                     {{-- Instagram --}}
                     <a href="#"
-                        class="grid place-content-center hover:cursor-pointer hover:-translate-y-0.5 transition-all duration-150 p-1 rounded-sm bg-gradient-to-tr from-pink-500 via-red-500 to-yellow-500">
-                        <svg class="w-4 h-4 text-gray-100 fill-current" xmlns="http://www.w3.org/2000/svg" x="0px"
-                            y="0px" width="50" height="50" viewBox="0 0 50 50">
-                            <path
-                                d="M 16 3 C 8.8324839 3 3 8.8324839 3 16 L 3 34 C 3 41.167516 8.8324839 47 16 47 L 34 47 C 41.167516 47 47 41.167516 47 34 L 47 16 C 47 8.8324839 41.167516 3 34 3 L 16 3 z M 16 5 L 34 5 C 40.086484 5 45 9.9135161 45 16 L 45 34 C 45 40.086484 40.086484 45 34 45 L 16 45 C 9.9135161 45 5 40.086484 5 34 L 5 16 C 5 9.9135161 9.9135161 5 16 5 z M 37 11 A 2 2 0 0 0 35 13 A 2 2 0 0 0 37 15 A 2 2 0 0 0 39 13 A 2 2 0 0 0 37 11 z M 25 14 C 18.936712 14 14 18.936712 14 25 C 14 31.063288 18.936712 36 25 36 C 31.063288 36 36 31.063288 36 25 C 36 18.936712 31.063288 14 25 14 z M 25 16 C 29.982407 16 34 20.017593 34 25 C 34 29.982407 29.982407 34 25 34 C 20.017593 34 16 29.982407 16 25 C 16 20.017593 20.017593 16 25 16 z">
-                            </path>
-                        </svg>
+                        class="grid place-content-center hover:cursor-pointer hover:-translate-y-0.5 transition-all duration-150">
+                        <x-fab-instagram class="w-6 h-6" />
                     </a>
 
                     {{-- X --}}
                     <a href="#"
-                        class="grid place-content-center hover:cursor-pointer hover:-translate-y-0.5 transition-all duration-150 p-1 rounded-sm bg-gray-950">
-                        <svg class="w-4 h-4 text-gray-100 fill-current" xmlns="http://www.w3.org/2000/svg"
-                            viewBox="0 0 30 30" width="50px" height="50px">
-                            <path
-                                d="M26.37,26l-8.795-12.822l0.015,0.012L25.52,4h-2.65l-6.46,7.48L11.28,4H4.33l8.211,11.971L12.54,15.97L3.88,26h2.65 l7.182-8.322L19.42,26H26.37z M10.23,6l12.34,18h-2.1L8.12,6H10.23z" />
-                        </svg>
+                        class="grid place-content-center hover:cursor-pointer hover:-translate-y-0.5 transition-all duration-150">
+                        <x-fab-x-twitter class="w-6 h-6" />
+                    </a>
+
+                    {{-- Linkedin --}}
+                    <a href="#"
+                        class="grid place-content-center hover:cursor-pointer hover:-translate-y-0.5 transition-all duration-150">
+                        <x-fab-linkedin class="w-6 h-6" />
                     </a>
                 </div>
             </article>
-            <div>
-                <h2 class="font-bebas-neue tracking-wider">Comments</h2>
-                <div class="flex flex-col items-start">
-                    <div class="flex items-center gap-x-2">
-                        <img class="w-7 h-7 rounded-full"
-                            src="https://flowbite.s3.amazonaws.com/blocks/marketing-ui/avatars/jese-leos.png"
-                            alt="avatar-{{ $post->author->username }}" />
-                        <div class="flex flex-col gap-2">
-                            <p>{{ $post->author->username }}</p>
-                            <p>timestamp comments</p>
+
+            {{-- Comments Section --}}
+            <div class="px-4 py-4 lg:px-8 border-b border-gray-200 dark:border-gray-700">
+                <x-heading size="2xl">Comments ({{ $comments->count() }})</x-heading>
+
+                {{-- Display Success/Error Messages --}}
+                @if (session('success'))
+                    <div class="mt-4 p-4 bg-green-100 border border-green-400 text-green-700 rounded-lg">
+                        {{ session('success') }}
+                    </div>
+                @endif
+
+                @if (session('error'))
+                    <div class="mt-4 p-4 bg-red-100 border border-red-400 text-red-700 rounded-lg">
+                        {{ session('error') }}
+                    </div>
+                @endif
+
+                {{-- Comments List --}}
+                <div class="mt-6 space-y-6">
+                    @forelse($comments as $comment)
+                        <x-comment :comment="$comment" :post="$post" />
+                    @empty
+                        <div class="text-center py-8">
+                            <p class="text-gray-500 dark:text-gray-400">No comments yet. Be the first to comment!</p>
                         </div>
-                    </div>
-                    <div class="">
-                        <p>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Fuga temporibus, modi assumenda ullam quod ut iure libero? Fugiat earum, vero nulla ducimus dignissimos, a totam saepe labore iure, ex asperiores?</p>
-                    </div>
+                    @endforelse
                 </div>
             </div>
+
+            {{-- Comment Form Section --}}
+            <div class="space-y-2 px-4 lg:px-8 py-4">
+                @auth
+                    <h4 class="font-bebas-neue tracking-wider text-lg">Post a comment</h4>
+                    <form action="{{ route('post.comments.store', $post->slug) }}" method="POST"
+                        class="flex flex-col w-full gap-y-2">
+                        @csrf
+                        <div>
+                            <label for="content" class="sr-only">Comment</label>
+                            <textarea id="content" name="content" rows="4"
+                                class="w-full rounded-lg border-gray-300 dark:border-gray-700 dark:bg-gray-800 dark:text-white focus:border-primary-500 focus:ring-primary-500 @error('content') border-red-500 @enderror"
+                                placeholder="Write your comment here..." required>{{ old('content') }}</textarea>
+                            @error('content')
+                                <x-input-error :messages="$errors->get('content')" class="mt-2" />
+                            @enderror
+                        </div>
+                        <x-primary-button type="submit" class="w-fit">
+                            Post Comment
+                        </x-primary-button>
+                        <button type="submit"
+                            class="bg-primary-600 hover:bg-primary-700 text-white font-medium py-2 px-4 rounded-lg transition-colors ml-auto">
+                            Post Comment
+                        </button>
+                    </form>
+                @else
+                    <div class="text-center py-8 bg-gray-50 dark:bg-gray-800 rounded-lg">
+                        <p class="text-gray-500 dark:text-gray-400 mb-4">
+                            Please sign in to post a comment.
+                        </p>
+                        <a href="{{ route('login') }}"
+                            class="inline-flex items-center px-6 py-2 bg-primary-600 hover:bg-primary-700 text-white font-medium rounded-lg transition-colors">
+                            Sign In
+                        </a>
+                    </div>
+                @endauth
+            </div>
         </div>
+
+        {{-- SIDEBAR --}}
         <div class="flex flex-col gap-y-6">
             {{-- Search --}}
             <div class="border border-gray-200 dark:border-gray-700 rounded-xs w-full lg:w-72">
@@ -144,15 +189,125 @@
                 <x-heading size="xl">
                     Popular Posts
                 </x-heading>
-                <div class="inline-flex gap-2 items-center">
-                    <img src="/images/article-1.png" alt="article"
-                        class="object-center object-cover w-14 aspect-square" />
-                    <div class="space-y-2">
-                        <h4 class="font-semibold">Lorem ipsum dolor, sit amet consectetur</h4>
-                        <p class="text-sm text-gray-400 dark:text-gray-200">4 days ago</p>
+                <div class="inline-flex gap-2">
+                    <img src="/images/article-1.png" alt="article" class="object-center object-cover w-14 h-14" />
+                    <div class="space-y-1">
+                        <h4 class="text-sm leading-4 font-semibold">Lorem ipsum dolor, sit amet consectetur</h4>
+                        <div class="flex items-center gap-1 text-gray-400 dark:text-gray-200">
+                            <x-heroicon-o-calendar-date-range class="w-5 h-5" />
+                            <p class="text-sm">4 days ago</p>
+                        </div>
                     </div>
+                </div>
+            </div>
+
+            {{-- FOLLOW US --}}
+            <div class="space-y-4 p-4">
+                <x-heading>Follow us</x-heading>
+                <div class="inline-flex items-center gap-x-2.5">
+
+                    {{-- Facebook --}}
+                    <a href="#"
+                        class="grid place-content-center hover:cursor-pointer hover:-translate-y-0.5 transition-all duration-150 p-1 rounded-sm bg-blue-700">
+                        <x-fab-facebook-f class="w-6 h-6 text-white" />
+                    </a>
+
+
+                    {{-- Instagram --}}
+                    <a href="#"
+                        class="grid place-content-center hover:cursor-pointer hover:-translate-y-0.5 transition-all duration-150 p-1 rounded-sm bg-gradient-to-tr from-pink-500 via-red-500 to-yellow-500">
+                        <x-fab-instagram class="w-6 h-6 text-white" />
+                    </a>
+
+                    {{-- X --}}
+                    <a href="#"
+                        class="grid place-content-center hover:cursor-pointer hover:-translate-y-0.5 transition-all duration-150 p-1 rounded-sm bg-gray-950">
+                        <x-fab-x-twitter class="w-6 h-6 text-white" />
+                    </a>
+
+                    {{-- Youtube --}}
+                    <a href="#"
+                        class="grid place-content-center hover:cursor-pointer hover:-translate-y-0.5 transition-all duration-150 p-1 rounded-sm bg-red-600">
+                        <x-fab-youtube class="w-6 h-6 text-white" />
+                    </a>
                 </div>
             </div>
         </div>
     </section>
+
+    @push('script')
+        <script>
+            document.addEventListener('alpine:init', () => {
+                Alpine.data('commentSystem', () => ({
+                    // State untuk form reply
+                    replyForms: {},
+                    repliesVisibility: {},
+
+                    // Toggle reply form
+                    toggleReplyForm(commentId) {
+                        this.replyForms[commentId] = !this.replyForms[commentId];
+
+                        // Focus pada textarea jika form ditampilkan
+                        if (this.replyForms[commentId]) {
+                            this.$nextTick(() => {
+                                const textarea = document.querySelector(
+                                    `#reply-form-${commentId} textarea`);
+                                if (textarea) textarea.focus();
+                            });
+                        }
+                    },
+
+                    // Toggle replies visibility
+                    toggleReplies(commentId) {
+                        this.repliesVisibility[commentId] = !this.repliesVisibility[commentId];
+                    },
+
+                    // Check if reply form is visible
+                    isReplyFormVisible(commentId) {
+                        return this.replyForms[commentId] || false;
+                    },
+
+                    // Check if replies are visible
+                    areRepliesVisible(commentId) {
+                        return this.repliesVisibility[commentId] || false;
+                    },
+
+                    // Get replies button text
+                    getRepliesButtonText(commentId, count) {
+                        const isVisible = this.areRepliesVisible(commentId);
+                        const action = isVisible ? 'Hide' : 'Show';
+                        const plural = count === 1 ? 'reply' : 'replies';
+                        return `${action} ${count} ${plural}`;
+                    },
+
+                    // Submit form dengan loading state
+                    async submitComment(event) {
+                        const form = event.target;
+                        const submitButton = form.querySelector('button[type="submit"]');
+                        const originalText = submitButton.textContent;
+
+                        // Set loading state
+                        submitButton.disabled = true;
+                        submitButton.textContent = 'Posting...';
+
+                        try {
+                            // Form akan di-submit secara normal oleh browser
+                            return true;
+                        } catch (error) {
+                            // Reset state jika ada error
+                            submitButton.disabled = false;
+                            submitButton.textContent = originalText;
+                            console.error('Error submitting comment:', error);
+                            return false;
+                        }
+                    },
+
+                    // Konfirmasi delete
+                    confirmDelete() {
+                        return confirm('Are you sure you want to delete this comment?');
+                    }
+                }));
+            });
+        </script>
+    @endpush
 </x-layout>

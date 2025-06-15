@@ -5,8 +5,10 @@ use App\Models\User;
 use App\Models\Category;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\FrontPostController;
+use App\Http\Controllers\LikeController;
+use App\Http\Controllers\CommentController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\FrontPostController;
 use App\Http\Controllers\User\UserController;
 use App\Http\Controllers\NewsletterController;
 use App\Http\Controllers\Admin\AdminController;
@@ -22,6 +24,12 @@ Route::get('/authors/{user:username}', [FrontPostController::class, 'author']);
 
 Route::post('/newsletter/subscribe', [NewsletterController::class, 'store'])->name('newsletter.subscribe');
 
+Route::middleware('auth')->group(function () {
+    Route::post('/posts/{post:slug}/like', [LikeController::class, 'toggle'])->name('posts.like.toggle');
+
+    Route::post('/posts/{post:slug}/comments', [CommentController::class, 'store'])->name('post.comments.store');
+    Route::delete('/posts/comments/{comment}', [CommentController::class, 'destroy'])->name('post.comments.destroy');
+});
 
 require __DIR__ . '/auth.php';
 

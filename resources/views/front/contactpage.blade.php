@@ -1,6 +1,6 @@
 <x-layout>
     <x-slot:title>{{ $title }}</x-slot:title>
-    <section class="w-full h-fit mt-4 mx-auto px-6 sm:px-8 md:px-10 lg:px-16">
+    <section class="w-full h-fit my-4 mx-auto px-6 sm:px-8 md:px-10 lg:px-16">
         <div
             class="mx-auto w-full bg-white rounded-xs text-center py-6 lg:py-8 px-4 lg:px-8 lg:mb-4 mb-2 shadow-md border border-gray-200 dark:bg-gray-900 dark:border-gray-700">
             <h2
@@ -21,9 +21,9 @@
         <div class="flex justify-between rounded-xs w-full mx-auto mb-6 md:mb-8">
             <div class="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-8 h-fit">
                 <div class="p-4 md:p-6 lg:p-8 bg-white dark:bg-gray-900 rounded-xs shadow space-y-4">
-                    <div class="mb-4 space-y-2">
+                    <div class="mb-4 space-y-0.5">
                         <x-heading size="2xl">Get in touch</x-heading>
-                        <p class="text-gray-600 dark:text-gray-400">
+                        <p class="text-sm text-gray-500 dark:text-gray-400">
                             Have questions, feedback, or just want to say hello? Fill out the form below and we’ll
                             get back to you as soon as we can.
                         </p>
@@ -44,7 +44,7 @@
                             <x-text-input id="email" type="email" name="email" class="w-full"
                                 placeholder="Enter your email" :has-error="$errors->has('email')" :value="old('email')" required autofocus
                                 autocomplete="email" />
-                            <x-input-error :messages="$errors->get('email')" class="mt-2 font-benne" />
+                            <x-input-error :messages="$errors->get('email')" class="mt-2" />
                         </div>
 
                         <div>
@@ -56,7 +56,7 @@
                         </div>
 
                         <div>
-                            <x-primary-button type="submit">
+                            <x-primary-button class="text-base" type="submit">
                                 Send message
                             </x-primary-button>
                         </div>
@@ -66,12 +66,14 @@
                 <!-- Subscribe Form -->
                 <div class="h-full flex flex-col justify-between lg:gap-4 xl:gap-6">
                     <div class="bg-slate-900 p-4 md:p-6 lg:p-8 rounded-xs shadow space-y-2">
-                        <x-heading size="2xl" class="!text-gray-200">Join Our Newsletter</x-heading>
-                        <p class="text-gray-400 dark:text-gray-400">
-                            Get the latest tips and posts from your favorite creators on
-                            <strong class="text-sm font-bebas-neue tracking-wider text-primary">Postly</strong>.
-                            Subscribe now:
-                        </p>
+                        <div class="space-y-0.5">
+                            <x-heading size="2xl" textClass="text-white">Join Our Newsletter</x-heading>
+                            <p class="text-gray-400 dark:text-gray-400 text-sm">
+                                Get the latest tips and posts from your favorite creators on
+                                <strong class="text-sm font-bebas-neue tracking-wider text-primary">Postly</strong>.
+                                Subscribe now:
+                            </p>
+                        </div>
                         <form action="{{ route('newsletter.subscribe') }}" method="POST" class="w-full">
                             @csrf
                             <div class="w-full inline-flex items-center rounded-sm gap-1 bg-slate-800 p-1">
@@ -99,11 +101,13 @@
                     </div>
 
                     <div class="bg-gray-200/80 p-4 md:p-6 lg:p-8 rounded-xs shadow space-y-2 dark:bg-gray-800">
-                        <x-heading size="xl">Let’s Connect</x-heading>
-                        <p class="text-gray-600 dark:text-gray-400">
-                            Don’t miss out on new stories and creator updates. Stay in the loop by following us
-                            on:
-                        </p>
+                        <div class="space-y-0.5">
+                            <x-heading size="xl">Let’s Connect</x-heading>
+                            <p class="text-sm text-gray-500 dark:text-gray-400">
+                                Don’t miss out on new stories and creator updates. Stay in the loop by following us
+                                on:
+                            </p>
+                        </div>
 
                         <div class="w-full inline-flex flex-wrap gap-4">
                             {{-- Facebook --}}

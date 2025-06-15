@@ -13,16 +13,16 @@
     <!-- Stats Overview -->
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
         <!-- Stat Card 1 -->
-        <x-stat-card value="0" label="Your Public Posts added" color="red" icon="heroicon-o-fire" />
+        <x-stat-card value="{{ $posts->count() }}" label="Your All Posts added" color="red" icon="heroicon-o-fire" />
 
         <!-- Stat Card 2 -->
-        <x-stat-card value="0" label="Your post draft" color="blue" icon="carbon-document-protected" />
+        <x-stat-card value="0" label="Your Public Posts" color="blue" icon="heroicon-o-document-text" />
 
         <!-- Stat Card 3 -->
-        <x-stat-card value="0" label="Total Like" color="yellow" icon="heroicon-o-hand-thumb-up" />
+        <x-stat-card value="0" label="Total Like" color="pink" icon="eva-heart" />
 
         <!-- Stat Card 4 -->
-        <x-stat-card value="2.9k" label="Total Comment" color="pink" icon="heroicon-o-chat-bubble-left-ellipsis" />
+        <x-stat-card value="2.9k" label="Total Comment" color="yellow" icon="eva-message-square-outline" />
     </div>
 
     <!-- Posts Section -->
@@ -71,18 +71,18 @@
                             </div>
                         </div>
 
-                        <div class="flex w-full items-center md:max-w-fit space-x-2 mt-2 md:mt-0">
+                        <div class="flex w-full items-center md:max-w-fit space-x-2 mt-2 md:mt-0 font-bebas-neue">
                             <span
-                                class="text-sm px-2 py-1 rounded cursor-default first-letter:uppercase
+                                class="text-sm px-2 py-1 rounded traking-wider
                                 {{ $post->visibility == 'public' ? 'bg-blue-100 text-blue-600' : 'bg-orange-100 text-orange-600' }}">
                                 {{ ucfirst($post->visibility) }}
                             </span>
-                            <div class="flex items-center font-sans gap-1 text-gray-500">
-                                <x-heroicon-o-hand-thumb-up class="w-6 h-6" />
+                            <div class="flex items-center gap-1 text-red-500">
+                                <x-eva-heart class="w-5 h-5" />
                                 {{ $post->likes_count ?? 0 }}
                             </div>
-                            <div class="flex items-center font-sans gap-1 text-gray-500">
-                                <x-heroicon-o-chat-bubble-left-ellipsis class="w-6 h-6" />
+                            <div class="flex items-center gap-1 text-gray-500">
+                                <x-eva-message-square-outline class="w-5 h-5" />
                                 {{ $post->comments_count ?? 0 }}
                             </div>
                         </div>
@@ -91,7 +91,7 @@
                 <div class="flex justify-center mt-2">
                     <a href="/dashboard/posts"
                         class="inline-flex items-center font-medium px-4 py-2 text-sm text-gray-600 hover:text-primary focus:outline-none focus:ring-2 focus:ring-offset-2 focus:text-primary">
-                        View All Posts ({{ $postCount - $postLimit }})</a>
+                        View All Posts ({{ $posts->count() }})</a>
                 </div>
             @endif
         </div>

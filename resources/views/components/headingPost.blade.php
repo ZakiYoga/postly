@@ -8,7 +8,7 @@
     <div class="inline-flex items-center text-gray-600 dark:text-gray-400 first-letter:uppercase">
         @foreach ($items as $index => $item)
             @if (!$loop->first)
-                <x-heroicon-c-slash class="w-5 h-5 pb-1" />
+                <x-heroicon-c-slash class="w-5 h-5" />
             @endif
 
             @if (isset($item['url']))

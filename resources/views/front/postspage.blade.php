@@ -1,8 +1,8 @@
 <x-layout>
-    <x-slot:title>{{ $title ?? 'title' }}</x-slot:title>
-    <section class="h-fit mt-4 mx-auto pb-6 px-4 py-6 lg:px-8 lg:py-12">
+    <x-slot:title>{{ $title ?? 'Blog' }}</x-slot:title>
+    <section class="w-full h-fit my-4 mx-auto px-6 sm:px-8 md:px-10 lg:px-16">
         <div
-            class="mx-auto w-full text-center py-6 lg:py-8 px-4 lg:px-8 lg:mb-4 mb-2 bg-white border border-gray-200 shadow-md dark:bg-gray-900 dark:border-gray-700">
+            class="mx-auto w-full rounded-sm text-center py-6 lg:py-8 px-4 lg:px-8 lg:mb-4 mb-2 bg-white border border-gray-200 shadow-md dark:bg-gray-900 dark:border-gray-700">
             <h2
                 class="mb-2 text-2xl font-bebas-neue tracking-wider lg:text-4xl font-semibold text-gray-900 dark:text-white">
                 @if (request('category') || request('search') || request('author'))
@@ -61,15 +61,11 @@
 
         <div class="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
             @forelse ($posts as $post)
-                <article x-data="{
-                    navigateToPost() {
-                        window.location.href = '/posts/{{ $post->slug }}';
-                    }
-                }" x-on:click="navigateToPost()"
-                    class="p-6 h-full max-h-fit bg-white border border-gray-200 shadow-md dark:bg-gray-900 dark:border-gray-700 group relative hover:cursor-pointer">
+                <article
+                    class="p-6 h-full max-h-fit bg-white border rounded-sm border-gray-200 shadow-md dark:bg-gray-900 dark:border-gray-700 group relative overflow-hidden">
 
                     <div
-                        class="absolute top-0 left-0 w-full h-[30%] group-hover:h-[100%] transition-all duration-500 ease-in-out overflow-hidden">
+                        class="absolute top-0 left-0 w-full h-[35%] group-hover:h-[100%] transition-all duration-500 ease-in-out overflow-hidden">
                         <div class="shadow-gradient">
                             <img src="/images/article-1.png" alt="article"
                                 class="w-full h-auto group-hover:scale-105 transition-transform duration-500 ease-in-out">
@@ -77,37 +73,42 @@
                     </div>
 
                     <div
-                        class="relative flex flex-col h-64 z-10 transition-all duration-500 mt-[35%] mb-4 group-hover:mt-[45%]">
-                        <div
-                            class="flex justify-between items-center mb-5 mt-2 group-hover:mt-0 text-gray-500 dark:text-gray-400">
+                        class="relative flex flex-col h-75 z-10 transition-all duration-500 mt-[45%] group-hover:mt-[44%] sm:group-hover:mt-[43%] md:group-hover:mt-[42%]">
+                        <div class="flex justify-between items-center my-2 text-gray-500 dark:text-gray-400">
                             <a id="categoryTag" href="/posts?category={{ $post->category->slug }}"
                                 style="--bg-category: @hexToRgba($post->category->color, 0.1); --bg-category-hover: {{ $post->category->color }}"
                                 class="group-hover:bg-[var(--bg-category-hover)] bg-[var(--bg-category)] group-hover:text-white hover:underline shadow-inner transition-all duration-500 text-xs font-medium font-bebas-neue tracking-widest inline-flex items-center px-2.5 py-2">
                                 {{ $post->category->name }}
                             </a>
-                            <span class="text-sm font-bebas-neue transition-all duration-500 group-hover:text-white">
-                                {{ $post->created_at->diffForHumans() }}
+                            <span class="flex font-bebas-neue transition-color duration-300 group-hover:text-white">
+                                @include('components.like-button', ['post' => $post])
+                                <div class="inline-flex items-center gap-1">
+                                    <x-eva-message-square-outline class="w-5 h-5 inline-block" />
+                                    {{ $post->comments_count }}
+                                </div>
                             </span>
                         </div>
                         <a href="/posts/{{ $post->slug }}">
-                            <h2
-                                class="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white hover:text-[{{ $post->category->color }}]">
+                            <h2 style="--text-category-hover: {{ $post->category->color }}"
+                                class="mb-2 text-lg md:text-2xl font-bold tracking-tight text-gray-900 dark:text-white hover:text-[var(--text-category-hover)]">
                                 {{ $post->title }}
                             </h2>
                         </a>
-                        <p class="mb-5 font-light text-gray-500 dark:text-gray-400">
+                        <p class="mb-4 text-sm sm:text-base text-gray-500 dark:text-gray-400">
                             {!! Str::limit($post->body, 120) !!}
                         </p>
                         <div class="flex mt-auto justify-between items-center">
-                            <a href="/posts?author={{ $post->author->username }}"
-                                class="font-medium tracking-wide dark:text-white font-bebas-neue text-sm hover:-translate-y-1 transition-all duration-500">
-                                <div class="flex items-center gap-x-2">
-                                    <img class="w-7 h-7 rounded-full"
-                                        src="https://flowbite.s3.amazonaws.com/blocks/marketing-ui/avatars/jese-leos.png"
-                                        alt="avatar-{{ $post->author->username }}" />
-                                    {{ $post->author->username }}
+                            <div class="inline-flex gap-x-2">
+                                <img class="w-10 h-10 rounded-xs"
+                                    src="https://flowbite.s3.amazonaws.com/blocks/marketing-ui/avatars/jese-leos.png"
+                                    alt="avatar-{{ $post->author->username }}" />
+                                <div class="flex flex-col gap-0.5">
+                                    <a class="text-sm font-bebas-neue text-gray-900 dark:text-200 hover:underline"
+                                        href="/posts?author={{ $post->author->username }}">{{ $post->author->username }}</a>
+                                    <p class="text-xs text-gray-500 dark:text-gray-300">
+                                        {{ $post->created_at->diffForHumans() }}</p>
                                 </div>
-                            </a>
+                            </div>
                             <a href="/posts/{{ $post->slug }}"
                                 class="inline-flex gap-2 tracking-wider text-sm items-center font-bebas-neue font-medium text-primary-600 dark:text-primary-500 hover:underline dark:text-white group-hover:text-[{{ $post->category->color }}]">
                                 Read more

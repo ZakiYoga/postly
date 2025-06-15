@@ -12,7 +12,7 @@
                     <div class="flex flex-col">
                         @foreach ($posts as $post)
                             <a href="{{ route('posts.show', $post) }}"
-                                class="text-sm h-8 py-2 flex items-center font-benne hover:underline">
+                                class="text-sm h-8 py-2 flex items-center hover:underline">
                                 {{ $post->title }}
                             </a>
                         @endforeach

@@ -2,65 +2,47 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Like;
-use App\Http\Requests\StoreLikeRequest;
-use App\Http\Requests\UpdateLikeRequest;
+use App\Models\Post;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class LikeController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
-    public function index()
+    public function toggle(Request $request, Post $post)
     {
-        //
-    }
+        if (!Auth::check()) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Anda harus login untuk memberikan like'
+            ], 401);
+        }
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
-    }
+        $user = Auth::user();
 
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(StoreLikeRequest $request)
-    {
-        //
-    }
+        // Cek apakah user sudah like post ini
+        $existingLike = $post->likes()->where('user_id', $user->id)->first();
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(Like $like)
-    {
-        //
-    }
+        if ($existingLike) {
+            // Jika sudah like, hapus like (unlike)
+            $existingLike->delete();
+            $isLiked = false;
+        } else {
+            // Jika belum like, tambahkan like
+            $post->likes()->create([
+                'user_id' => $user->id,
+                'reaction' => 'like'
+            ]);
+            $isLiked = true;
+        }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(Like $like)
-    {
-        //
-    }
+        // Hitung ulang total likes
+        $likesCount = $post->likes()->count();
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(UpdateLikeRequest $request, Like $like)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(Like $like)
-    {
-        //
+        return response()->json([
+            'success' => true,
+            'is_liked' => $isLiked,
+            'likes_count' => $likesCount,
+            'message' => $isLiked ? 'Post berhasil dilike' : 'Like berhasil dihapus'
+        ]);
     }
 }

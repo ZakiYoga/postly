@@ -14,7 +14,7 @@
             </div>
             <label for="search" class="sr-only">Search</label>
             <input type="search" id="search" name="search"
-                class="font-bebas-neue block w-full p-2 pt-2.5 pl-9 text-sm text-gray-900 border-transparent bg-transparent focus:ring-gray-500 focus:border-primary-500 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
+                class="font-bebas-neue rounded-sm block w-full p-2 pt-2.5 pl-9 text-sm text-gray-900 border-transparent bg-transparent focus:ring-gray-500 focus:border-primary-500 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
                 placeholder="search article" autocomplete="off" />
         </div>
     </form>
@@ -51,13 +51,14 @@
                 x-transition:enter-start="opacity-0 translate-y-1" x-transition:enter-end="opacity-100 translate-y-0"
                 x-transition:leave="transition ease-in duration-150 transform"
                 x-transition:leave-start="opacity-100 translate-y-0" x-transition:leave-end="opacity-0 translate-y-1"
-                class="absolute top-full -left-12 z-10 mt-3 overflow-hidden bg-white ring-1 dark:bg-gray-900 shadow-lg ring-gray-900/5 border border-gray-300">
+                class="absolute top-full -left-12 z-10 mt-3 overflow-hidden rounded-sm                                           bg-white ring-1 dark:bg-gray-900 shadow-lg ring-gray-900/5 border border-gray-300">
                 <div class="p-4">
                     <ul class="space-y-2 my-0.5 w-full text-sm">
-                        <li>
+                        <li class="w-full">
                             @foreach ($categories as $index => $category)
                                 @if ($index > $total - 4)
-                                    <x-nav-link href="/posts?category={{ $category->slug }}" :active="request()->is('posts') && request('category') === $category->slug">
+                                    <x-nav-link class="w-full" href="/posts?category={{ $category->slug }}"
+                                        :active="request()->is('posts') && request('category') === $category->slug">
                                         {{ $category->name }}
                                     </x-nav-link>
                                 @endif
