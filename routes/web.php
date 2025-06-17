@@ -12,15 +12,17 @@ use App\Http\Controllers\FrontPostController;
 use App\Http\Controllers\User\UserController;
 use App\Http\Controllers\NewsletterController;
 use App\Http\Controllers\Admin\AdminController;
+use App\Http\Controllers\GoogleAuthController;
 use App\Http\Controllers\User\DashboardPostController;
+use Laravel\Socialite\Facades\Socialite;
+use Illuminate\Http\Request;
 
-Route::get('/', [FrontPostController::class, 'homepage']);
-Route::get('/about', [FrontPostController::class, 'about']);
-Route::get('/contact', [FrontPostController::class, 'contact']);
-
-Route::get('/posts', [FrontPostController::class, 'index']);
-Route::get('/posts/{post:slug}', [FrontPostController::class, 'show']);
-Route::get('/authors/{user:username}', [FrontPostController::class, 'author']);
+Route::get('/', [FrontPostController::class, 'homepage'])->name('front.homepage');
+Route::get('/about', [FrontPostController::class, 'about'])->name('front.aboutpage');
+Route::get('/contact', [FrontPostController::class, 'contact'])->name('front.contactpage');
+Route::get('/posts', [FrontPostController::class, 'index'])->name('front.index');
+Route::get('/posts/{post:slug}', [FrontPostController::class, 'show'])->name('front.show');
+Route::get('/author/{user:username}', [FrontPostController::class, 'author'])->name('front.authorpage');
 
 Route::post('/newsletter/subscribe', [NewsletterController::class, 'store'])->name('newsletter.subscribe');
 
@@ -30,6 +32,10 @@ Route::middleware('auth')->group(function () {
     Route::post('/posts/{post:slug}/comments', [CommentController::class, 'store'])->name('post.comments.store');
     Route::delete('/posts/comments/{comment}', [CommentController::class, 'destroy'])->name('post.comments.destroy');
 });
+
+// Authentication With Google Route
+Route::get('/auth/google/redirect', [GoogleAuthController::class, 'redirectToGoogle']);
+Route::get('/auth/google/callback', [GoogleAuthController::class, 'handleGoogleCallback']);
 
 require __DIR__ . '/auth.php';
 

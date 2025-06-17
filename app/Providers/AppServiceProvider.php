@@ -25,18 +25,6 @@ class AppServiceProvider extends ServiceProvider
     {
         Model::preventLazyLoading(false);
 
-        view()->composer('*', function ($view) {
-            if (Auth::check()) {
-                $user = Auth::user();
-                $name = strtoupper($user->name);
-                $avatarUrl = $user->avatar
-                    ? asset('storage/' . $user->avatar)
-                    : Avatar::create($name)->toBase64();
-
-                $view->with('avatarUrl', $avatarUrl);
-            }
-        });
-
         Blade::directive('hexToRgba', function ($expression) {
             return "<?php echo \\App\\Helpers\\ColorHelper::hexToRgba($expression); ?>";
         });

@@ -67,9 +67,7 @@ button:hover {
     pointer-events: none;
 }
 
-[x-cloak] {
-    display: none !important;
-}
+[x-cloak] { display: none !important; }
 
 
 .scrollbar-none {
@@ -96,10 +94,6 @@ button:hover {
 .dropdown-fix .absolute {
     right: auto;
     left: -10px;
-}
-
-trix-toolbar [data-trix-button-group="file-tools"] {
-    display: none;
 }
 
 .custom-scrollbar::-webkit-scrollbar {
@@ -131,7 +125,7 @@ trix-toolbar [data-trix-button-group="file-tools"] {
 }
 
 .animate-scroll-step {
-    animation: scroll-step 8s infinite;
+    animation: scroll-step 16s infinite;
 }
 
 .group:hover .pause-on-hover {
@@ -141,10 +135,22 @@ trix-toolbar [data-trix-button-group="file-tools"] {
 /* -------------------------------------- */
 
 /* Category Tag */
-.custom-category-bg {
-    background-color: var(--category-color);
+.category-tag {
+  @apply font-medium font-bebas-neue tracking-wider inline-flex items-center transition-all shadow-inner hover:underline;
+  background-color: var(--bg-category);
+  color: var(--text-category);
 }
 
-.custom-category-color {
-    color: var(--category-color);
+.group:hover .category-tag {
+  background-color: var(--bg-category-hover);
+  color: white;
+}
+
+.category-title {
+  @apply transition-colors duration-150;
+  color: var(--text-category);
+}
+
+.category-title:hover {
+  color: var(--text-category-hover);
 }

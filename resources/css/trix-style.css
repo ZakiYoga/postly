@@ -1,0 +1,50 @@
+/* Dark mode styling untuk trix toolbar */
+.dark trix-toolbar {
+    background-color: #121820; /* dark:bg-gray-800 */
+    border-color: #d1d5db;
+}
+
+/* Semua tombol toolbar */
+.dark trix-toolbar .trix-button {
+    color: #f3f4f6;
+    transition: all 0.2s ease;
+}
+
+/* Sembunyikan file tools */
+/* Sembunyikan seluruh grup file tools */
+trix-toolbar [data-trix-button-group="file-tools"] {
+    display: none !important;
+}
+
+/* Sembunyikan tombol upload file secara spesifik */
+trix-toolbar .trix-button[data-trix-action="attachFiles"] {
+    display: none !important;
+}
+
+/* Alternative: Jika ingin menggunakan warna yang sama untuk semua tombol format */
+
+.dark trix-toolbar .trix-button[data-trix-attribute] {
+    background-color: #eeeeee;
+}
+
+.dark trix-toolbar .trix-button--icon:hover {
+    background-color: #dddddd;
+    color: #ffffff !important;
+}
+
+.dark trix-toolbar .trix-button--icon.trix-active::before {
+    background-color: #777777;
+    color: #ffffff;
+}
+
+/* REDO::BEFORE AND UNDO::BEFORE */
+.dark trix-toolbar .trix-button--icon-redo::before,
+.dark trix-toolbar .trix-button--icon-undo::before {
+    background-color: #eeeeee;
+}
+
+.dark trix-toolbar .trix-button--icon-increase-nesting-level::before,
+.dark trix-toolbar .trix-button--icon-decrease-nesting-level::before {
+    background-color: #ffffff;
+    opacity:0.8;
+}

@@ -14,6 +14,7 @@ use Cviebrock\EloquentSluggable\Services\SlugService;
 
 class DashboardPostController extends Controller
 {
+    use \Illuminate\Foundation\Auth\Access\AuthorizesRequests;
     /**
      * Display a listing of the resource.
      */
@@ -95,7 +96,9 @@ class DashboardPostController extends Controller
      */
     public function show(Post $post)
     {
+        $this->authorize('view', $post);
         Post::with(['category', 'author'])->latest()->get();
+
         return view('user.dashboard.show', [
             'post' => $post,
         ]);
@@ -106,6 +109,7 @@ class DashboardPostController extends Controller
      */
     public function edit(Post $post)
     {
+        $this->authorize('update', $post);
         return view('user.dashboard.edit', [
             'post' => $post,
             'categories' => Category::all(),
@@ -117,6 +121,7 @@ class DashboardPostController extends Controller
      */
     public function update(Request $request, Post $post)
     {
+        $this->authorize('update', $post);
         $rules = [
             'title' => 'required|max:255',
             'body' => 'required',

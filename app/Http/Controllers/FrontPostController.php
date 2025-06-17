@@ -9,17 +9,41 @@ use Illuminate\Http\Request;
 
 class FrontPostController extends Controller
 {
-    public function homepage()
+    public function homepage(Request $request)
     {
-        $posts = Post::where('visibility', 'public')
+        $allPosts = Post::with(['category', 'author'])
+            ->where('visibility', 'public')
+            ->withCount('comments')
+            ->filter($request->only(['search', 'category', 'author']))
             ->latest()
-            ->take(3)
-            ->get();
+            ->get(); // Menggunakan get() untuk mendapatkan collection
 
-        return view('front.homepage', [
-            'title' => 'Homepage',
-            'posts' => $posts,
-        ]);
+        // Filter untuk news slider (featured posts) - ambil 5 terbaru
+        $news = $allPosts->take(5)->map(function ($post) {
+            return [
+                'id' => $post->id,
+                'title' => $post->title,
+                'category' => $post->category->name ?? 'Uncategorized',
+                'time_ago' => $post->created_at->diffForHumans(),
+                'image' => $post->featured_image ?? '/images/article-1.png',
+                'slug' => $post->slug,
+                'excerpt' => $post->excerpt ?? substr(strip_tags($post->content), 0, 150) . '...'
+            ];
+        });
+
+        // Filter untuk sidebar posts - ambil 3 setelah yang digunakan untuk slider
+        $sidebarPosts = $allPosts->skip(5)->take(3);
+
+        // Jika butuh pagination untuk halaman tertentu
+        $paginatedPosts = $allPosts->forPage($request->get('page', 1), 9);
+
+        return view(
+            'front.homepage',
+            [
+                'title' => 'Homepage'
+            ],
+            compact('news', 'sidebarPosts', 'allPosts')
+        );
     }
 
     public function about()
@@ -32,7 +56,8 @@ class FrontPostController extends Controller
 
     public function index(Request $request)
     {
-        $posts = Post::with(['category'])->where('visibility', 'public')
+        $posts = Post::with(['category'])
+            ->where('visibility', 'public')
             ->withCount('comments')
             ->filter($request->only(['search', 'category', 'author']))
             ->latest()
@@ -67,31 +92,26 @@ class FrontPostController extends Controller
             ->orderBy('created_at', 'desc')
             ->get();
 
+        $sidebarPosts = Post::with(['category'])
+            ->where('visibility', 'public')
+            ->latest()
+            ->take(3)
+            ->get();
+
         return view('front.postpage', [
             'title' => 'Single Post',
             'post' => $post,
-            'comments' => $comments
+            'comments' => $comments,
+            'sidebarPosts' => $sidebarPosts,
         ]);
     }
 
     public function author(User $user)
     {
-        $posts = Post::where('visibility', 'public')
-            ->where('user_id', $user->id)
-            ->with(['category', 'author'])
-            ->latest()
-            ->paginate(6)
-            ->withQueryString();
+        $title = 'Author Posts';
 
-        return view('front.postspage', [
-            'title' => 'Article by ' . $user->name,
-            'heading' => 'Posts by ' . $user->name,
-            'description' => 'Found ' . $posts->total() . ' article(s) by ' . $user->name,
-            'posts' => $posts,
-            'count' => $posts->total(),
-            'currentAuthor' => $user->username,
-            'currentCategory' => null,
-            'currentSearch' => null
+        return view('front.authorpage', [
+            'title' => $title,
         ]);
     }
 

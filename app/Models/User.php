@@ -4,12 +4,13 @@ namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 
-use Illuminate\Support\Facades\Storage;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Relations\HasMany;
-use Illuminate\Foundation\Auth\User as Authenticatable;
-use Illuminate\Notifications\Notifiable;
 use Laravolt\Avatar\Facade as Avatar;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Notifications\Notifiable;
+use Intervention\Image\Encoders\PngEncoder;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Foundation\Auth\User as Authenticatable;
 
 class User extends Authenticatable
 {
@@ -27,7 +28,38 @@ class User extends Authenticatable
         'email',
         'password',
         'avatar',
+        'google_id',
+        'email_verified_at'
     ];
+
+    protected static function boot()
+    {
+        parent::boot();
+
+        static::created(function ($user) {
+            if (empty($user->avatar)) {
+                $user->generateAvatar();
+            }
+        });
+    }
+
+    public function generateAvatar()
+    {
+        $avatar = Avatar::create($this->username)->getImageObject();
+
+        $filename = 'avatars/' . $this->id . time() . '.png';
+        Storage::disk('public')->put($filename, $avatar->encode(new PngEncoder()));
+
+        $this->update(['avatar' => $filename]);
+    }
+
+    public function getAvatarUrlAttribute()
+    {
+        return $this->avatar
+            ? asset('storage/' . $this->avatar)
+            : Avatar::create($this->name)->toBase64();
+    }
+
 
     /**
      * The attributes that should be hidden for serialization.
@@ -50,15 +82,6 @@ class User extends Authenticatable
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
         ];
-    }
-
-    public function getAvatarUrlAttribute()
-    {
-        if ($this->avatar && Storage::disk('public')->exists($this->avatar)) {
-            return Storage::url($this->avatar);
-        }
-
-        return Avatar::create($this->name)->toBase64();
     }
 
     // Relation dengan Post

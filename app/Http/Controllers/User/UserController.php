@@ -13,8 +13,10 @@ class UserController extends Controller
 {
     public function index()
     {
-        $posts = Post::where('author_id', Auth::id())
-            ->orderBy('created_at', 'desc')
+        $posts = Post::with(['category', 'author'])
+            ->withCount('comments')
+            ->where('author_id', Auth::id())
+            ->latest()
             ->get();
 
         return view('user.dashboard', compact('posts'));
