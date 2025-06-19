@@ -13,7 +13,8 @@
     <!-- Scripts -->
     @stack('styles')
     @stack('scripts')
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/trix/2.1.0/trix.min.css" integrity="..." crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/trix/2.1.0/trix.min.css" integrity="..."
+        crossorigin="anonymous">
     <script defer src="/js/toggleTheme.js"></script>
     @vite(['resources/css/app.css', 'resources/css/trix-style.css', 'resources/js/app.js'])
 </head>
@@ -39,12 +40,13 @@
 
 
             <!-- Main Content -->
-            <main class="flex-1 overflow-y-auto bg-background dark:bg-background-foreground p-6 transition-all duration-300 ">
+            <main
+                class="flex-1 overflow-y-auto bg-background dark:bg-background-foreground p-6 transition-all duration-300 ">
                 {{-- Alert Success --}}
                 @if (session('success'))
-                <x-alert type="success" title="Sukses!" :duration="3000">
-                    {{ session('success') }}
-                </x-alert>
+                    <x-alert type="success" title="Sukses!" :duration="3000">
+                        {{ session('success') }}
+                    </x-alert>
                 @endif
                 @yield('content')
             </main>
@@ -53,5 +55,29 @@
 </body>
 
 @stack('script')
+<script>
+    function previewAvatar(input) {
+        const filename = document.getElementById("avatar-name");
+
+        if (input.files && input.files[0]) {
+            const reader = new FileReader();
+
+            reader.onload = function(e) {
+                document.querySelector('img[alt="Avatar"]').src = e.target.result;
+            }
+            reader.readAsDataURL(input.files[0]);
+
+            filename.textContent = input.files[0].name;
+        }
+    }
+
+
+
+    function deleteAvatar() {
+        if (confirm('Apakah Anda yakin ingin menghapus avatar?')) {
+            document.getElementById('delete-avatar-form').submit();
+        }
+    }
+</script>
 
 </html>

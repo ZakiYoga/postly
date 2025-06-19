@@ -36,7 +36,7 @@
                         <li><a href="/help-center"
                                 class="hover:text-gray-500 dark:hover:text-white transition duration-150">Help
                                 Center</a></li>
-                        <li><a href="/privacy-policy"
+                        <li><a href="{{ route('privacy.policy') }}"
                                 class="hover:text-gray-500 dark:hover:text-white transition duration-150">Privacy
                                 Policy</a></li>
                         <li><a href="/term-of-service"

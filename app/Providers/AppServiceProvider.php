@@ -7,6 +7,7 @@ use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Facades\Auth;
 use Laravolt\Avatar\Facade as Avatar;
 use Illuminate\Support\Facades\Blade;
+use Illuminate\Validation\Rules\Password;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -23,6 +24,14 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
+        Password::defaults(function () {
+            $rule = Password::min(8);
+
+            return app()->environment('production')
+                ? $rule->mixedCase()->numbers()->symbols()->uncompromised()
+                : $rule;
+        });
+
         Model::preventLazyLoading(false);
 
         Blade::directive('hexToRgba', function ($expression) {

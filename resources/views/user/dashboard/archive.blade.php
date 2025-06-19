@@ -1,19 +1,24 @@
 @extends('user.layouts.app')
 
 @section('title')
-Dashboard - Private Posts
+    Dashboard - Private Posts
 @endsection
 
 @section('content')
-<x-breadcrumb :items="[['label' => 'Dashboard', 'url' => '/dashboard'], ['label' => 'Private']]" />
+    <x-breadcrumb :items="[['label' => 'Dashboard', 'url' => '/dashboard'], ['label' => 'Private']]" />
 
-<div class="bg-white dark:bg-slate-900 rounded-sm shadow p-6">
-    <x-heading>
-        My Private Posts
-    </x-heading>
+    <div class="bg-white dark:bg-slate-900 rounded-sm shadow p-6">
+        <x-heading>
+            Archive Posts
+        </x-heading>
 
-    <div class="space-y-2">
-        {{-- @foreach ($posts as $post)
+        <div class="space-y-1 mt-4">
+            <p class="font-bebas-neue text-xl tracking-wide">Coming Soon!</p>
+            <p>Archived posts will be saved and shown here.</p>
+        </div>
+
+        <div class="space-y-2">
+            {{-- @foreach ($posts as $post)
                 <!-- Posts -->
                 <div
                     class="flex border-b py-2 border-gray-200 items-center justify-between group hover:bg-gray-50/50 transition duration-200 ease-in-out">
@@ -68,6 +73,6 @@ Dashboard - Private Posts
 </div>
 </div>
 @endforeach --}}
-</div>
-</div>
+        </div>
+    </div>
 @endsection

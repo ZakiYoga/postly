@@ -13,40 +13,40 @@
         @csrf
     </form>
 
-    <form method="post" action="{{ route('profile.update') }}" class="mt-6 space-y-6">
+    <form method="POST" enctype="multipart/form-data"
+        action="{{ Auth::user()->role === 'admin' ? route('admin.settings.update') : route('settings.update') }}"
+        class="mt-6 space-y-6">
         @csrf
         @method('patch')
 
         <!-- Avatar Section -->
         <div>
-            <div class="flex flex-col items-center space-y-4 mb-4">
-                <!-- Avatar Preview -->
-                <div class="relative group">
-                    <img src="{{ $user->avatar_url }}" alt="{{ $user->name }}"
-                        class="w-32 h-32 rounded-full object-cover border-4 border-gray-200" />
-
-                    <div
-                        class="absolute inset-0 flex items-center justify-center bg-black/40 rounded-full opacity-0 group-hover:opacity-100 transition-opacity">
-                        <span class="text-white text-sm font-medium">{{ __('Change Photo') }}</span>
+            <x-input-label for="avatar" class="w-fit" :value="__('Avatar')" />
+            <div class="mt-2 flex items-center space-x-4">
+                <div class="max-w-20">
+                    <div class="w-20 h-20 object-center rounded-sm overflow-hidden">
+                        <img src="{{ Auth::user()->avatar_url }}" alt="Avatar" class="w-full h-full object-cover">
                     </div>
                 </div>
-
-                <!-- File Input -->
-                <label class="block">
-                    <span class="sr-only">{{ __('Choose profile photo') }}</span>
-                    <input type="file" name="avatar"
-                        class="block w-full text-sm text-slate-500
-                                  file:mr-4 file:py-2 file:px-4
-                                  file:rounded-full file:border-0
-                                  file:text-sm file:font-semibold
-                                  file:bg-violet-50 file:text-violet-700
-                                  hover:file:bg-violet-100" />
-                </label>
-
-                @error('avatar')
-                    <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
-                @enderror
+                <div
+                    class="flex flex-col gap-2 {{ Auth::user()->avatar && !Str::startsWith(Auth::user()->avatar, 'avatars/laravolt') ? 'mt-auto' : 'mt-0' }}">
+                    <input type="file" id="avatar" name="avatar" accept="image/*" class="hidden"
+                        onchange="previewAvatar(this)">
+                    <label for="avatar"
+                        class="cursor-pointer bg-white py-2 px-3 border border-gray-300 rounded-sm shadow-sm text-xs leading-4 font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+                        {{ __('Change Avatar') }}
+                    </label>
+                    @if (Auth::user()->avatar && !Str::startsWith(Auth::user()->avatar, 'avatars/laravolt'))
+                        <button type="button" onclick="deleteAvatar()"
+                            class="bg-red-600 py-2 px-3 border border-transparent rounded-sm shadow-sm text-xs font-medium leading-4 text-white hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500">
+                            {{ __('Delete') }}
+                        </button>
+                    @endif
+                </div>
             </div>
+            <p id="avatar-name" class="text-sm mt-2"></p>
+
+            <x-input-error class="mt-2" :messages="$errors->get('avatar')" />
         </div>
 
         <div>
@@ -97,5 +97,11 @@
                     class="text-sm text-gray-600 dark:text-gray-400">{{ __('Saved.') }}</p>
             @endif
         </div>
+    </form>
+
+    <!-- Delete Avatar Form (Hidden) -->
+    <form id="delete-avatar-form" action="{{ route('profile.avatar.delete') }}" method="POST" style="display: none;">
+        @csrf
+        @method('DELETE')
     </form>
 </section>

@@ -4,6 +4,7 @@ namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 
+use App\Notifications\ResetPasswordNotification;
 use Laravolt\Avatar\Facade as Avatar;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Notifications\Notifiable;
@@ -11,6 +12,7 @@ use Intervention\Image\Encoders\PngEncoder;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Support\Facades\Log;
 
 class User extends Authenticatable
 {
@@ -47,7 +49,7 @@ class User extends Authenticatable
     {
         $avatar = Avatar::create($this->username)->getImageObject();
 
-        $filename = 'avatars/' . $this->id . time() . '.png';
+        $filename = 'avatars/' . 'laravolt' . $this->id . time() . '.png';
         Storage::disk('public')->put($filename, $avatar->encode(new PngEncoder()));
 
         $this->update(['avatar' => $filename]);
@@ -57,9 +59,8 @@ class User extends Authenticatable
     {
         return $this->avatar
             ? asset('storage/' . $this->avatar)
-            : Avatar::create($this->name)->toBase64();
+            : Avatar::create($this->username)->toBase64();
     }
-
 
     /**
      * The attributes that should be hidden for serialization.
@@ -82,6 +83,26 @@ class User extends Authenticatable
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
         ];
+    }
+
+    /**
+     * Send the password reset notification.
+     */
+    public function sendPasswordResetNotification($token): void
+    {
+        Log::info('=== Starting password reset notification ===');
+        Log::info('User email: ' . $this->email);
+        Log::info('Token: ' . $token);
+
+        try {
+            $this->notify(new ResetPasswordNotification($token));
+            Log::info('Password reset notification sent successfully');
+        } catch (\Exception $e) {
+            Log::error('Failed to send password reset notification: ' . $e->getMessage());
+            Log::error('Stack trace: ' . $e->getTraceAsString());
+        }
+
+        Log::info('=== End password reset notification ===');
     }
 
     // Relation dengan Post

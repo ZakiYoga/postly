@@ -22,13 +22,6 @@
 @endsection
 
 @section('content')
-    {{-- Alert Success --}}
-    @if (session('success'))
-        <x-alert type="success" title="Success!">
-            {{ session('success') }}
-        </x-alert>
-    @endif
-
     <!-- Welcome Section -->
     @include('user.layouts.welcome')
 

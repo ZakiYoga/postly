@@ -1,7 +1,10 @@
-<div class="bg-gradient-to-tl from-primary/60 to-primary/10 dark:to-primary rounded-sm p-6 mb-6 shadow-sm">
-    <div class="flex items-center justify-between flex-col-reverse md:flex-row md:max-h-32 font-bebas-neue tracking-wider">
+<div
+    class="bg-gradient-to-tl from-primary to-primary/20 dark:from-primary dark:to-primary/70 rounded-sm p-6 mb-6 shadow-sm">
+    <div
+        class="flex items-center justify-between flex-col-reverse md:flex-row md:max-h-32 font-bebas-neue tracking-wider">
         <div class="space-y-2">
-            <h2 class="text-2xl font-bold text-gray-800 dark:text-gray-100">Hi, <span class="first-letter:uppercase">{{ auth()->user()->name }}</span>
+            <h2 class="text-2xl font-bold text-gray-800 dark:text-gray-100">Hi, <span
+                    class="first-letter:uppercase">{{ auth()->user()->name }}</span>
             </h2>
             <p class="text-gray-600 dark:text-gray-200 font-lora">Ready to share your thoughts today?</p>
         </div>

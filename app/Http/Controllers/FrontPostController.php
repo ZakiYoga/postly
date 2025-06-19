@@ -25,7 +25,7 @@ class FrontPostController extends Controller
                 'title' => $post->title,
                 'category' => $post->category->name ?? 'Uncategorized',
                 'time_ago' => $post->created_at->diffForHumans(),
-                'image' => $post->featured_image ?? '/images/article-1.png',
+                'cover_image' => $post->cover_image ? 'storage/' . $post->cover_image : null,
                 'slug' => $post->slug,
                 'excerpt' => $post->excerpt ?? substr(strip_tags($post->content), 0, 150) . '...'
             ];

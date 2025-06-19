@@ -20,6 +20,8 @@ use Illuminate\Http\Request;
 Route::get('/', [FrontPostController::class, 'homepage'])->name('front.homepage');
 Route::get('/about', [FrontPostController::class, 'about'])->name('front.aboutpage');
 Route::get('/contact', [FrontPostController::class, 'contact'])->name('front.contactpage');
+Route::view('/privacy-policy', 'front.privacy-policy')->name('privacy.policy');
+
 Route::get('/posts', [FrontPostController::class, 'index'])->name('front.index');
 Route::get('/posts/{post:slug}', [FrontPostController::class, 'show'])->name('front.show');
 Route::get('/author/{user:username}', [FrontPostController::class, 'author'])->name('front.authorpage');
@@ -61,7 +63,7 @@ Route::middleware(['auth', 'userMiddleware'])->prefix('dashboard')->group(functi
     Route::patch('/settings', [ProfileController::class, 'update'])->name('settings.update');
     Route::delete('/settings', [ProfileController::class, 'destroy'])->name('settings.destroy');
 
-    Route::get('/private-posts', [UserController::class, 'private'])->name('user.dashboard.private');
+    Route::get('/archive', [UserController::class, 'archive'])->name('user.dashboard.archive');
     Route::get('/trash', [UserController::class, 'trash'])->name('user.dashboard.trash');
 });
 
@@ -69,7 +71,9 @@ Route::middleware(['auth', 'userMiddleware'])->prefix('dashboard')->group(functi
 Route::middleware(['auth', 'adminMiddleware'])->prefix('admin/dashboard')->group(function () {
     Route::get('/', [AdminController::class, 'index'])->name('admin.dashboard');
 
-    Route::get('/settings', [ProfileController::class, 'edit'])->name('profile.edit');
-    Route::patch('/settings', [ProfileController::class, 'update'])->name('profile.update');
-    Route::delete('/settings', [ProfileController::class, 'destroy'])->name('profile.destroy');
+    Route::get('/settings', [ProfileController::class, 'edit'])->name('admin.settings.edit');
+    Route::patch('/settings', [ProfileController::class, 'update'])->name('admin.settings.update');
+    Route::delete('/settings', [ProfileController::class, 'destroy'])->name('admin.settings.destroy');
 });
+
+Route::delete('/profile/avatar', [ProfileController::class, 'deleteAvatar'])->name('profile.avatar.delete')->middleware('auth');

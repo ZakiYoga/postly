@@ -22,10 +22,10 @@ class UserController extends Controller
         return view('user.dashboard', compact('posts'));
     }
 
-    public function private()
+    public function archive()
     {
-        $private = 'private';
-        return view('user.dashboard.private', compact('private'));
+        $archive = 'archive';
+        return view('user.dashboard.archive', compact('archive'));
     }
     public function trash()
     {
