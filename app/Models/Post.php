@@ -65,6 +65,7 @@ class Post extends Model
     {
         return $this->attributes['likes_count'] ?? $this->likes()->count();
     }
+
     public function getViewCountAttribute(): int
     {
         return $this->attributes['views_count'] ?? $this->views()->count();

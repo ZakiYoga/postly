@@ -14,7 +14,7 @@ class UserController extends Controller
     public function index()
     {
         $posts = Post::with(['category', 'author'])
-            ->withCount('comments')
+            ->withCount(['comments', 'likes'])
             ->where('author_id', Auth::id())
             ->latest()
             ->get();

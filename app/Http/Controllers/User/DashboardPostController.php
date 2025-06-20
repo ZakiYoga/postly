@@ -23,6 +23,7 @@ class DashboardPostController extends Controller
     public function index()
     {
         $posts = Post::with(['category', 'author'])
+            ->withCount('likes')
             ->where('author_id', Auth::id())
             ->latest()
             ->paginate(6);
@@ -91,7 +92,26 @@ class DashboardPostController extends Controller
     public function show(Post $post)
     {
         $this->authorize('view', $post);
-        Post::with(['category', 'author'])->latest()->get();
+
+        $post = Post::with([
+            'category',
+            'author',
+            'comments' => function ($query) {
+                $query->whereNull('parent_id')
+                    ->approved()
+                    ->orderBy('created_at', 'desc')
+                    ->with([
+                        'user',
+                        'replies' => function ($q) {
+                            $q->approved()
+                                ->orderBy('created_at', 'asc')
+                                ->with('user');
+                        }
+                    ]);
+            }
+        ])
+            ->withCount(['likes', 'comments', 'views'])
+            ->findOrFail($post->id);
 
         return view('user.dashboard.show', [
             'post' => $post,

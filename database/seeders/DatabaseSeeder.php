@@ -15,12 +15,23 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        // User::factory(10)->create();
+        // Create categories and users first
+        $this->call([
+            CategorySeeder::class,
+            UserSeeder::class
+        ]);
 
-        $this->call([CategorySeeder::class, UserSeeder::class]);
+        // Create posts using existing categories and users
         Post::factory(40)->recycle([
             Category::all(),
             User::all(),
         ])->create();
+
+        // Create interactions after posts are created
+        $this->call([
+            LikeSeeder::class,
+            CommentSeeder::class,
+            PostViewSeeder::class,
+        ]);
     }
 }

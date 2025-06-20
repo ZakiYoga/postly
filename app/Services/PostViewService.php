@@ -4,6 +4,7 @@ namespace App\Services;
 
 use App\Models\Post;
 use App\Models\PostView;
+use Illuminate\Support\Collection;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Cache;
@@ -97,7 +98,7 @@ class PostViewService
         });
     }
 
-    public function getMostViewedPosts(int $limit = 10, int $days = 30): \Illuminate\Database\Eloquent\Collection
+    public function getMostViewedPosts(int $limit = 10, int $days = 30): Collection
     {
         $cacheKey = "most_viewed_posts_{$limit}_{$days}";
 
@@ -113,7 +114,7 @@ class PostViewService
         });
     }
 
-    public function getTrendingPosts(int $limit = 10): \Illuminate\Database\Eloquent\Collection
+    public function getTrendingPosts(int $limit = 10): Collection
     {
         $cacheKey = "trending_posts_{$limit}";
 
