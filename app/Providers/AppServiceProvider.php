@@ -8,6 +8,8 @@ use Illuminate\Support\Facades\Auth;
 use Laravolt\Avatar\Facade as Avatar;
 use Illuminate\Support\Facades\Blade;
 use Illuminate\Validation\Rules\Password;
+use App\Services\PostViewService;
+
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -16,7 +18,7 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
-        //
+        $this->app->singleton(PostViewService::class);
     }
 
     /**

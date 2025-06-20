@@ -65,9 +65,19 @@ class Post extends Model
     {
         return $this->attributes['likes_count'] ?? $this->likes()->count();
     }
-    public function getViewsCountAttribute(): int
+    public function getViewCountAttribute(): int
     {
         return $this->attributes['views_count'] ?? $this->views()->count();
+    }
+
+    public function getRecentViewCountAttribute(): int
+    {
+        return $this->views()->recent()->count();
+    }
+
+    public function getTodayViewCountAttribute(): int
+    {
+        return $this->views()->today()->count();
     }
 
     public function isLikedByUser(?User $user = null): bool

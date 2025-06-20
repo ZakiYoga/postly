@@ -14,16 +14,16 @@ return new class extends Migration
         Schema::create('post_views', function (Blueprint $table) {
             $table->id();
             $table->foreignId('post_id')->constrained()->onDelete('cascade');
-            $table->string('ip_address', 45);
-            $table->string('user_agent')->nullable();
             $table->foreignId('user_id')->nullable()->constrained()->onDelete('cascade');
-
+            $table->string('ip_address', 45)->nullable();
+            $table->string('user_agent')->nullable();
+            $table->timestamp('viewed_at');
             $table->timestamps();
 
             // Index untuk optimasi query
+            $table->index(['post_id', 'user_id']);
             $table->index(['post_id', 'ip_address']);
-            $table->index('created_at');
-            $table->index('user_id');
+            $table->index('viewed_at');
         });
     }
 

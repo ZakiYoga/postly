@@ -3,12 +3,20 @@
 namespace App\Http\Controllers;
 
 use App\Models\Post;
+use App\Services\PostViewService;
 use App\Models\Category;
 use App\Models\User;
 use Illuminate\Http\Request;
 
 class FrontPostController extends Controller
 {
+    protected $postViewService;
+
+    public function __construct(PostViewService $postViewService)
+    {
+        $this->postViewService = $postViewService;
+    }
+
     public function homepage(Request $request)
     {
         $allPosts = Post::with(['category', 'author'])
@@ -17,6 +25,10 @@ class FrontPostController extends Controller
             ->filter($request->only(['search', 'category', 'author']))
             ->latest()
             ->get(); // Menggunakan get() untuk mendapatkan collection
+
+        $posts = Post::latest()->paginate(10);
+        $mostViewed = $this->postViewService->getMostViewedPosts(5);
+        $trending = $this->postViewService->getTrendingPosts(5);
 
         // Filter untuk news slider (featured posts) - ambil 5 terbaru
         $news = $allPosts->take(5)->map(function ($post) {
@@ -76,8 +88,15 @@ class FrontPostController extends Controller
         ]);
     }
 
-    public function show(Post $post)
+    public function show(Post $post, Request $request)
     {
+
+        // Track view
+        $this->postViewService->trackView($post, $request);
+
+        // Get view count
+        $viewCount = $this->postViewService->getPostViewCount($post);
+
         $comments = $post->comments()
             ->with([
                 'user',

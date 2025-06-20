@@ -12,20 +12,35 @@ class PostView extends Model
 
     protected $fillable = [
         'post_id',
+        'user_id',
         'ip_address',
         'user_agent',
-        'user_id'
+        'viewed_at'
     ];
 
-    // Relation dengan Post
+    protected $casts = [
+        'viewed_at' => 'datetime'
+    ];
+
     public function post()
     {
         return $this->belongsTo(Post::class);
     }
 
-    // Relation dengan User (opsional jika user login)
     public function user()
     {
         return $this->belongsTo(User::class);
+    }
+
+    // Scope for view 12 hours
+    public function scopeRecent($query, $hours = 12)
+    {
+        return $query->where('viewed_at', '>=', now()->subHours($hours));
+    }
+
+    // Scope today
+    public function scopeToday($query)
+    {
+        return $query->whereDate('viewed_at', today());
     }
 }
