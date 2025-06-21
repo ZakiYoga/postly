@@ -67,7 +67,9 @@ button:hover {
     pointer-events: none;
 }
 
-[x-cloak] { display: none !important; }
+[x-cloak] {
+    display: none !important;
+}
 
 
 .scrollbar-none {
@@ -98,10 +100,16 @@ button:hover {
 
 .custom-scrollbar::-webkit-scrollbar {
     width: 4px;
+    padding-inline: 2px;
 }
 
 .custom-scrollbar::-webkit-scrollbar-thumb {
-    background-color: #f0f0f0;
+    background-color: #ababab;
+    border-radius: 8px;
+}
+
+.dark .custom-scrollbar::-webkit-scrollbar-thumb {
+    background-color: #1f1f1f;
     border-radius: 8px;
 }
 
@@ -136,21 +144,20 @@ button:hover {
 
 /* Category Tag */
 .category-tag {
-  @apply font-medium font-bebas-neue tracking-wider inline-flex items-center transition-all shadow-inner hover:underline;
-  background-color: var(--bg-category);
-  color: var(--text-category);
+    @apply font-medium font-bebas-neue tracking-wider inline-flex items-center transition-all shadow-inner;
+    background-color: var(--bg-category);
 }
 
 .group:hover .category-tag {
-  background-color: var(--bg-category-hover);
-  color: white;
+    background-color: var(--bg-category-hover);
+    color: white;
 }
 
 .category-title {
-  @apply transition-colors duration-150;
-  color: var(--text-category);
+    @apply transition-colors duration-150;
+    color: var(--text-category);
 }
 
 .category-title:hover {
-  color: var(--text-category-hover);
+    color: var(--text-category-hover);
 }

@@ -4,14 +4,17 @@
 
     <!-- Logo -->
     <div class="flex items-center justify-center shadow-sm h-16 border-b py-6 border-gray-200 dark:border-gray-500">
-        <div x-show="sidebarOpen" class="flex items-center space-x-2">
-            <x-application-logo class="block h-9 w-auto fill-current text-gray-800 dark:text-gray-200" />
-            <span class="text-2xl font-semibold text-gray-800 dark:text-gray-200 font-bebas-neue tracking-wide">
-                POSTLY
-        </div>
-        <div x-show="!sidebarOpen" class="flex items-center justify-center h-9 w-9">
-            <x-application-logo class="block h-9 w-auto fill-current text-gray-800 dark:text-gray-200" />
-        </div>
+        <a href="{{ route('front.homepage') }}">
+            <div x-show="sidebarOpen" class="flex items-center space-x-2">
+                <x-application-logo class="block h-9 w-auto fill-current text-gray-800 dark:text-gray-200" />
+                <span class="text-2xl font-semibold text-gray-800 dark:text-gray-200 font-bebas-neue tracking-wide">
+                    POSTLY
+                </span>
+            </div>
+            <div x-show="!sidebarOpen" class="flex items-center justify-center h-9 w-9">
+                <x-application-logo class="block h-9 w-auto fill-current text-gray-800 dark:text-gray-200" />
+            </div>
+        </a>
     </div>
 
     <!-- Menu Items -->

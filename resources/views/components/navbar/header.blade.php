@@ -37,7 +37,7 @@
                     <p>{{ auth()->user()->username }}</p>
                 </span>
             @else
-                <a href="/login" class="inline-flex items-center uppercase underline dark:text-white">
+                <a href="/login" class="hidden sm:inline-flex items-center uppercase underline dark:text-white">
                     Sign In
                     <x-heroicon-o-arrow-right-end-on-rectangle class="ml-0.5 w-6 h-6" />
                 </a>

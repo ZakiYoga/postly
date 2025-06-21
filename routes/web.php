@@ -35,12 +35,6 @@ Route::middleware('auth')->group(function () {
     Route::delete('/posts/comments/{comment}', [CommentController::class, 'destroy'])->name('post.comments.destroy');
 });
 
-// Authentication With Google Route
-Route::get('/auth/google/redirect', [GoogleAuthController::class, 'redirectToGoogle']);
-Route::get('/auth/google/callback', [GoogleAuthController::class, 'handleGoogleCallback']);
-
-require __DIR__ . '/auth.php';
-
 // Check Slug
 Route::get('/dashboard/posts/checkSlug', [DashboardPostController::class, 'checkSlug'])->middleware('auth');
 
@@ -77,3 +71,5 @@ Route::middleware(['auth', 'adminMiddleware'])->prefix('admin/dashboard')->group
 });
 
 Route::delete('/profile/avatar', [ProfileController::class, 'deleteAvatar'])->name('profile.avatar.delete')->middleware('auth');
+
+require __DIR__ . '/auth.php';

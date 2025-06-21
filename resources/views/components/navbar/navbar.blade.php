@@ -1,5 +1,5 @@
 <nav x-data="{ menuOpen: false }"
-    class="bg-gray-50 dark:bg-slate-900 mx-auto flex w-full items-center justify-between py-2 tracking-widest z-40 flex-col-reverse lg:flex-row px-6 sm:px-8 md:px-10 lg:px-16 gap-2"
+    class="bg-gray-50 dark:bg-slate-950/80 mx-auto flex w-full items-center justify-between py-2 tracking-widest z-40 flex-col-reverse lg:flex-row px-6 sm:px-8 md:px-10 lg:px-16 gap-2"
     aria-label="Global">
     <form class="flex items-center mr-auto w-full lg:w-72" action="/posts" method="GET">
         @if (request('category'))
@@ -19,7 +19,8 @@
         </div>
     </form>
 
-    <div class="inline-flex items-center flex-wrap justify-center lg:justify-end gap-x-2 w-full text-sm/6 uppercase">
+    <div
+        class="hidden sm:inline-flex items-center flex-wrap justify-center lg:justify-end gap-x-2 w-full text-sm/6 uppercase">
         @php
             $total = $categories->count();
         @endphp

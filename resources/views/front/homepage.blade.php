@@ -2,7 +2,7 @@
 
     <x-slot:title>{{ $title }}</x-slot:title>
     <section
-        class="h-fit mt-2 px-4 sm:px-6 md:px-8 lg:px-16 w-full border rounded-xs border-gray-300 dark:border-gray-700 text-white bg-red-500">
+        class="h-fit mt-2 px-4 sm:px-6 md:px-8 lg:px-16 w-full border border-gray-300 dark:border-gray-700 text-white bg-red-500 dark:bg-red-600">
         <div class="flex items-center gap-2 h-8">
             <x-heroicon-o-fire class="w-6 h-6 pb-0.5" />
             <h1 class="text-sm font-bebas-neue min-w-fit tracking-wide">Trending Topic</h1>
@@ -22,9 +22,9 @@
         </div>
     </section>
 
-
     <section class="h-fit px-4 sm:px-6 md:px-8 lg:px-16">
-        <div class="w-full flex flex-col lg:flex-row items-start justify-between gap-8 lg:h-[70vh] py-4">
+        <div
+            class="w-full flex flex-col lg:flex-row items-start justify-between px-4 sm:px-6 md:px-0 gap-8 lg:h-[70vh] py-4">
             <!-- Main featured article with slider - Full width on mobile, 60% on desktop -->
             <div class="w-full lg:w-[60%] h-full mb-8 lg:mb-0" x-data="{
                 currentSlide: 0,
@@ -46,7 +46,7 @@
 
                 <div class="relative w-full h-full overflow-hidden">
                     <!-- Slides Container -->
-                    <div class="relative w-full h-full">
+                    <div class="relative w-full h-full -z-10 min-h-52 sm:min-h-60">
                         <template x-for="(slide, index) in slides" :key="index">
                             <article class="absolute inset-0 w-full h-full transition-all duration-500 ease-in-out"
                                 :class="currentSlide === index ? 'opacity-100 translate-x-0' : 'opacity-0 translate-x-full'"
@@ -86,19 +86,20 @@
 
                     <!-- Navigation Buttons -->
                     <div
-                        class="flex items-center justify-between w-full mt-4 lg:justify-center lg:mt-0 lg:absolute z-20 lg:space-x-4 lg:bottom-4 lg:left-2 xl:left-2.5 lg:max-w-[15%] text-black dark:text-white">
+                        class="flex items-center justify-between w-full mt-4 lg:justify-center px-4 mb-4 lg:p-0 lg:m-0 lg:absolute z-20 lg:space-x-4 lg:bottom-4 lg:left-2 xl:left-2.5 lg:max-w-[15%] text-black dark:text-white">
                         <button @click="prevSlide()"
-                            class="w-10 h-10 p-1 bg-white dark:bg-gray-900 rounded-xs shadow-md transition-all duration-200 hover:shadow-lg hover:scale-105 active:scale-95">
+                            class="w-10 h-10 p-1 bg-white/40 dark:bg-gray-900/40 hover:bg-white dark:hover:bg-gray-900 rounded-xs shadow-md transition-all duration-200 hover:shadow-lg hover:scale-105 active:scale-95">
                             <x-heroicon-m-chevron-left class="text-lg" />
                         </button>
                         <button @click="nextSlide()"
-                            class="w-10 h-10 p-1 bg-white dark:bg-gray-900 rounded-xs shadow-md transition-all duration-200 hover:shadow-lg hover:scale-105 active:scale-95">
+                            class="w-10 h-10 p-1 bg-white/40 dark:bg-gray-900/40 hover:bg-white dark:hover:bg-gray-900 rounded-xs shadow-md transition-all duration-200 hover:shadow-lg hover:scale-105 active:scale-95">
                             <x-heroicon-m-chevron-right class="text-lg" />
                         </button>
                     </div>
 
                     <!-- Slide Indicators (Dots) -->
-                    <div class="absolute bottom-5 left-1/2 transform -translate-x-1/2 flex space-x-2 z-20 lg:hidden">
+                    <div
+                        class="absolute p-2 rounded-xs bottom-5 left-1/2 transform -translate-x-1/2 lg:backdrop-blur-xs lg:bg-white/40 lg:dark:bg-gray-800/40 lg:bottom-6 lg:left-auto lg:-translate-0 lg:right-5 flex space-x-2 z-20">
                         <template x-for="(slide, index) in slides" :key="index">
                             <button @click="goToSlide(index)" class="w-2 h-2 rounded-full transition-all duration-200"
                                 :class="currentSlide === index ? 'bg-primary scale-125' : 'bg-gray-400 hover:bg-gray-600'">
@@ -116,7 +117,8 @@
             </div>
 
             <!-- Latest 3 articles - Full width on mobile, 40% on desktop -->
-            <div class="flex flex-col justify-between items-start w-full lg:w-[40%] h-full space-y-4 lg:space-y-0">
+            <div
+                class="custom-scrollbar flex flex-col gap-y-6 justify-between items-start w-full overflow-hidden lg:overflow-y-auto rounded-xs lg:w-[40%] h-full space-y-4 lg:space-y-0">
                 @foreach ($sidebarPosts as $index => $post)
                     @if ($index == 1)
                         <hr class="w-full h-1.5 text-gray-300" />
@@ -127,123 +129,19 @@
                     @endif
                 @endforeach
             </div>
+
         </div>
     </section>
 
     <!-- Most Popular section -->
-    <section class="h-fit mt-8 px-4 sm:px-6 md:px-8 lg:px-16">
-        <div class="flex item-center p-8 justify-between gap-4 w-full h-full min-h-[80vh] bg-white/95 dark:bg-gray-900">
-            <div class="flex flex-col w-1/3">
-                <div class="">
-                    <hr class="w-10 h-1 text-transparent bg-primary" />
-                    <h1 class="lg:text-3xl md:text-2xl tracking-wider font-bebas-neue pt-1.5 dark:text-gray-200">
-                        Most Popular
-                    </h1>
-                </div>
-                <div class="flex flex-col gap-y-2 mt-4">
-                    @foreach ($allPosts->take(7) as $index => $post)
-                        @if ($index < 4)
-                            <article class="flex flex-col sm:flex-row py-2 rounded-xs gap-4 sm:gap-2 group w-full">
-                                <div class="space-y-2 w-full h-full group">
-                                    <div class="inline-flex items-center text-sm/normal gap-2 font-bebas-neue">
-                                        <a href="#"
-                                            class="tracking-wider p-0.5 px-1.5 text-[{{ $post->category->color }}] bg-[{{ $post->category->color }}]/15 group-hover:bg-[{{ $post->category->color }}] group-hover:text-white shadow-inner transition-all duration-500">{{ $post->category->name }}</a>
-                                        <div class="w-5 h-0.5 bg-gray-200"></div>
-                                        <p class="tracking-wider text-gray-400">{{ $post->created_at->diffForHumans() }}
-                                        </p>
-                                    </div>
-                                    <div class="text-lg font-semibold dark:text-white">
-                                        <a href="#" class="hover:text-[{{ $post->category->color }}]">
-                                            {{ Str::limit($post->title, 60) }}
-                                        </a>
-                                    </div>
-                                    <a href="/posts/{{ $post->slug }}"
-                                        class="relative overflow-hidden inline-flex items-center gap-1 uppercase underline tracking-wider font-bebas-neue mt-auto dark:text-white hover:text-gray-900/80">
-                                        More
-                                        <x-fas-arrow-right
-                                            class="w-3 h-3 mb-0.5 group-hover:rotate-[315deg] transition-all duration-200" />
-                                    </a>
-                                </div>
-                            </article>
-                            <hr class="w-full h-1 text-gray-300" />
-                        @endif
-                    @endforeach
-                </div>
-                {{-- @elseif($index == $totalLimitedPost - 3)
-                        <article>
-                            asdasdsadasd
-                        </article>
-                    @elseif($index == $totalLimitedPost - 2)
-                        <article>
-                            asdasdsadasd
-                        </article>
-                    @elseif($index == $totalLimitedPost - 1)
-                        <article>
-                            asdasdsadasd
-                        </article>
-                    @endif
-                @endforeach --}}
-            </div>
-            <div class="grid grid-cols-2 gap-4 max-w-4xl pl-4 border-l border-gray-300 mx-auto">
-                <!-- First Item - Meta Quest Pro -->
-                <div class="relative overflow-hidden rounded-xs shadow-md">
-                    <img src="/images/article-1.png" alt="Meta Quest Pro VR Headset" class="w-full h-64 object-cover">
-                    <div class="absolute bottom-0 left-0 right-0 p-4 bg-gradient-to-t from-black/80 to-transparent">
-                        <h2 class="text-white font-bold text-xl">The Meta Quest Pro is a cutting-edge headset looking
-                            for an audience</h2>
-                        <div class="absolute bottom-4 right-4 bg-green-500 p-1 rounded">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-white" fill="none"
-                                viewBox="0 0 24 24" stroke="currentColor">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                    d="M14 5l7 7m0 0l-7 7m7-7H3" />
-                            </svg>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Second Item - Yale Assure Lock -->
-                <div class="relative overflow-hidden rounded-xs shadow-md">
-                    <img src="/images/article-1.png" alt="Yale Assure Lock 2" class="w-full h-64 object-cover">
-                    <div class="absolute bottom-0 left-0 right-0 p-4 bg-gradient-to-t from-black/80 to-transparent">
-                        <h2 class="text-white font-bold text-xl">Yale Assure Lock 2 review: a promising all-rounder</h2>
-                        <div class="absolute bottom-4 right-4 bg-green-500 p-1 rounded">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-white" fill="none"
-                                viewBox="0 0 24 24" stroke="currentColor">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                    d="M14 5l7 7m0 0l-7 7m7-7H3" />
-                            </svg>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Third Item (Full Width) - Delta Air Taxis -->
-                <div class="relative overflow-hidden rounded-xs shadow-md col-span-2">
-                    <img src="/images/article-1.png" alt="Electric Air Taxi" class="w-full h-64 object-cover">
-                    <div class="absolute bottom-0 left-0 right-0 p-4 bg-gradient-to-t from-black/80 to-transparent">
-                        <h2 class="text-white font-bold text-xl">Delta Could Soon Fly Passengers To Their Doorsteps
-                            Using Electric Air Taxis</h2>
-                        <div class="absolute bottom-4 right-4 bg-green-500 p-1 rounded">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-white" fill="none"
-                                viewBox="0 0 24 24" stroke="currentColor">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                    d="M14 5l7 7m0 0l-7 7m7-7H3" />
-                            </svg>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
+    <x-most-popular-section :posts="$allPosts" />
 
     <!-- Section Categories -->
     <section class="h-fit mt-8 px-4 sm:px-6 md:px-8 lg:px-16">
         <div
             class="flex item-center p-8 flex-col gap-4 w-full h-full min-h-[80vh] bg-white/95 dark:bg-gray-900 dark:text-gray-200">
             <div class="flex w-full justify-between items-center">
-                <div>
-                    <hr class="w-10 h-1 text-transparent bg-primary" />
-                    <h1 class="lg:text-3xl md:text-2xl tracking-wider font-bebas-neue pt-1.5">Categories</h1>
-                </div>
+                <x-heading>Categories</x-heading>
                 <div>
                     <a href="/posts"
                         class="font-bebas-neue hover:underline-offset-2 hover:underline hover:text-primary tracking-wide">View
@@ -268,8 +166,8 @@
                             <div
                                 class="slider-item flex items-center gap-2 p-2 border shadow-[2px_2px_0px_#000] flex-shrink-0 snap-start bg-white dark:bg-gray-800 hover:border-primary cursor-pointer transition-all">
                                 @if ($category->image)
-                                    <img src="{{ asset('storage/' . $category->image) }}"
-                                        alt="{{ $category->name }}" class="w-8 h-8 object-cover">
+                                    <img src="{{ asset('storage/' . $category->image) }}" alt="{{ $category->name }}"
+                                        class="w-8 h-8 object-cover">
                                 @else
                                     <div class="w-8 h-8 bg-gray-200 dark:bg-gray-700 flex items-center justify-center">
                                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
@@ -297,7 +195,7 @@
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
                 @forelse($allPosts->take(8) as $post)
                     <article
-                        class="border bg-white dark:bg-gray-800 shadow-md hover:shadow-lg transition-shadow overflow-hidden rounded-lg">
+                        class="border bg-white dark:bg-gray-800 shadow-md hover:shadow-lg transition-shadow overflow-hidden rounded-sm">
                         @if ($post->thumbnail)
                             <img src="{{ asset('storage/' . $post->thumbnail) }}" alt="{{ $post->title }}"
                                 class="w-full h-48 object-cover">
@@ -313,8 +211,11 @@
 
                         <div class="p-4">
                             @if ($post->category)
-                                <span
-                                    class="text-xs bg-primary/10 text-primary px-2 py-1 rounded-full">{{ $post->category->name }}</span>
+                                <a id="categoryTag" href="/posts?category={{ $post->category->slug }}"
+                                    class="category-tag rounded-xs px-2 py-1.5 text-gray-200 hover:underline"
+                                    style="--bg-category: {{ $post->category->color }}; --bg-category-hover:  @hexToRgba($post->category->color, 0.4);">
+                                    {{ $post->category->name }}
+                                </a>
                             @endif
 
                             <h3 class="text-xl font-bold mt-2 mb-2 line-clamp-2">{{ $post->title }}</h3>

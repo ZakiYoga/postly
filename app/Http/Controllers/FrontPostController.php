@@ -43,8 +43,7 @@ class FrontPostController extends Controller
             ];
         });
 
-        // Filter untuk sidebar posts - ambil 3 setelah yang digunakan untuk slider
-        $sidebarPosts = $allPosts->skip(5)->take(3);
+        $sidebarPosts = $allPosts->skip(5)->take(5);
 
         // Jika butuh pagination untuk halaman tertentu
         $paginatedPosts = $allPosts->forPage($request->get('page', 1), 9);
