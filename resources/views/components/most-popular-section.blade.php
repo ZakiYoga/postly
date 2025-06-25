@@ -1,59 +1,60 @@
 @props(['posts' => collect()])
 
-<section class="min-h-fit w-full mt-8 px-4 sm:px-6 md:px-8 lg:px-16 py-6 lg:py-8 bg-white dark:bg-slate-900">
-    <div class="w-full space-y-6 min-h-[80vh]">
+<section
+    class="w-full mt-8 px-4 sm:px-6 md:px-8 lg:px-16 bg-white dark:bg-slate-900 md:bg-transparent md:dark:bg-transparent">
+    <div class="w-full space-y-6 min-h-[80vh] p-6 bg-white dark:bg-slate-900">
         <x-heading>Most Popular</x-heading>
 
-        <div class="flex flex-col lg:flex-row gap-6 p-6 md:p-0 lg:gap-8 w-full">
+        <div class="flex flex-col lg:flex-row gap-6 w-full min-h-[500px] lg:min-h-[70vh]">
             {{-- Articles List Section --}}
-            <div
-                class="flex flex-col h-full gap-y-4 lg:overflow-y-scroll lg:max-w-sm overflow-hidden lg:flex-1 order-2 lg:order-1">
-                @foreach ($posts->take(10) as $index => $post)
-                    @if ($index < 7)
-                        <article class="flex flex-col sm:flex-row py-3 rounded-xs gap-4 group w-full">
-                            <div class="space-y-3 w-full h-full group">
-                                {{-- Category and Date --}}
-                                <div class="flex flex-row items-center text-sm gap-2 sm:gap-3 font-bebas-neue">
-                                    <a href="/dashboard/posts/{{ $post->slug }}"
-                                        style="--text-category-hover: {{ $post->category->color }}"
-                                        class="category-title leading-5 font-medium text-sm md:text-base text-gray-800 dark:text-gray-100">
-                                        {{ $post->category->name }}
+            <div class="flex-1 order-2 lg:order-1 overflow-auto md:max-h-[70vh] pr-4 custom-scrollbar">
+                <div class="flex flex-col gap-y-4">
+                    @foreach ($posts->take(10) as $index => $post)
+                        @if ($index < 7)
+                            <article class="flex flex-col sm:flex-row py-3 rounded-xs gap-4 group w-full">
+                                <div class="space-y-3 w-full h-full group">
+                                    {{-- Category and Date --}}
+                                    <div class="flex flex-row items-center text-sm gap-2 sm:gap-3 font-bebas-neue">
+                                        <a href="/dashboard/posts/{{ $post->slug }}"
+                                            style="--text-category-hover: {{ $post->category->color }}"
+                                            class="category-title leading-5 font-medium text-sm md:text-base text-gray-800 dark:text-gray-100">
+                                            {{ $post->category->name }}
+                                        </a>
+                                        <div class="hidden sm:block w-5 h-0.5 bg-gray-200"></div>
+                                        <p class="tracking-wider text-gray-400 text-xs sm:text-sm">
+                                            {{ $post->created_at->diffForHumans() }}
+                                        </p>
+                                    </div>
+
+                                    {{-- Title --}}
+                                    <div class="text-base sm:text-lg font-semibold dark:text-white leading-tight">
+                                        <a href="#"
+                                            class="hover:text-[{{ $post->category->color }}] transition-colors duration-300">
+                                            {{ Str::limit($post->title, 80) }}
+                                        </a>
+                                    </div>
+
+                                    {{-- Read More Link --}}
+                                    <a href="/posts/{{ $post->slug }}"
+                                        class="relative overflow-hidden inline-flex items-center gap-2 uppercase underline tracking-wider font-bebas-neue mt-auto dark:text-white hover:text-gray-900/80 transition-colors duration-300 text-sm">
+                                        More
+                                        <x-fas-arrow-right
+                                            class="w-3 h-3 mb-0.5 group-hover:rotate-[315deg] transition-all duration-200" />
                                     </a>
-                                    <div class="hidden sm:block w-5 h-0.5 bg-gray-200"></div>
-                                    <p class="tracking-wider text-gray-400 text-xs sm:text-sm">
-                                        {{ $post->created_at->diffForHumans() }}
-                                    </p>
                                 </div>
+                            </article>
 
-                                {{-- Title --}}
-                                <div class="text-base sm:text-lg font-semibold dark:text-white leading-tight">
-                                    <a href="#"
-                                        class="hover:text-[{{ $post->category->color }}] transition-colors duration-300">
-                                        {{ Str::limit($post->title, 80) }}
-                                    </a>
-                                </div>
-
-                                {{-- Read More Link --}}
-                                <a href="/posts/{{ $post->slug }}"
-                                    class="relative overflow-hidden inline-flex items-center gap-2 uppercase underline tracking-wider font-bebas-neue mt-auto dark:text-white hover:text-gray-900/80 transition-colors duration-300 text-sm">
-                                    More
-                                    <x-fas-arrow-right
-                                        class="w-3 h-3 mb-0.5 group-hover:rotate-[315deg] transition-all duration-200" />
-                                </a>
-                            </div>
-                        </article>
-
-                        @if ($index < 3)
-                            <hr class="w-full border-t border-gray-200 dark:border-gray-600" />
+                            @if ($index < 3)
+                                <hr class="w-full border-t border-gray-200 dark:border-gray-600" />
+                            @endif
                         @endif
-                    @endif
-                @endforeach
+                    @endforeach
+                </div>
             </div>
 
             {{-- Featured Articles Grid Section --}}
-            <div class="lg:flex-1 w-full order-1 lg:order-2">
-                <div
-                    class="grid grid-cols-1 sm:grid-cols-2 gap-6 lg:pl-6 lg:border-l border-gray-200 dark:border-gray-600">
+            <div class="flex-1 w-full order-1 lg:order-2">
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
                     {{-- First Featured Article --}}
                     <div class="relative overflow-hidden rounded-xs shadow-lg group cursor-pointer">
                         <img src="/images/article-1.png" alt="Meta Quest Pro VR Headset"
@@ -90,7 +91,7 @@
                         </div>
                     </div>
 
-                    {{-- Third Featured Article (Full Width) --}}
+                    {{-- Third Featured Article --}}
                     <div class="relative overflow-hidden rounded-xs shadow-lg sm:col-span-2 group cursor-pointer">
                         <img src="/images/article-1.png" alt="Electric Air Taxi"
                             class="w-full h-48 sm:h-56 md:h-64 object-cover group-hover:scale-105 transition-transform duration-500">

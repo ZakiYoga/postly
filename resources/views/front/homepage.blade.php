@@ -67,9 +67,11 @@
                                         <span class="w-5 h-[1px] bg-gray-300"></span>
                                         <p class="tracking-wider" x-text="slide.time_ago || '20 minute ago'"></p>
                                     </div>
-                                    <p class="text-xl sm:text-2xl md:text-3xl font-semibold dark:text-white"
-                                        x-text="slide.title || 'Lorem ipsum dolor sit amet, consectetur adipisicing elit.'">
-                                    </p>
+                                    <a :href="'/posts/'
+                                    slide.slug"
+                                        class="text-xl hover:underline sm:text-2xl md:text-3xl font-semibold dark:text-white"
+                                        x-text="slide.title">
+                                    </a>
                                     <hr class="w-14 h-1 text-transparent bg-primary" />
                                 </div>
 
@@ -118,7 +120,7 @@
 
             <!-- Latest 3 articles - Full width on mobile, 40% on desktop -->
             <div
-                class="custom-scrollbar flex flex-col gap-y-6 justify-between items-start w-full overflow-hidden lg:overflow-y-auto rounded-xs lg:w-[40%] h-full space-y-4 lg:space-y-0">
+                class="custom-scrollbar md:pb-1 flex flex-col gap-y-6 justify-between pr-4 items-start w-full overflow-hidden lg:overflow-y-auto rounded-xs lg:w-[40%] h-full space-y-4 lg:space-y-0">
                 @foreach ($sidebarPosts as $index => $post)
                     @if ($index == 1)
                         <hr class="w-full h-1.5 text-gray-300" />
@@ -135,6 +137,9 @@
 
     <!-- Most Popular section -->
     <x-most-popular-section :posts="$allPosts" />
+
+    <!-- Most Popular section -->
+    <x-most-viewed-section :posts="$allPosts" />
 
     <!-- Section Categories -->
     <section class="h-fit mt-8 px-4 sm:px-6 md:px-8 lg:px-16">

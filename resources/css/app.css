@@ -104,17 +104,21 @@ button:hover {
 }
 
 .custom-scrollbar::-webkit-scrollbar-thumb {
-    background-color: #ababab;
+    background-color: var(--color-primary);
     border-radius: 8px;
 }
 
 .dark .custom-scrollbar::-webkit-scrollbar-thumb {
-    background-color: #1f1f1f;
+    background-color: #fff;
     border-radius: 8px;
 }
 
 .custom-scrollbar::-webkit-scrollbar-track {
-    background: transparent;
+    background: #e5e7eb;
+}
+
+.dark .custom-scrollbar::-webkit-scrollbar-track {
+    background: #9ca3af;
 }
 
 @keyframes scroll-step {

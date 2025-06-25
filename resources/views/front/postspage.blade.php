@@ -67,7 +67,7 @@
                     <div
                         class="absolute top-0 left-0 w-full h-[35%] group-hover:h-[100%] transition-all duration-500 ease-in-out overflow-hidden">
                         <div class="shadow-gradient">
-                            <img src="/images/article-1.png" alt="article"
+                            <img src="{{ assert() }}" alt="article"
                                 class="w-full h-auto group-hover:scale-105 transition-transform duration-500 ease-in-out">
                         </div>
                     </div>

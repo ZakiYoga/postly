@@ -1,8 +1,8 @@
-@props(['posts' => collect()])
+@props(['title'])
 
-<section class="min-h-fit w-full mt-8 px-4 sm:px-6 md:px-8 lg:px-16 py-6 lg:py-8 ">
+<section class="min-h-fit w-full mt-8 px-4 sm:px-6 md:px-8 lg:px-16">
     <div class="w-full space-y-6 min-h-[80vh] p-6 bg-white dark:bg-slate-900">
-        <x-heading>Most Viewed</x-heading>
+        <x-heading>Most Popular</x-heading>
 
         <div class="flex flex-col lg:flex-row gap-6 lg:gap-8 w-full">
             {{-- Articles List Section --}}
