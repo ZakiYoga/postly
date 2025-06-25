@@ -24,26 +24,49 @@ class FrontPostController extends Controller
             ->withCount('comments')
             ->filter($request->only(['search', 'category', 'author']))
             ->latest()
-            ->get(); // Menggunakan get() untuk mendapatkan collection
+            ->get();
 
-        $posts = Post::latest()->paginate(10);
-        $mostViewed = $this->postViewService->getMostViewedPosts(5);
-        $trending = $this->postViewService->getTrendingPosts(5);
+        // Most Viewed
+        $mostViewedData = $this->postViewService->getMostViewedPosts(10);
+        $mostViewedIds = collect($mostViewedData)->pluck('id')->toArray();
+
+        $mostViewed = Post::with(['category', 'author'])
+            ->whereIn('id', $mostViewedIds)
+            ->orderByRaw('FIELD(id, ' . implode(',', $mostViewedIds) . ')')
+            ->get();
+
+        // Most Trending
+        $trendingData = $this->postViewService->getTrendingPosts(10);
+        $trendingIds = collect($trendingData)->pluck('id')->toArray();
+
+        $trending = Post::with(['category', 'author'])
+            ->whereIn('id', $trendingIds)
+            ->orderByRaw('FIELD(id, ' . implode(',', $trendingIds) . ')')
+            ->get();
 
         // Filter untuk news slider (featured posts) - ambil 5 terbaru
         $news = $allPosts->take(5)->map(function ($post) {
             return [
                 'id' => $post->id,
                 'title' => $post->title,
+                'slug' => $post->slug,
                 'category' => $post->category->name ?? 'Uncategorized',
+                'category_slug' => $post->category->slug ?? 'uncategorized',
+                'author' => $post->author->name ?? 'Unknown',
+                'author_slug' => $post->author->username ?? 'unknown',
                 'time_ago' => $post->created_at->diffForHumans(),
                 'cover_image' => $post->cover_image ? 'storage/' . $post->cover_image : null,
-                'slug' => $post->slug,
-                'excerpt' => $post->excerpt ?? substr(strip_tags($post->content), 0, 150) . '...'
             ];
         });
 
         $sidebarPosts = $allPosts->skip(5)->take(5);
+
+        $categoryPosts = $allPosts;
+        if ($request->has('category') && $request->category) {
+            $categoryPosts = $allPosts->filter(function ($post) use ($request) {
+                return $post->category && $post->category->slug === $request->category;
+            });
+        }
 
         // Jika butuh pagination untuk halaman tertentu
         $paginatedPosts = $allPosts->forPage($request->get('page', 1), 9);
@@ -53,7 +76,7 @@ class FrontPostController extends Controller
             [
                 'title' => 'Homepage'
             ],
-            compact('news', 'sidebarPosts', 'allPosts')
+            compact('news', 'sidebarPosts', 'allPosts', 'mostViewed', 'trending', 'categoryPosts')
         );
     }
 
@@ -89,6 +112,7 @@ class FrontPostController extends Controller
 
     public function show(Post $post, Request $request)
     {
+        $post->load(['category', 'author']);
 
         // Track view
         $this->postViewService->trackView($post, $request);
@@ -121,6 +145,7 @@ class FrontPostController extends Controller
             'post' => $post,
             'comments' => $comments,
             'sidebarPosts' => $sidebarPosts,
+            'viewCount' => $viewCount,
         ]);
     }
 

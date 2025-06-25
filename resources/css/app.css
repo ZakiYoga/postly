@@ -100,12 +100,13 @@ button:hover {
 
 .custom-scrollbar::-webkit-scrollbar {
     width: 4px;
+    height: 6px;
     padding-inline: 2px;
 }
 
 .custom-scrollbar::-webkit-scrollbar-thumb {
     background-color: var(--color-primary);
-    border-radius: 8px;
+    border-radius: 6px;
 }
 
 .dark .custom-scrollbar::-webkit-scrollbar-thumb {
@@ -115,6 +116,7 @@ button:hover {
 
 .custom-scrollbar::-webkit-scrollbar-track {
     background: #e5e7eb;
+    border-radius: 6px;
 }
 
 .dark .custom-scrollbar::-webkit-scrollbar-track {
@@ -153,8 +155,12 @@ button:hover {
 }
 
 .group:hover .category-tag {
-    background-color: var(--bg-category-hover);
+    background-color: var(--bg-category-group-hover);
     color: white;
+}
+
+.category-tag:hover {
+    background-color: var(--bg-category-hover);
 }
 
 .category-title {
@@ -162,6 +168,14 @@ button:hover {
     color: var(--text-category);
 }
 
+.group:hover .category-title {
+    color: var(--text-category-group-hover);
+}
+
 .category-title:hover {
     color: var(--text-category-hover);
+}
+
+.category-border:hover {
+    border: 1px solid var(--bg-category-hover);
 }

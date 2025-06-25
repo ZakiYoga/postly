@@ -98,7 +98,7 @@ class PostViewService
         });
     }
 
-    public function getMostViewedPosts(int $limit = 10, int $days = 30): Collection
+    public function getMostViewedPosts(int $limit = 10, int $days = 60): Collection
     {
         $cacheKey = "most_viewed_posts_{$limit}_{$days}";
 
