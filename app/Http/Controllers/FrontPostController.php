@@ -45,21 +45,27 @@ class FrontPostController extends Controller
             ->get();
 
         // Filter untuk news slider (featured posts) - ambil 5 terbaru
-        $news = $allPosts->take(5)->map(function ($post) {
-            return [
-                'id' => $post->id,
-                'title' => $post->title,
-                'slug' => $post->slug,
-                'category' => $post->category->name ?? 'Uncategorized',
-                'category_slug' => $post->category->slug ?? 'uncategorized',
-                'author' => $post->author->name ?? 'Unknown',
-                'author_slug' => $post->author->username ?? 'unknown',
-                'time_ago' => $post->created_at->diffForHumans(),
-                'cover_image' => $post->cover_image ? 'storage/' . $post->cover_image : null,
-            ];
-        });
+        $news = Post::with(['author', 'category'])
+            ->latest()
+            ->take(10)
+            ->get()
+            ->map(function ($post) {
+                return [
+                    'id' => $post->id,
+                    'title' => $post->title,
+                    'slug' => $post->slug,
+                    'category' => $post->category->name ?? 'Uncategorized',
+                    'category_slug' => $post->category->slug ?? 'uncategorized',
+                    'category_color' => $post->category->color ?? '#fff',
+                    'author' => $post->author->name ?? 'Unknown',
+                    'author_slug' => $post->author->username ?? 'unknown',
+                    'time_ago' => $post->created_at->diffForHumans(),
+                    'cover_image' => $post->cover_image ? 'storage/' . $post->cover_image : null,
+                ];
+            });
 
-        $sidebarPosts = $allPosts->skip(5)->take(5);
+        $sidebarPosts = $news->skip(5)->take(5);
+        $paginatedPosts = $allPosts->forPage($request->get('page', 1), 9);
 
         $categoryPosts = $allPosts;
         if ($request->has('category') && $request->category) {

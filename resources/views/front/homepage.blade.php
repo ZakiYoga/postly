@@ -25,8 +25,8 @@
             <!-- Main featured article with slider - Full width on mobile, 60% on desktop -->
             <div class="w-full lg:w-[60%] h-full mb-8 lg:mb-0" x-data="{
                 currentSlide: 0,
-                slides: {{ json_encode($news ?? []) }},
-                totalSlides: {{ count($news ?? []) }},
+                slides: {{ json_encode($news->take(5) ?? []) }},
+                totalSlides: {{ count($news->take(5) ?? []) }},
                 nextSlide() {
                     this.currentSlide = (this.currentSlide + 1) % this.totalSlides;
                 },
@@ -37,10 +37,13 @@
                     this.currentSlide = index;
                 }
             }" x-init="// Auto-play functionality (optional)
-            setInterval(() => {
-                if (totalSlides > 1) nextSlide();
-            }, 5000);">
+            if (totalSlides > 1) {
+                setInterval(() => {
+                    nextSlide();
+                }, 5000);
+            }">
 
+                @if(count($news ?? []) > 0)
                 <div class="relative w-full h-full overflow-hidden">
                     <!-- Slides Container -->
                     <div class="relative w-full h-full min-h-52 -z-10 sm:min-h-60">
@@ -69,8 +72,8 @@
                         </template>
                     </div>
 
-                    <!-- Navigation Buttons -->
-                    <div class="flex items-center justify-between w-full mt-4 lg:justify-center px-4 mb-4 lg:p-0 lg:m-0 lg:absolute z-20 lg:space-x-4 lg:bottom-4 lg:left-2 xl:left-2.5 lg:max-w-[15%] text-black dark:text-white">
+                    <!-- Navigation Buttons (only show if more than 1 slide) -->
+                    <div x-show="totalSlides > 1" class="flex items-center justify-between w-full mt-4 lg:justify-center px-4 mb-4 lg:p-0 lg:m-0 lg:absolute z-20 lg:space-x-4 lg:bottom-4 lg:left-2 xl:left-2.5 lg:max-w-[15%] text-black dark:text-white">
                         <button @click="prevSlide()" class="w-10 h-10 p-1 bg-white/40 dark:bg-gray-900/40 hover:bg-white dark:hover:bg-gray-900 rounded-xs shadow-md transition-all duration-200 hover:shadow-lg hover:scale-105 active:scale-95">
                             <x-heroicon-m-chevron-left class="text-lg" />
                         </button>
@@ -79,24 +82,47 @@
                         </button>
                     </div>
 
-                    <!-- Slide Indicators (Dots) -->
-                    <div class="absolute p-2 rounded-xs bottom-5 left-1/2 transform -translate-x-1/2 lg:backdrop-blur-xs lg:bg-white/40 lg:dark:bg-gray-800/40 lg:bottom-6 lg:left-auto lg:-translate-0 lg:right-5 flex space-x-2 z-20">
+                    <!-- Slide Indicators (Dots) - only show if more than 1 slide -->
+                    <div x-show="totalSlides > 1" class="absolute p-2 rounded-xs bottom-5 left-1/2 transform -translate-x-1/2 lg:backdrop-blur-xs lg:bg-white/40 lg:dark:bg-gray-800/40 lg:bottom-6 lg:left-auto lg:-translate-0 lg:right-5 flex space-x-2 z-20">
                         <template x-for="(slide, index) in slides" :key="index">
                             <button @click="goToSlide(index)" class="w-2 h-2 rounded-full transition-all duration-200" :class="currentSlide === index ? 'bg-primary scale-125' : 'bg-gray-400 hover:bg-gray-600'">
                             </button>
                         </template>
                     </div>
 
-                    <!-- Progress Bar (Optional) -->
-                    <div class="absolute bottom-0 left-0 right-0 h-1 bg-gray-200 dark:bg-gray-700 z-20">
+                    <!-- Progress Bar (Optional) - only show if more than 1 slide -->
+                    <div x-show="totalSlides > 1" class="absolute bottom-0 left-0 right-0 h-1 bg-gray-200 dark:bg-gray-700 z-20">
                         <div class="h-full bg-primary transition-all duration-500 ease-linear" :style="`width: ${((currentSlide + 1) / totalSlides) * 100}%`">
                         </div>
                     </div>
                 </div>
+
+                @else
+                {{-- No posts found state --}}
+                <div class="flex items-center justify-center w-full h-full min-h-[300px] bg-gray-50 dark:bg-gray-800 rounded-xs border-2 border-dashed border-gray-300 dark:border-gray-600">
+                    <div class="text-center">
+                        <x-heroicon-o-document-text class="w-16 h-16 text-gray-400 mx-auto mb-4" />
+                        <h3 class="text-lg font-medium text-gray-900 dark:text-gray-100 mb-2">No Featured Posts</h3>
+                        <p class="text-gray-500 dark:text-gray-400 mb-4">
+                            @if(request('category'))
+                            No posts found in this category for the featured section.
+                            @else
+                            No posts available for the featured section.
+                            @endif
+                        </p>
+                        @if(request('category'))
+                        <a href="{{ request()->fullUrlWithQuery(['category' => null]) }}" class="text-blue-600 hover:text-blue-800 dark:text-blue-400 dark:hover:text-blue-300 underline">
+                            View all posts
+                        </a>
+                        @endif
+                    </div>
+                </div>
+                @endif
             </div>
 
-            <!-- Latest 3 articles - Full width on mobile, 40% on desktop -->
+            <!-- Latest articles sidebar - Full width on mobile, 40% on desktop -->
             <div class="custom-scrollbar md:pb-1 flex flex-col gap-y-6 justify-between pr-4 items-start w-full overflow-hidden lg:overflow-y-auto rounded-xs lg:w-[40%] h-full space-y-4 lg:space-y-0">
+                @if($sidebarPosts->count() > 0)
                 @foreach ($sidebarPosts as $index => $post)
                 @if ($index == 1)
                 <hr class="w-full h-1.5 text-gray-300" />
@@ -106,6 +132,22 @@
                 <x-article-post :post="$post" />
                 @endif
                 @endforeach
+                @else
+                {{-- No sidebar posts found state --}}
+                <div class="flex items-center justify-center w-full h-full min-h-[200px] bg-gray-50 dark:bg-gray-800 rounded-xs border border-gray-200 dark:border-gray-700">
+                    <div class="text-center p-6">
+                        <x-heroicon-o-newspaper class="w-12 h-12 text-gray-400 mx-auto mb-3" />
+                        <h4 class="text-md font-medium text-gray-900 dark:text-gray-100 mb-2">No Additional Posts</h4>
+                        <p class="text-sm text-gray-500 dark:text-gray-400">
+                            @if(request('category'))
+                            Not enough posts in this category for the sidebar.
+                            @else
+                            No additional posts available for the sidebar.
+                            @endif
+                        </p>
+                    </div>
+                </div>
+                @endif
             </div>
 
         </div>
@@ -118,7 +160,7 @@
     <x-most-viewed-section :posts="$mostViewed" />
 
     <!-- Section Categories -->
-    <x-section-categories :posts="$categoryPosts" />
+    <x-section-categories :categories="$categories" :categoryPosts="$categoryPosts" />
 
     <!-- Subscribe Section -->
     <x-subscribe-form />

@@ -1,12 +1,11 @@
 @props([
-    'disabled' => false,
-    'hasError' => false,
+'disabled' => false,
+'hasError' => false,
 ])
 
 <div class="relative">
-    <input @disabled($disabled)
-        {{ $attributes->class([
-                'block w-full rounded-sm px-3 py-1.5 text-base',
+    <input @disabled($disabled) {{ $attributes->class([
+                'block w-full rounded-xs px-3 py-1.5 text-base',
                 'bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100',
                 'placeholder:text-gray-400 dark:placeholder:text-gray-500',
                 'outline-1 -outline-offset-1 pr-10',
@@ -17,8 +16,8 @@
             ])->merge() }} />
 
     @if ($hasError)
-        <div class="absolute inset-y-0 right-0 bottom-0 flex items-center pr-3 pointer-events-none">
-            <x-heroicon-o-exclamation-triangle class="size-5 text-red-500 dark:text-red-400" />
-        </div>
+    <div class="absolute inset-y-0 right-0 bottom-0 flex items-center pr-3 pointer-events-none">
+        <x-heroicon-o-exclamation-triangle class="size-5 text-red-500 dark:text-red-400" />
+    </div>
     @endif
 </div>

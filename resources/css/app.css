@@ -28,6 +28,10 @@
     --color-background-foreground: #030712;
 }
 
+html {
+    scroll-behavior: smooth;
+}
+
 .lora-regular {
     font-family: "Lora", serif;
     font-optical-sizing: auto;
@@ -52,6 +56,10 @@
 a:hover,
 button:hover {
     cursor: pointer;
+}
+
+.active-nav {
+    @apply text-primary bg-gray-100 dark:bg-gray-800 font-semibold;
 }
 
 .shadow-gradient {
@@ -156,11 +164,14 @@ button:hover {
 
 .group:hover .category-tag {
     background-color: var(--bg-category-group-hover);
-    color: white;
 }
 
-.category-tag:hover {
-    background-color: var(--bg-category-hover);
+.category-border {
+    border: 2px solid var(--category-border);
+}
+
+.category-border:hover {
+    border: 2px solid var(--category-border);
 }
 
 .category-title {
@@ -174,8 +185,4 @@ button:hover {
 
 .category-title:hover {
     color: var(--text-category-hover);
-}
-
-.category-border:hover {
-    border: 1px solid var(--bg-category-hover);
 }

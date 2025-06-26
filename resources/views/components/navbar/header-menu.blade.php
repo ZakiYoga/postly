@@ -19,6 +19,11 @@
                 <x-nav-link @click="isOpen = !isOpen" href="/posts" :active="request()->is('posts*')" class="font-bebas-neue md:text-lg font-thin border-none hover:bg-gray-100 dark:hover:bg-gray-900">
                     Blog
                 </x-nav-link>
+                <div x-data="navigationHandler()">
+                    <x-nav-link @click="navigateToSection('category-section')" href="/#category-section" :active="false" class="font-bebas-neue md:text-lg font-thin border-none hover:bg-gray-100 dark:hover:bg-gray-900">
+                        Categories
+                    </x-nav-link>
+                </div>
                 <x-nav-link @click="isOpen = !isOpen" href="/about" :active="request()->is('about')" class="font-bebas-neue md:text-lg font-thin border-none hover:bg-gray-100 dark:hover:bg-gray-900">
                     About
                 </x-nav-link>
