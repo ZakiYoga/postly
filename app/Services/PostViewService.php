@@ -114,19 +114,23 @@ class PostViewService
         });
     }
 
-    public function getTrendingPosts(int $limit = 10): Collection
+    public function getTrendingPosts(int $limit = 10, int $days = 7): Collection
     {
-        $cacheKey = "trending_posts_{$limit}";
+        $cacheKey = "trending_posts_{$limit}_{$days}";
 
-        return Cache::remember($cacheKey, 900, function () use ($limit) {
-            return DB::table('posts')
-                ->join('post_views', 'posts.id', '=', 'post_views.post_id')
-                ->where('post_views.viewed_at', '>=', now()->subHours(24))
-                ->select('posts.*', DB::raw('COUNT(post_views.id) as view_count'))
-                ->groupBy('posts.id')
-                ->orderByDesc('view_count')
-                ->limit($limit)
-                ->get();
+        return Cache::remember($cacheKey, 1800, function () use ($limit, $days) {
+            return Post::with(['author', 'category'])
+                ->where('visibility', 'public')
+                ->where('created_at', '>=', now()->subDays($days))
+                ->withCount(['likes', 'comments'])
+                ->get()
+                ->map(function ($post) {
+                    $post->trending_score = ($post->likes_count * 2) + ($post->comments_count * 3);
+                    return $post;
+                })
+                ->sortByDesc('trending_score')
+                ->take($limit)
+                ->values();
         });
     }
 

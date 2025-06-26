@@ -79,7 +79,7 @@
                             {{ $post->category->name }}
                         </a>
                         <span class="flex font-bebas-neue transition-color duration-300 group-hover:text-white">
-                            @include('components.like-button', ['post' => $post])
+                            <x-like-button :post="$post" unliked-color="group-hover:text-white" count-unliked-class="group-hover:text-white" />
                             <div class="inline-flex items-center gap-1">
                                 <x-eva-message-square-outline class="w-5 h-5 inline-block" />
                                 {{ $post->comments_count }}

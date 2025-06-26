@@ -56,7 +56,7 @@
 
                 {{-- Category Badge --}}
                 <div class="absolute bottom-3 right-3">
-                    <span class="px-2 py-1 text-xs font-semibold rounded-xs text-white shadow-sm" style="background-color: {{ $post->category->color ?? '#6B7280' }}">
+                    <span class="px-2 py-1 text-xs font-semibold rounded-xs text-gray-200 shadow-sm" style="background-color: @hexToRgba($post->category->color, 0.8)">
                         {{ $post->category->name ?? 'Uncategorized' }}
                     </span>
                 </div>
@@ -65,7 +65,7 @@
             <div class="flex flex-col p-4 h-full">
                 <div class="flex items-center justify-between font-bebas-neue tracking-wider gap-2 mb-2">
                     <span class="flex font-bebas-neue transition-color duration-300 group-hover:text-white">
-                        @include('components.like-button', ['post' => $post])
+                        <x-like-button :post="$post" />
                         <div class="inline-flex items-center gap-1">
                             <x-eva-message-square-outline class="w-5 h-5 inline-block" />
                             {{ $post->comments_count }}

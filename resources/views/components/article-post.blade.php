@@ -11,7 +11,7 @@
     </div>
     @endif
     <div class="flex flex-col gap-y-2 w-full h-full group">
-        <div class="inline-flex items-center text-sm/normal gap-2 font-bebas-neue tracking-wider text-gray-500 dark:text-gray-200">
+        <div class="inline-flex items-center text-sm/normal gap-2 font-bebas-neue tracking-wider text-gray-500 dark:text-gray-400">
             <a id="categoryTag" href="/posts?category={{ $post['category_slug'] }}" class="hover:underline">
                 {{ $post['category'] }}
             </a>

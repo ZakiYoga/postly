@@ -6,16 +6,16 @@
         {{-- Articles List Section --}}
         <div class="flex-1 order-2 lg:order-1 overflow-auto md:max-h-[71vh] md:pr-4 custom-scrollbar">
             <div class="flex items-center flex-col gap-y-4">
-                @foreach ($posts->take(10) as $index => $post)
-                @if ($index < 7) <article class="flex flex-col sm:flex-row pb-4 border-b border-gray-200 dark:border-gray-600 rounded-xs gap-4 group w-full">
+                @foreach ($posts->skip(3) as $index => $post)
+                <article class="flex flex-col sm:flex-row pb-4 border-b border-gray-200 dark:border-gray-600 rounded-xs gap-4 group w-full">
                     <div class="space-y-3 w-full h-full group">
                         {{-- Category and Date --}}
-                        <div class="flex flex-row items-center text-sm gap-2 sm:gap-3 font-bebas-neue">
-                            <a href="/category/{{ $post->category->slug ?? '' }}" style="--text-category-hover: {{ $post->category->color ?? '#000' }}" class="category-title leading-5 font-medium text-sm md:text-base text-gray-800 dark:text-gray-100">
+                        <div class="flex flex-row items-center text-sm gap-2 sm:gap-3 font-bebas-neue tracking-wider text-gray-500 dark:text-gray-400">
+                            <a href="/category/{{ $post->category->slug ?? '' }}" class="leading-5 font-medium text-sm md:text-base ">
                                 {{ $post->category->name ?? 'Uncategorized' }}
                             </a>
                             <div class="hidden sm:block w-5 h-0.5 bg-gray-200"></div>
-                            <p class="tracking-wider text-gray-400 text-xs sm:text-sm">
+                            <p class="text-gray-400 text-xs sm:text-sm">
                                 {{ $post->created_at->diffForHumans() }}
                             </p>
                         </div>
@@ -28,17 +28,23 @@
                         </div>
 
                         {{-- Read More Link --}}
-                        <div class="inline-flex items-center justify-between tracking-wider font-bebas-neue dark:text-white hover:text-gray-900/80">
-                            <a href="/posts/{{ $post->slug }}" class="relative overflow-hidden inline-flex items-center gap-2 uppercase underline  mt-auto transition-colors duration-300 text-sm">
+                        <div class="flex w-full items-center justify-between mt-auto tracking-wider font-bebas-neue dark:text-white hover:text-gray-900/80">
+                            <span class="flex font-bebas-neue transition-color duration-300">
+                                @include('components.like-button', ['post' => $post])
+                                <div class="inline-flex items-center gap-1">
+                                    <x-eva-message-square-outline class="w-5 h-5 inline-block" />
+                                    {{ $post->comments_count }}
+                                </div>
+                            </span>
+                            <a href="/posts/{{ $post->slug }}" class="relative overflow-hidden inline-flex items-center gap-2 uppercase underline  transition-colors duration-300">
                                 More
                                 <x-fas-arrow-right class="w-3 h-3 mb-0.5 group-hover:rotate-[315deg] transition-all duration-200" />
                             </a>
 
                         </div>
                     </div>
-                    </article>
-                    @endif
-                    @endforeach
+                </article>
+                @endforeach
             </div>
         </div>
 
