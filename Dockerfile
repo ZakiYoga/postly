@@ -1,6 +1,6 @@
 FROM php:8.2-fpm
 
-# Install dependencies
+# Install system dependencies
 RUN apt-get update && apt-get install -y \
     build-essential \
     libpng-dev \
@@ -16,12 +16,12 @@ RUN apt-get update && apt-get install -y \
     libonig-dev \
     libxml2-dev \
     libzip-dev \
-    libpq-dev
+    nginx
 
 # Clear cache
 RUN apt-get clean && rm -rf /var/lib/apt/lists/*
 
-# Install extensions
+# Install PHP extensions
 RUN docker-php-ext-install pdo_mysql mbstring zip exif pcntl
 RUN docker-php-ext-configure gd --with-freetype --with-jpeg
 RUN docker-php-ext-install gd
@@ -30,25 +30,23 @@ RUN docker-php-ext-install gd
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 
 # Set working directory
-WORKDIR /var/www
+WORKDIR /var/www/html
 
-# Copy existing application directory contents
-COPY . /var/www
-
-# Copy existing application directory permissions
-COPY --chown=www-data:www-data . /var/www
+# Copy application files
+COPY . .
 
 # Install dependencies
-RUN composer install --optimize-autoloader --no-dev
-
-# Generate application key
-RUN php artisan key:generate
+RUN composer install --optimize-autoloader --no-dev --no-interaction
 
 # Set permissions
-RUN chown -R www-data:www-data /var/www
-RUN chmod -R 755 /var/www/storage
-RUN chmod -R 755 /var/www/bootstrap/cache
+RUN chown -R www-data:www-data /var/www/html
+RUN chmod -R 755 /var/www/html/storage
+RUN chmod -R 755 /var/www/html/bootstrap/cache
 
-# Expose port 8000 and start php-fpm server
+# Create start script
+RUN echo '#!/bin/bash\nphp artisan key:generate --force\nphp artisan config:cache\nphp artisan route:cache\nphp artisan view:cache\nphp artisan migrate --force\nphp artisan serve --host=0.0.0.0 --port=${PORT:-8000}' > /start.sh
+RUN chmod +x /start.sh
+
 EXPOSE 8000
-CMD php artisan serve --host=0.0.0.0 --port=8000
+
+CMD ["/start.sh"]

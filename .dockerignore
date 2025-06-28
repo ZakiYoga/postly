@@ -4,9 +4,8 @@ npm-debug.log
 .gitignore
 README.md
 .env
-.nyc_output
-coverage
 .env.local
-.env.dev
-.env.prod
+.env.example
 vendor
+tests
+.phpunit.result.cache
