@@ -1,131 +1,148 @@
 <x-layout>
     <x-slot:title>{{ $title ?? 'Blog' }}</x-slot:title>
-    <section class="w-full h-fit my-4 lg:my-6 mx-auto px-6 sm:px-8 md:px-10 lg:px-16">
-        <div class="mx-auto w-full rounded-sm text-center py-6 lg:py-8 px-4 lg:px-8 lg:mb-6 mb-4 bg-white border border-gray-200 shadow-md dark:bg-gray-900 dark:border-gray-700">
-            <h2 class="mb-2 text-2xl font-bebas-neue tracking-wider lg:text-4xl font-semibold text-gray-900 dark:text-white">
+    <section class="mx-auto my-4 h-fit w-full px-6 sm:px-8 md:px-10 lg:my-6 lg:px-16">
+        <div
+            class="mx-auto mb-4 w-full rounded-sm border border-gray-200 bg-white px-4 py-6 text-center shadow-md lg:mb-6 lg:px-8 lg:py-8 dark:border-gray-700 dark:bg-gray-900">
+            <h2
+                class="font-bebas-neue mb-2 text-2xl font-semibold tracking-wider text-gray-900 lg:text-4xl dark:text-white">
                 @if (request('category') || request('search') || request('author'))
-                @if (request('category'))
-                Category : {{ request('category') }}
-                @elseif(request('author'))
-                All Posts for "{{ request('author') }}"
-                @elseif(request('search'))
-                Search "{{ request('search') }}"
-                @endif
+                    @if (request('category'))
+                        Category : {{ request('category') }}
+                    @elseif(request('author'))
+                        All Posts for "{{ request('author') }}"
+                    @elseif(request('search'))
+                        Search "{{ request('search') }}"
+                    @endif
                 @else
-                {{ $heading }}
+                    {{ $heading }}
                 @endif
             </h2>
             @if (request('search') || request('category') || request('author'))
-            <p class="inline-flex items-center mt-4 text-gray-500 dark:text-gray-400 first-letter:uppercase">
-                <a href="/" class="hover:text-primary focus:text-primary">
-                    Homepage
-                </a>
-                <x-ri-arrow-right-double-fill class="w-4 h-4 pb-0.5" />
-                <a href="/posts" class="hover:text-primary focus:text-primary">
-                    Posts
-                </a>
-                <x-ri-arrow-right-double-fill class="w-4 h-4 pb-1" />
-                @if (request('category'))
-                {{ ucfirst(request('category')) }}
-                @elseif (request('author'))
-                {{ ucfirst(request('author')) }}
-                @elseif (request('search'))
-                Search
-                @endif
-            </p>
+                <p class="mt-4 inline-flex items-center text-gray-500 first-letter:uppercase dark:text-gray-400">
+                    <a href="/" class="hover:text-primary focus:text-primary">
+                        Homepage
+                    </a>
+                    <x-ri-arrow-right-double-fill class="h-4 w-4 pb-0.5" />
+                    <a href="/posts" class="hover:text-primary focus:text-primary">
+                        Posts
+                    </a>
+                    <x-ri-arrow-right-double-fill class="h-4 w-4 pb-1" />
+                    @if (request('category'))
+                        {{ ucfirst(request('category')) }}
+                    @elseif (request('author'))
+                        {{ ucfirst(request('author')) }}
+                    @elseif (request('search'))
+                        Search
+                    @endif
+                </p>
             @else
-            <p class="font-light text-gray-500 text-lg dark:text-gray-400">
-                {{ $description }}
-            </p>
+                <p class="text-lg font-light text-gray-500 dark:text-gray-400">
+                    {{ $description }}
+                </p>
             @endif
         </div>
         @if (request('category') || request('search') || request('author'))
-        <p class="text-gray-500 dark:text-white my-4 leading-4">
-            Found {{ $count }} {{ Str::plural('article', $count) }}
-            @if (request('category'))
-            in <span class="text-gray-600 font-bold">"{{ request('category') }}"</span>
-            @endif
-            @if (request('author'))
-            by <span class="text-gray-600 font-bold">"{{ request('author') }}"</span>
-            @endif
-            @if (request('search'))
-            matching <span class="text-gray-600 font-bold">"{{ request('search') }}"</span>
-            @endif
-        </p>
+            <p class="my-4 leading-4 text-gray-500 dark:text-white">
+                Found {{ $count }} {{ Str::plural('article', $count) }}
+                @if (request('category'))
+                    in <span class="font-bold text-gray-600">"{{ request('category') }}"</span>
+                @endif
+                @if (request('author'))
+                    by <span class="font-bold text-gray-600">"{{ request('author') }}"</span>
+                @endif
+                @if (request('search'))
+                    matching <span class="font-bold text-gray-600">"{{ request('search') }}"</span>
+                @endif
+            </p>
         @else
-        <div></div>
+            <div></div>
         @endif
 
 
         <div class="grid gap-8 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3">
             @forelse ($posts as $post)
-            <article class="p-6 h-full max-h-fit bg-white border rounded-sm border-gray-200 shadow-md dark:bg-gray-900 dark:border-gray-700 group relative overflow-hidden">
+                <article
+                    class="group relative h-full max-h-fit overflow-hidden rounded-sm border border-gray-200 bg-white p-6 shadow-md dark:border-gray-700 dark:bg-gray-900">
 
-                <div class="absolute top-0 left-0 w-full h-[35%] group-hover:h-[100%] transition-all duration-500 ease-in-out overflow-hidden">
-                    <div class="shadow-gradient">
-                        @if ($post->cover_image)
-                        <img src="{{ asset('storage/' . $post->cover_image) }}" alt="{{ $post->title }}" class="object-cover object-center w-full h-full" />
-                        @elseif ($post->unsplash_image_url)
-                        <img src="{{ $post->unsplash_image_url }}" alt="unsplashAPI-{{ $post->category->name }}" class="object-cover object-center w-full h-full" />
-                        @else
-                        <img src="/images/article-1.png" alt="gambarsementara" />
-                        @endif
-                    </div>
-                </div>
-
-                <div class="relative flex flex-col h-75 z-10 transition-all duration-500 mt-[45%] group-hover:mt-[44%] sm:group-hover:mt-[43%] md:group-hover:mt-[42%]">
-                    <div class="flex justify-between items-center my-2 text-gray-500 dark:text-gray-400">
-                        <a id="categoryTag text-sm md:text-base" href="/posts?category={{ $post->category->slug }}" class="category-tag rounded-xs xl:text-base px-2.5 py-2" style="--bg-category: @hexToRgba($post->category->color, 0.1) }}; --bg-category-hover: {{ $post->category->color }};">
-                            {{ $post->category->name }}
-                        </a>
-                        <span class="flex font-bebas-neue transition-color duration-300 group-hover:text-white">
-                            <x-like-button :post="$post" unliked-color="group-hover:text-white" count-unliked-class="group-hover:text-white" />
-                            <div class="inline-flex items-center gap-1">
-                                <x-eva-message-square-outline class="w-5 h-5 inline-block" />
-                                {{ $post->comments_count }}
-                            </div>
-                        </span>
-                    </div>
-                    <a href="/posts/{{ $post->slug }}" class="lg:mt-1">
-                        <h2 class="category-title font-semibold text-xl lg:text-2xl" style="--text-category-hover: {{ $post->category->color }}">
-                            {{ ucfirst($post->title) }}
-                        </h2>
-                    </a>
-                    <p class="mb-4 text-sm sm:text-base text-gray-500 dark:text-gray-400">
-                        {!! Str::limit($post->body, 120) !!}
-                    </p>
-                    <div class="flex mt-auto justify-between items-center">
-                        <div class="inline-flex gap-x-2">
-                            <x-user-avatar :user="$post->author" size="w-9 h-9" class="rounded-sm" />
-                            <div class="flex flex-col gap-0.5">
-                                <a class="text-sm font-bebas-neue text-gray-900 dark:text-gray-300 hover:underline" href="/posts?author={{ $post->author->username }}">
-                                    {{ $post->author->username }}
-                                </a>
-                                <p class="text-xs text-gray-500 dark:text-gray-300">
-                                    {{ $post->created_at->diffForHumans() }}</p>
-                            </div>
+                    <div
+                        class="absolute left-0 top-0 h-[35%] w-full overflow-hidden transition-all duration-500 ease-in-out group-hover:h-[100%]">
+                        <div class="shadow-gradient">
+                            @if ($post->cover_image)
+                                <img src="{{ asset('storage/' . $post->cover_image) }}" alt="{{ $post->title }}"
+                                    class="h-full w-full object-cover object-center" />
+                            @elseif ($post->unsplash_image_url)
+                                <img src="{{ $post->unsplash_image_url }}"
+                                    alt="unsplashAPI-{{ $post->category->name }}"
+                                    class="h-full w-full object-cover object-center" />
+                            @else
+                                <img src="/images/article-1.png" alt="gambarsementara" />
+                            @endif
                         </div>
-                        <a href="/posts/{{ $post->slug }}" class="inline-flex gap-2 tracking-wider text-sm items-center font-bebas-neue font-medium text-primary-600 dark:text-primary-500 hover:underline dark:text-white group-hover:text-[{{ $post->category->color }}]">
-                            Read more
-                            <x-fas-arrow-right class="w-3 h-3 mb-0.5 group-hover:rotate-[315deg] transition-all duration-600" />
-                        </a>
                     </div>
-                </div>
-            </article>
+
+                    <div
+                        class="h-75 relative z-10 mt-[45%] flex flex-col transition-all duration-500 group-hover:mt-[44%] sm:group-hover:mt-[43%] md:group-hover:mt-[42%]">
+                        <div class="my-2 flex items-center justify-between text-gray-500 dark:text-gray-400">
+                            <a href="/posts?category={{ $post->category->slug }}"
+                                class="category-tag rounded-xs bg-[var(--bg-category)] px-2 py-1 text-gray-600 group-hover:bg-[var(--bg-category)] group-hover:text-white xl:text-base"
+                                style="--bg-category: @hexToRgba($post->category->color, 0.2); --bg-category-group-hover: {{ $post->category->color }};">
+                                {{ $post->category->name }}
+                            </a>
+                            <span class="font-bebas-neue transition-color flex duration-300 group-hover:text-white">
+                                <x-like-button :post="$post" unliked-color="group-hover:text-white"
+                                    count-unliked-class="group-hover:text-white" />
+                                <div class="inline-flex items-center gap-1">
+                                    <x-eva-message-square-outline class="inline-block h-5 w-5" />
+                                    {{ $post->comments_count }}
+                                </div>
+                            </span>
+                        </div>
+                        <a href="/posts/{{ $post->slug }}" class="lg:mt-1">
+                            <h2 class="category-title text-xl font-semibold lg:text-2xl"
+                                style="--text-category-hover: {{ $post->category->color }}">
+                                {{ ucfirst($post->title) }}
+                            </h2>
+                        </a>
+                        <p class="mb-4 text-sm text-gray-500 sm:text-base dark:text-gray-400">
+                            {!! Str::limit($post->body, 120) !!}
+                        </p>
+                        <div class="mt-auto flex items-center justify-between">
+                            <div class="inline-flex gap-x-2">
+                                <x-user-avatar :user="$post->author" size="w-9 h-9" class="rounded-sm" />
+                                <div class="flex flex-col gap-0.5">
+                                    <a class="font-bebas-neue text-sm text-gray-900 hover:underline dark:text-gray-300"
+                                        href="/posts?author={{ $post->author->username }}">
+                                        {{ $post->author->username }}
+                                    </a>
+                                    <p class="text-xs text-gray-500 dark:text-gray-300">
+                                        {{ $post->created_at->diffForHumans() }}</p>
+                                </div>
+                            </div>
+                            <a href="/posts/{{ $post->slug }}"
+                                class="font-bebas-neue text-primary-600 dark:text-primary-500 inline-flex items-center gap-2 text-sm font-medium tracking-wider hover:underline group-hover:text-[{{ $post->category->color }}] dark:text-white">
+                                Read more
+                                <x-fas-arrow-right
+                                    class="duration-600 mb-0.5 h-3 w-3 transition-all group-hover:rotate-[315deg]" />
+                            </a>
+                        </div>
+                    </div>
+                </article>
 
             @empty
-            <div class="flex flex-col items-center justify-center col-span-3 p-6 min-h-[30vh] bg-white border border-gray-200 shadow-md dark:bg-gray-900 dark:border-gray-700">
-                <p class="text-xl text-gray-800 dark:text-white">
-                    Stay tuned for upcoming posts!
-                </p>
-                @if (request('search') || request('category') || request('author'))
-                <a href="/posts" class="inline-flex justify-start mt-auto mr-auto font-bebas-neue items-center gap-2 px-3 py-2 bg-primary hover:bg-primary/80 text-gray-900 shadow-md">
-                    <x-fas-arrow-left class="w-4 h-4 pb-0.5" />
-                    Back to All Posts
-                </a>
-                @endif
+                <div
+                    class="col-span-3 flex min-h-[30vh] flex-col items-center justify-center border border-gray-200 bg-white p-6 shadow-md dark:border-gray-700 dark:bg-gray-900">
+                    <p class="text-xl text-gray-800 dark:text-white">
+                        Stay tuned for upcoming posts!
+                    </p>
+                    @if (request('search') || request('category') || request('author'))
+                        <a href="/posts"
+                            class="font-bebas-neue bg-primary hover:bg-primary/80 mr-auto mt-auto inline-flex items-center justify-start gap-2 px-3 py-2 text-gray-900 shadow-md">
+                            <x-fas-arrow-left class="h-4 w-4 pb-0.5" />
+                            Back to All Posts
+                        </a>
+                    @endif
 
-            </div>
+                </div>
             @endforelse
         </div>
 

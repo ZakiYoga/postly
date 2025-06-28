@@ -1,4 +1,4 @@
-@extends('user.layouts.app')
+@extends('layouts.dashboard.app')
 
 @section('title')
     Dashboard - Private Posts

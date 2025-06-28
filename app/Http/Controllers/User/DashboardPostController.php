@@ -22,16 +22,14 @@ class DashboardPostController extends Controller
      */
     public function index()
     {
+        $title = 'MyPosts';
         $posts = Post::with(['category', 'author'])
             ->withCount('likes')
             ->where('author_id', Auth::id())
             ->latest()
             ->paginate(6);
 
-        return view('user.dashboard.posts', [
-            'title' => 'Dashboard',
-            'posts' => $posts,
-        ]);
+        return view('user.dashboard.posts', compact('title', 'posts'));
     }
 
     /**
@@ -54,7 +52,7 @@ class DashboardPostController extends Controller
     {
         $validatedData = $request->validated();
 
-        $validatedData['generate_unsplash'] = $request->input('generate_unsplash') === 'on' ? true : false;
+        $validatedData['generate_unsplash'] = $request->has('generate_unsplash');
 
         if ($request->file('cover_image')) {
             $validatedData['cover_image'] = $request->file('cover_image')->store('cover_images');
@@ -75,6 +73,7 @@ class DashboardPostController extends Controller
                 return redirect()->back()->with('error', 'Failed to fetch image from Unsplash.');
             }
         }
+
 
 
         $cleanBody = Purifier::clean($request->body);

@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', $title)
+@section('title', 'Postly - ' . $title)
 
 @section('content')
     <div

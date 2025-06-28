@@ -7,10 +7,10 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
     <title>
-        @yield('title', default: config('app.name', 'Dashboard'))
+        @yield('title', $title ?? config('app.name', 'Dashboard'))
     </title>
 
-    <link rel="icon" type="image/png" sizes="16x16" href="{{ asset('images/favicon-16x16.png') }}">
+    <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}">
 
     <!-- Scripts -->
     @stack('styles')

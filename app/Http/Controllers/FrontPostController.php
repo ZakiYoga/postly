@@ -59,24 +59,38 @@ class FrontPostController extends Controller
             });
 
         $sidebarPosts = $news->skip(5)->take(5);
-        $paginatedPosts = $allPosts->forPage($request->get('page', 1), 9);
 
-        $categoryPosts = $allPosts;
+        // Category Posts dengan Pagination
+        $categoryPostsQuery = Post::with(['category', 'author'])
+            ->where('visibility', 'public')
+            ->withCount('comments')
+            ->latest();
+
+        // Filter berdasarkan category jika ada
         if ($request->has('category') && $request->category) {
-            $categoryPosts = $allPosts->filter(function ($post) use ($request) {
-                return $post->category && $post->category->slug === $request->category;
+            $categoryPostsQuery->whereHas('category', function ($query) use ($request) {
+                $query->where('slug', $request->category);
             });
         }
 
-        // Jika butuh pagination untuk halaman tertentu
+        // Pagination untuk category posts (8 posts per halaman)
+        $categoryPosts = $categoryPostsQuery->paginate(8, ['*'], 'category_page');
+
+        // Append query parameters ke pagination links
+        $categoryPosts->appends($request->query());
+
+        // Pagination untuk semua posts (9 posts per halaman)
         $paginatedPosts = $allPosts->forPage($request->get('page', 1), 9);
+
+        // Get all categories untuk filter
+        $categories = \App\Models\Category::orderBy('name')->get();
 
         return view(
             'front.homepage',
             [
                 'title' => 'Homepage'
             ],
-            compact('news', 'sidebarPosts', 'allPosts', 'mostViewed', 'trending', 'categoryPosts')
+            compact('news', 'sidebarPosts', 'allPosts', 'mostViewed', 'trending', 'categoryPosts', 'categories')
         );
     }
 

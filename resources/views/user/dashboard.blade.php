@@ -1,10 +1,10 @@
-@extends('user.layouts.app')
+@extends('layouts.dashboard.app')
 
-<x-slot:title>{{ $title }}</x-slot:title>
+@section('title', $title)
 
 @section('content')
 <!-- Welcome Section -->
-@include('user.layouts.welcome')
+@include('layouts.dashboard.welcome')
 
 <h2 class="font-bebas-neue tracking-wider text-xl md:text-2xl ml-0.5 text-gray-800 dark:text-white mb-2">Overview</h2>
 

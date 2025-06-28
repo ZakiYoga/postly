@@ -1,4 +1,4 @@
-@extends('user.layouts.app')
+@extends('layouts.dashboard.app')
 
 @push('style')
     <style>
