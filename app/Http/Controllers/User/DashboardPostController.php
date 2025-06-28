@@ -29,6 +29,7 @@ class DashboardPostController extends Controller
             ->paginate(6);
 
         return view('user.dashboard.posts', [
+            'title' => 'Dashboard',
             'posts' => $posts,
         ]);
     }

@@ -1,20 +1,8 @@
-<!DOCTYPE html>
-<html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
+@extends('layouts.app')
 
-<head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="csrf-token" content="{{ csrf_token() }}">
+@section('title', $title)
 
-    <title>{{ $title ?? config('app.name') }}</title>
-
-    <!-- Scripts -->
-    <script defer src="/js/toggleTheme.js"></script>
-    @vite(['resources/css/app.css', 'resources/js/app.js'])
-</head>
-
-<body
-    class="min-h-screen w-full flex items-center justify-center bg-bakground dark:bg-background-foreground text-gray-900 dark:text-white antialiased font-lora">
+@section('content')
     <div
         class="w-full max-w-6xl my-6 mx-4 mr-2 h-auto sm:h-[90vh] flex flex-col sm:flex-row items-center justify-center bg-white dark:bg-gray-900 shadow-md rounded-sm overflow-hidden">
         <div
@@ -32,6 +20,4 @@
             {{ $slot }}
         </div>
     </div>
-</body>
-
-</html>
+@endsection

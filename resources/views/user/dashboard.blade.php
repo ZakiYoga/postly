@@ -1,8 +1,6 @@
 @extends('user.layouts.app')
 
-@section('title')
-Dashboard
-@endsection
+<x-slot:title>{{ $title }}</x-slot:title>
 
 @section('content')
 <!-- Welcome Section -->
