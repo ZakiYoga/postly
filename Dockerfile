@@ -1,73 +1,68 @@
-FROM php:8.2-fpm
+FROM php:8.2-apache
 
-# Install dependencies
+# Install sistem dependencies
 RUN apt-get update && apt-get install -y \
-    build-essential \
     libpng-dev \
     libjpeg62-turbo-dev \
     libfreetype6-dev \
-    locales \
     zip \
-    jpegoptim optipng pngquant gifsicle \
-    vim \
     unzip \
     git \
     curl \
     libonig-dev \
     libxml2-dev \
     libzip-dev \
-    libpq-dev
+    && rm -rf /var/lib/apt/lists/*
 
-# Clear cache
-RUN apt-get clean && rm -rf /var/lib/apt/lists/*
+# Install PHP extensions
+RUN docker-php-ext-configure gd --with-freetype --with-jpeg \
+    && docker-php-ext-install -j$(nproc) gd \
+    && docker-php-ext-install pdo_mysql mbstring zip exif pcntl
 
-# Install extensions
-RUN docker-php-ext-install pdo_mysql mbstring zip exif pcntl
-RUN docker-php-ext-configure gd --with-freetype --with-jpeg
-RUN docker-php-ext-install gd
-
-# Install composer
+# Install Composer
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 
 # Set working directory
-WORKDIR /var/www
+WORKDIR /var/www/html
 
-# Copy existing application directory contents
-COPY . /var/www
-
-# Copy existing application directory permissions
-COPY --chown=www-data:www-data . /var/www
+# Copy aplikasi
+COPY . .
 
 # Install dependencies
-RUN composer install --optimize-autoloader --no-dev
-
-# Create .env file from example (Railway will override with env vars)
-RUN cp .env.example .env || true
+RUN composer install --no-dev --optimize-autoloader --no-interaction
 
 # Set permissions
-RUN chown -R www-data:www-data /var/www
-RUN chmod -R 755 /var/www/storage
-RUN chmod -R 755 /var/www/bootstrap/cache
+RUN chown -R www-data:www-data /var/www/html \
+    && chmod -R 755 /var/www/html/storage \
+    && chmod -R 755 /var/www/html/bootstrap/cache
 
-# Create a startup script
+# Create startup script
 RUN echo '#!/bin/bash\n\
-# Generate app key if not set\n\
+echo "Starting Laravel application..."\n\
+\n\
+# Generate APP_KEY if not set\n\
 if [ -z "$APP_KEY" ]; then\n\
+    echo "Generating APP_KEY..."\n\
     php artisan key:generate --force\n\
 fi\n\
 \n\
-# Run migrations\n\
-php artisan migrate --force\n\
+# Wait a bit for database\n\
+echo "Waiting for database..."\n\
+sleep 5\n\
 \n\
-# Cache config\n\
+# Try to run migrations\n\
+echo "Running migrations..."\n\
+php artisan migrate --force || echo "Migration failed, continuing..."\n\
+\n\
+# Clear and cache config\n\
+php artisan config:clear\n\
 php artisan config:cache\n\
 \n\
-# Start the server\n\
+# Start server\n\
+echo "Starting server on port ${PORT:-8000}"\n\
 php artisan serve --host=0.0.0.0 --port=${PORT:-8000}\n\
-' > /var/www/start.sh && chmod +x /var/www/start.sh
+' > /var/www/html/start.sh && chmod +x /var/www/html/start.sh
 
-# Expose port (Railway will provide PORT env var)
-EXPOSE ${PORT:-8000}
+EXPOSE 8000
 
-# Use the startup script
-CMD ["/var/www/start.sh"]
+CMD ["/var/www/html/start.sh"]

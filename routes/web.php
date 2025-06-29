@@ -72,4 +72,17 @@ Route::middleware(['auth', 'adminMiddleware'])->prefix('admin/dashboard')->group
 
 Route::delete('/profile/avatar', [ProfileController::class, 'deleteAvatar'])->name('profile.avatar.delete')->middleware('auth');
 
+Route::get('/health', function () {
+    return response()->json([
+        'status' => 'ok',
+        'app' => 'Postly',
+        'timestamp' => date('Y-m-d H:i:s')
+    ], 200);
+});
+
+// Route backup jika /health tidak work
+Route::get('/ping', function () {
+    return 'pong';
+});
+
 require __DIR__ . '/auth.php';

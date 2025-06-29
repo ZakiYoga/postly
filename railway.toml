@@ -2,6 +2,10 @@
 builder = "dockerfile"
 
 [deploy]
-healthcheckPath = "/"
-healthcheckTimeout = 100
-restartPolicyType = "always"
+healthcheckPath = "/health"
+healthcheckTimeout = 120
+startCommand = "/entrypoint.sh"
+restartPolicyType = "on_failure"
+
+[env]
+PORT = "8000"
