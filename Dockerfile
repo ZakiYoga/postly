@@ -1,6 +1,6 @@
 FROM php:8.2-fpm
 
-# Install system dependencies
+# Install dependencies
 RUN apt-get update && apt-get install -y \
     build-essential \
     libpng-dev \
@@ -16,12 +16,12 @@ RUN apt-get update && apt-get install -y \
     libonig-dev \
     libxml2-dev \
     libzip-dev \
-    nginx
+    libpq-dev
 
 # Clear cache
 RUN apt-get clean && rm -rf /var/lib/apt/lists/*
 
-# Install PHP extensions
+# Install extensions
 RUN docker-php-ext-install pdo_mysql mbstring zip exif pcntl
 RUN docker-php-ext-configure gd --with-freetype --with-jpeg
 RUN docker-php-ext-install gd
@@ -30,23 +30,44 @@ RUN docker-php-ext-install gd
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 
 # Set working directory
-WORKDIR /var/www/html
+WORKDIR /var/www
 
-# Copy application files
-COPY . .
+# Copy existing application directory contents
+COPY . /var/www
+
+# Copy existing application directory permissions
+COPY --chown=www-data:www-data . /var/www
 
 # Install dependencies
-RUN composer install --optimize-autoloader --no-dev --no-interaction
+RUN composer install --optimize-autoloader --no-dev
+
+# Create .env file from example (Railway will override with env vars)
+RUN cp .env.example .env || true
 
 # Set permissions
-RUN chown -R www-data:www-data /var/www/html
-RUN chmod -R 755 /var/www/html/storage
-RUN chmod -R 755 /var/www/html/bootstrap/cache
+RUN chown -R www-data:www-data /var/www
+RUN chmod -R 755 /var/www/storage
+RUN chmod -R 755 /var/www/bootstrap/cache
 
-# Create start script
-RUN echo '#!/bin/bash\nphp artisan key:generate --force\nphp artisan config:cache\nphp artisan route:cache\nphp artisan view:cache\nphp artisan migrate --force\nphp artisan serve --host=0.0.0.0 --port=${PORT:-8000}' > /start.sh
-RUN chmod +x /start.sh
+# Create a startup script
+RUN echo '#!/bin/bash\n\
+# Generate app key if not set\n\
+if [ -z "$APP_KEY" ]; then\n\
+    php artisan key:generate --force\n\
+fi\n\
+\n\
+# Run migrations\n\
+php artisan migrate --force\n\
+\n\
+# Cache config\n\
+php artisan config:cache\n\
+\n\
+# Start the server\n\
+php artisan serve --host=0.0.0.0 --port=${PORT:-8000}\n\
+' > /var/www/start.sh && chmod +x /var/www/start.sh
 
-EXPOSE 8000
+# Expose port (Railway will provide PORT env var)
+EXPOSE ${PORT:-8000}
 
-CMD ["/start.sh"]
+# Use the startup script
+CMD ["/var/www/start.sh"]
