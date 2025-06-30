@@ -2,17 +2,17 @@
 
     <x-slot:title>{{ $title }}</x-slot:title>
     <section
-        class="h-fit mt-2 px-4 sm:px-6 md:px-8 lg:px-16 w-full border border-gray-300 dark:border-gray-700 text-white bg-red-500 dark:bg-red-600">
-        <div class="flex items-center gap-2 h-8">
-            <x-heroicon-o-fire class="w-6 h-6 pb-0.5" />
-            <h1 class="text-sm font-bebas-neue min-w-fit tracking-wide">Trending Topic</h1>
+        class="mt-2 h-fit w-full border border-gray-300 bg-red-500 px-4 text-white sm:px-6 md:px-8 lg:px-16 dark:border-gray-700 dark:bg-red-600">
+        <div class="flex h-8 items-center gap-2">
+            <x-heroicon-o-fire class="h-6 w-6 pb-0.5" />
+            <h1 class="font-bebas-neue min-w-fit text-sm tracking-wide">Trending Topic</h1>
 
-            <div class="relative group h-8 w-full ml-2  overflow-hidden">
-                <div class="absolute animate-scroll-step pause-on-hover">
+            <div class="group relative ml-2 h-8 w-full overflow-hidden">
+                <div class="animate-scroll-step pause-on-hover absolute">
                     <div class="flex flex-col">
                         @foreach ($allPosts->take(3) as $post)
-                            <a href="{{ route('posts.show', $post) }}"
-                                class="text-sm h-8 py-2 flex items-center hover:underline">
+                            <a href="/posts/{{ $post->slug }}"
+                                class="flex h-8 items-center py-2 text-sm hover:underline">
                                 {{ $post->title }}
                             </a>
                         @endforeach
@@ -24,9 +24,9 @@
 
     <section class="h-fit px-4 sm:px-6 md:px-8 lg:px-16">
         <div
-            class="w-full flex flex-col lg:flex-row items-start justify-between px-4 sm:px-6 md:px-0 gap-8 lg:h-[70vh] py-4">
+            class="flex w-full flex-col items-start justify-between gap-8 px-4 py-4 sm:px-6 md:px-0 lg:h-[70vh] lg:flex-row">
             <!-- Main featured article with slider - Full width on mobile, 60% on desktop -->
-            <div class="w-full lg:w-[60%] h-full mb-8 lg:mb-0" x-data="{
+            <div class="mb-8 h-full w-full lg:mb-0 lg:w-[60%]" x-data="{
                 currentSlide: 0,
                 slides: {{ json_encode($news->take(5) ?? []) }},
                 totalSlides: {{ count($news->take(5) ?? []) }},
@@ -47,11 +47,11 @@
             }">
 
                 @if (count($news ?? []) > 0)
-                    <div class="relative w-full h-full overflow-hidden">
+                    <div class="relative h-full w-full overflow-hidden">
                         <!-- Slides Container -->
-                        <div class="relative w-full h-full min-h-52 -z-10 sm:min-h-60">
+                        <div class="relative -z-10 h-full min-h-52 w-full sm:min-h-60">
                             <template x-for="(slide, index) in slides" :key="index">
-                                <article class="absolute inset-0 w-full h-full transition-all duration-500 ease-in-out"
+                                <article class="absolute inset-0 h-full w-full transition-all duration-500 ease-in-out"
                                     :class="currentSlide === index ? 'opacity-100 translate-x-0' : 'opacity-0 translate-x-full'"
                                     x-show="currentSlide === index"
                                     x-transition:enter="transition ease-out duration-500"
@@ -63,30 +63,30 @@
 
                                     <!-- Article Content -->
                                     <div
-                                        class="flex flex-col rounded-xs shadow-[0px_-8px_0px_#f5f5f5] drop-shadow-[4px_4px_0px_#f5f5f5] dark:shadow-[0px_-8px_0px_#030712] dark:drop-shadow-[4px_4px_0px_#030712] relative lg:absolute top-auto lg:top-0 lg:left-0 w-full lg:w-[45%] h-fit bg-background border border-gray-300 dark:border-gray-700 dark:bg-gray-900 z-10 space-y-2 p-4 mb-4 lg:mb-0">
+                                        class="rounded-xs bg-background relative top-auto z-10 mb-4 flex h-fit w-full flex-col space-y-2 border border-gray-300 p-4 shadow-[0px_-8px_0px_#f5f5f5] drop-shadow-[4px_4px_0px_#f5f5f5] lg:absolute lg:left-0 lg:top-0 lg:mb-0 lg:w-[45%] dark:border-gray-700 dark:bg-gray-900 dark:shadow-[0px_-8px_0px_#030712] dark:drop-shadow-[4px_4px_0px_#030712]">
                                         <div
-                                            class="inline-flex items-center gap-2 font-bebas-neue text-sm/6 text-gray-800 dark:text-gray-200">
+                                            class="font-bebas-neue inline-flex items-center gap-2 text-sm/6 text-gray-800 dark:text-gray-200">
                                             <a :href="'/posts?category=' + slide.category_slug"
-                                                class="tracking-wider p-0.5 px-1.5 dark:bg-[#050708] hover:underline hover:underline-offset-2 transition-all duration-200"
+                                                class="p-0.5 px-1.5 tracking-wider transition-all duration-200 hover:underline hover:underline-offset-2 dark:bg-[#050708]"
                                                 x-text="slide.category?.name || slide.category || 'Gadget'"></a>
-                                            <span class="w-5 h-[1px] bg-gray-300"></span>
+                                            <span class="h-[1px] w-5 bg-gray-300"></span>
                                             <p class="tracking-wider" x-text="slide.time_ago || '20 minute ago'"></p>
                                         </div>
                                         <a :href="'/posts/' + slide.slug" class="group block">
-                                            <h3 class="text-xl mb-2 sm:text-2xl md:text-3xl font-semibold dark:text-white group-hover:underline group-hover:underline-offset-4 transition-all duration-200"
+                                            <h3 class="mb-2 text-xl font-semibold transition-all duration-200 group-hover:underline group-hover:underline-offset-4 sm:text-2xl md:text-3xl dark:text-white"
                                                 x-text="slide.title">
                                             </h3>
                                             <hr
-                                                class="w-14 group-hover:w-full transition-all duration-500 h-1 text-transparent bg-primary" />
+                                                class="bg-primary h-1 w-14 text-transparent transition-all duration-500 group-hover:w-full" />
                                         </a>
                                     </div>
 
                                     <!-- Article Image -->
                                     <div
-                                        class="flex lg:absolute lg:top-0 lg:right-0 w-full lg:pl-32 h-48 sm:h-64 md:h-80 lg:h-full">
+                                        class="flex h-48 w-full sm:h-64 md:h-80 lg:absolute lg:right-0 lg:top-0 lg:h-full lg:pl-32">
                                         <img :src="slide.cover_image || '/images/article-1.png'"
                                             :alt="slide.title || 'article'"
-                                            class="rounded-xs w-full lg:aspect-[10/8] h-full object-cover object-center" />
+                                            class="rounded-xs h-full w-full object-cover object-center lg:aspect-[10/8]" />
                                     </div>
                                 </article>
                             </template>
@@ -94,23 +94,23 @@
 
                         <!-- Navigation Buttons (only show if more than 1 slide) -->
                         <div x-show="totalSlides > 1"
-                            class="flex items-center justify-between w-full mt-4 lg:justify-center px-4 mb-4 lg:p-0 lg:m-0 lg:absolute z-20 lg:space-x-4 lg:bottom-4 lg:left-2 xl:left-2.5 lg:max-w-[15%] text-black dark:text-white">
+                            class="z-20 mb-4 mt-4 flex w-full items-center justify-between px-4 text-black lg:absolute lg:bottom-4 lg:left-2 lg:m-0 lg:max-w-[15%] lg:justify-center lg:space-x-4 lg:p-0 xl:left-2.5 dark:text-white">
                             <button @click="prevSlide()"
-                                class="w-10 h-10 p-1 bg-white/40 dark:bg-gray-900/40 hover:bg-white dark:hover:bg-gray-900 rounded-xs shadow-md transition-all duration-200 hover:shadow-lg hover:scale-105 active:scale-95">
+                                class="rounded-xs h-10 w-10 bg-white/40 p-1 shadow-md transition-all duration-200 hover:scale-105 hover:bg-white hover:shadow-lg active:scale-95 dark:bg-gray-900/40 dark:hover:bg-gray-900">
                                 <x-heroicon-m-chevron-left class="text-lg" />
                             </button>
                             <button @click="nextSlide()"
-                                class="w-10 h-10 p-1 bg-white/40 dark:bg-gray-900/40 hover:bg-white dark:hover:bg-gray-900 rounded-xs shadow-md transition-all duration-200 hover:shadow-lg hover:scale-105 active:scale-95">
+                                class="rounded-xs h-10 w-10 bg-white/40 p-1 shadow-md transition-all duration-200 hover:scale-105 hover:bg-white hover:shadow-lg active:scale-95 dark:bg-gray-900/40 dark:hover:bg-gray-900">
                                 <x-heroicon-m-chevron-right class="text-lg" />
                             </button>
                         </div>
 
                         <!-- Slide Indicators (Dots) - only show if more than 1 slide -->
                         <div x-show="totalSlides > 1"
-                            class="absolute p-2 rounded-xs bottom-5 left-1/2 transform -translate-x-1/2 lg:backdrop-blur-xs lg:bg-white/40 lg:dark:bg-gray-800/40 lg:bottom-6 lg:left-auto lg:-translate-0 lg:right-5 flex space-x-2 z-20">
+                            class="rounded-xs lg:backdrop-blur-xs lg:-translate-0 absolute bottom-5 left-1/2 z-20 flex -translate-x-1/2 transform space-x-2 p-2 lg:bottom-6 lg:left-auto lg:right-5 lg:bg-white/40 lg:dark:bg-gray-800/40">
                             <template x-for="(slide, index) in slides" :key="index">
                                 <button @click="goToSlide(index)"
-                                    class="w-2 h-2 rounded-full transition-all duration-200"
+                                    class="h-2 w-2 rounded-full transition-all duration-200"
                                     :class="currentSlide === index ? 'bg-primary scale-125' : 'bg-gray-400 hover:bg-gray-600'">
                                 </button>
                             </template>
@@ -118,8 +118,8 @@
 
                         <!-- Progress Bar (Optional) - only show if more than 1 slide -->
                         <div x-show="totalSlides > 1"
-                            class="absolute bottom-0 left-0 right-0 h-1 bg-gray-200 dark:bg-gray-700 z-20">
-                            <div class="h-full bg-primary transition-all duration-500 ease-linear"
+                            class="absolute bottom-0 left-0 right-0 z-20 h-1 bg-gray-200 dark:bg-gray-700">
+                            <div class="bg-primary h-full transition-all duration-500 ease-linear"
                                 :style="`width: ${((currentSlide + 1) / totalSlides) * 100}%`">
                             </div>
                         </div>
@@ -127,11 +127,11 @@
                 @else
                     {{-- No posts found state --}}
                     <div
-                        class="flex items-center justify-center w-full h-full min-h-[300px] bg-gray-50 dark:bg-gray-800 rounded-xs border-2 border-dashed border-gray-300 dark:border-gray-600">
+                        class="rounded-xs flex h-full min-h-[300px] w-full items-center justify-center border-2 border-dashed border-gray-300 bg-gray-50 dark:border-gray-600 dark:bg-gray-800">
                         <div class="text-center">
-                            <x-heroicon-o-document-text class="w-16 h-16 text-gray-400 mx-auto mb-4" />
-                            <h3 class="text-lg font-medium text-gray-900 dark:text-gray-100 mb-2">No Featured Posts</h3>
-                            <p class="text-gray-500 dark:text-gray-400 mb-4">
+                            <x-heroicon-o-document-text class="mx-auto mb-4 h-16 w-16 text-gray-400" />
+                            <h3 class="mb-2 text-lg font-medium text-gray-900 dark:text-gray-100">No Featured Posts</h3>
+                            <p class="mb-4 text-gray-500 dark:text-gray-400">
                                 @if (request('category'))
                                     No posts found in this category for the featured section.
                                 @else
@@ -140,7 +140,7 @@
                             </p>
                             @if (request('category'))
                                 <a href="{{ request()->fullUrlWithQuery(['category' => null]) }}"
-                                    class="text-blue-600 hover:text-blue-800 dark:text-blue-400 dark:hover:text-blue-300 underline">
+                                    class="text-blue-600 underline hover:text-blue-800 dark:text-blue-400 dark:hover:text-blue-300">
                                     View all posts
                                 </a>
                             @endif
@@ -151,13 +151,13 @@
 
             <!-- Latest articles sidebar - Full width on mobile, 40% on desktop -->
             <div
-                class="custom-scrollbar md:pb-1 flex flex-col gap-y-6 justify-between pr-4 items-start w-full overflow-hidden lg:overflow-y-auto rounded-xs lg:w-[40%] h-full space-y-4 lg:space-y-0">
+                class="custom-scrollbar rounded-xs flex h-full w-full flex-col items-start justify-between gap-y-6 space-y-4 overflow-hidden pr-4 md:pb-1 lg:w-[40%] lg:space-y-0 lg:overflow-y-auto">
                 @if ($sidebarPosts->count() > 0)
                     @foreach ($sidebarPosts as $index => $post)
                         @if ($index == 1)
-                            <hr class="w-full h-1.5 text-gray-300" />
+                            <hr class="h-1.5 w-full text-gray-300" />
                             <x-article-post :post="$post" />
-                            <hr class="w-full h-1.5 text-gray-300" />
+                            <hr class="h-1.5 w-full text-gray-300" />
                         @else
                             <x-article-post :post="$post" />
                         @endif
@@ -165,10 +165,10 @@
                 @else
                     {{-- No sidebar posts found state --}}
                     <div
-                        class="flex items-center justify-center w-full h-full min-h-[200px] bg-gray-50 dark:bg-gray-800 rounded-xs border border-gray-200 dark:border-gray-700">
-                        <div class="text-center p-6">
-                            <x-heroicon-o-newspaper class="w-12 h-12 text-gray-400 mx-auto mb-3" />
-                            <h4 class="text-md font-medium text-gray-900 dark:text-gray-100 mb-2">No Additional Posts
+                        class="rounded-xs flex h-full min-h-[200px] w-full items-center justify-center border border-gray-200 bg-gray-50 dark:border-gray-700 dark:bg-gray-800">
+                        <div class="p-6 text-center">
+                            <x-heroicon-o-newspaper class="mx-auto mb-3 h-12 w-12 text-gray-400" />
+                            <h4 class="text-md mb-2 font-medium text-gray-900 dark:text-gray-100">No Additional Posts
                             </h4>
                             <p class="text-sm text-gray-500 dark:text-gray-400">
                                 @if (request('category'))

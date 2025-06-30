@@ -25,6 +25,16 @@
     <x-navbar.header />
 
     <main>
+        @if (session('success'))
+            <x-alert type="success" title="Sukses!" :duration="3000">
+                {{ session('success') }}
+            </x-alert>
+        @endif
+        @if (session('error'))
+            <x-alert type="error" title="Error!" :duration="3000">
+                {{ session('error') }}
+            </x-alert>
+        @endif
         {{ $slot }}
     </main>
 

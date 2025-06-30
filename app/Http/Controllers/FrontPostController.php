@@ -63,13 +63,13 @@ class FrontPostController extends Controller
                     'id' => $post->id,
                     'title' => $post->title,
                     'slug' => $post->slug,
+                    'cover_image' => $post->cover_image ? 'storage/' . $post->cover_image : $post->unsplash_image_url,
                     'category' => $post->category->name ?? 'Uncategorized',
                     'category_slug' => $post->category->slug ?? 'uncategorized',
                     'category_color' => $post->category->color ?? '#fff',
                     'author' => $post->author->name ?? 'Unknown',
                     'author_slug' => $post->author->username ?? 'unknown',
                     'time_ago' => $post->created_at->diffForHumans(),
-                    'cover_image' => $post->cover_image ? 'storage/' . $post->cover_image : null,
                 ];
             });
 
@@ -161,6 +161,16 @@ class FrontPostController extends Controller
         // Get view count
         $viewCount = $this->postViewService->getPostViewCount($post);
 
+        // Most Trending Posts (berdasarkan likes + comments dalam 7 hari terakhir)
+        $trending = $this->postViewService->getTrendingPosts(10, 7);
+        if ($trending->isEmpty()) {
+            $trending = Post::with(['category', 'author'])
+                ->where('visibility', 'public')
+                ->latest()
+                ->take(10)
+                ->get();
+        }
+
         $comments = $post->comments()
             ->with([
                 'user',
@@ -175,17 +185,11 @@ class FrontPostController extends Controller
             ->orderBy('created_at', 'desc')
             ->get();
 
-        $sidebarPosts = Post::with(['category'])
-            ->where('visibility', 'public')
-            ->latest()
-            ->take(3)
-            ->get();
-
         return view('front.postpage', [
             'title' => 'Single Post',
             'post' => $post,
             'comments' => $comments,
-            'sidebarPosts' => $sidebarPosts,
+            'trending' => $trending,
             'viewCount' => $viewCount,
         ]);
     }

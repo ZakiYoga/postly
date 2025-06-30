@@ -55,6 +55,7 @@
                         {{ session('error') }}
                     </x-alert>
                 @endif
+
                 @yield('content')
             </main>
         </div>

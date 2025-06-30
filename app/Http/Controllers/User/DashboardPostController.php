@@ -54,23 +54,36 @@ class DashboardPostController extends Controller
 
         $validatedData['generate_unsplash'] = $request->has('generate_unsplash');
 
+        // if cover image or unsplash image is not provided
+        if (!$request->file('cover_image') && !$validatedData['generate_unsplash']) {
+            return redirect()->back()
+                ->withInput()
+                ->with('error', 'Please upload a featured image or enable auto-generate image from Unsplash.');
+        }
+
         if ($request->file('cover_image')) {
             $validatedData['cover_image'] = $request->file('cover_image')->store('cover_images');
         }
 
+        // dd($validatedData);
+
+
         if ($validatedData['generate_unsplash']) {
             $category = Category::find($request->category_id);
-            $response = Http::withHeaders([
-                'Authorization' => 'Client-ID ' . env('UNSPLASH_ACCESS_KEY'),
-            ])->get('https://api.unsplash.com/photos/random?query=' . urlencode($category->name));
 
+            $response = Http::withHeaders([
+                'Authorization' => 'Client-ID ' . config('services.unsplash.access_key')
+            ])
+                ->get('https://api.unsplash.com/photos/random', [
+                    'query' => $category->name,
+                    'orientation' => 'landscape',
+                ]);
 
             if ($response->successful()) {
-                $validatedData['unsplash_image_url'] = $response->json()['urls']['regular'] ?? null;
-            }
-
-            if ($response->failed()) {
-                return redirect()->back()->with('error', 'Failed to fetch image from Unsplash.');
+                $validatedData['unsplash_image_url'] = $response->json('urls.small');
+            } else {
+                $errorMessage = $response->json('errors.0') ?? 'Unknown error';
+                return back()->with('error', 'Failed to fetch image from Unsplash. ' . $errorMessage);
             }
         }
 

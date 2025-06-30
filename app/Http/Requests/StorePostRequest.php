@@ -48,7 +48,6 @@ class StorePostRequest extends FormRequest
             'body.required' => 'The post content is required.',
             'visibility.required' => 'The post visibility must be selected.',
             'visibility.in' => 'Post visibility can only be public or private.',
-            'generated_unsplash.in' => 'ERROR',
             'cover_image.image' => 'The file must be an image.',
             'cover_image.max' => 'The image size cannot exceed 1MB.',
             'category_id.required' => 'The category must be selected.',

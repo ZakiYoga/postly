@@ -75,10 +75,13 @@
             <article
                 class="rounded-xs overflow-hidden bg-white shadow-md transition-shadow duration-300 hover:shadow-lg dark:bg-gray-900">
                 <div class="relative overflow-hidden">
-                    <img src="{{ $post->cover_image ? asset('storage/' . $post->cover_image) : asset('images/article-1.png') }}"
+                    <img src="{{ $post->cover_image
+                        ? asset('storage/' . $post->cover_image)
+                        : ($post->unsplash_image_url
+                            ? $post->unsplash_image_url
+                            : asset('images/article-1.png')) }}"
                         alt="{{ $post->title }}"
-                        class="h-48 w-full object-cover transition-transform duration-300 hover:scale-105"
-                        onerror="this.src='{{ asset('images/article-1.png') }}'">
+                        class="h-48 w-full object-cover transition-transform duration-300 hover:scale-105">
 
                     {{-- Category Badge --}}
                     <div class="absolute bottom-3 right-3">

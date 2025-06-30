@@ -62,9 +62,8 @@
                     @if ($index == 0)
                         {{-- First Featured Article --}}
                         <div class="rounded-xs group relative cursor-pointer overflow-hidden shadow-lg">
-                            <img src="{{ $post->cover_image ? 'storage/' . $post->cover_image : '/images/article-1.png' }}"
-                                alt="{{ $post->title }}"
-                                class="h-48 w-full object-cover transition-transform duration-500 group-hover:scale-105 sm:h-56 md:h-64">
+                            <x-cover-image :image="$post['unsplash_image_url']" :title="$post['title']" />
+
                             <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent">
                                 <div class="absolute bottom-0 left-0 right-0 p-4">
                                     <div class="space-y-1">
@@ -92,9 +91,7 @@
                     @elseif ($index == 1)
                         {{-- Second Featured Article --}}
                         <div class="rounded-xs group relative cursor-pointer overflow-hidden shadow-md">
-                            <img src="{{ $post->cover_image ? 'storage/' . $post->cover_image : '/images/article-1.png' }}"
-                                alt="{{ $post->title }}"
-                                class="h-48 w-full object-cover transition-transform duration-500 group-hover:scale-105 sm:h-56 md:h-64">
+                            <x-cover-image :image="$post['unsplash_image_url']" :title="$post['title']" />
                             <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent">
                                 <div class="absolute bottom-0 left-0 right-0 p-4">
                                     <div class="space-y-1">
@@ -122,9 +119,8 @@
                     @elseif ($index == 2)
                         {{-- Third Featured Article --}}
                         <div class="rounded-xs group relative cursor-pointer overflow-hidden shadow-lg sm:col-span-2">
-                            <img src="{{ $post->cover_image ? 'storage/' . $post->cover_image : '/images/article-1.png' }}"
-                                alt="{{ $post->title }}"
-                                class="h-48 w-full object-cover transition-transform duration-500 group-hover:scale-105 sm:h-56 md:h-64">
+                            <x-cover-image :image="$post['unsplash_image_url']" :title="$post['title']" />
+
                             <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent">
                                 <div class="absolute bottom-0 left-0 right-0 p-4">
                                     <div class="space-y-1">
