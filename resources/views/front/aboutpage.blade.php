@@ -18,7 +18,7 @@
 
         <div
             class="rounded-xs mx-auto flex w-full flex-col border border-gray-200 bg-white p-4 shadow-md md:p-6 lg:p-8 dark:border-gray-700 dark:bg-gray-900">
-            <div class="inline-flex items-center justify-evenly gap-4">
+            <div class="inline-flex flex-col items-center justify-evenly gap-4 md:flex-row">
                 <div class="">
                     <img src="{{ asset('images/about.png') }}" alt="Postly Logo"
                         class="h-52 w-52 object-cover object-center" />

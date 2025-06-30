@@ -18,7 +18,11 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/trix/2.1.0/trix.min.css" integrity="..."
         crossorigin="anonymous">
     <script defer src="/js/toggleTheme.js"></script>
-    @vite(['resources/css/app.css', 'resources/css/trix-style.css', 'resources/js/app.js'])
+    @if (file_exists(resource_path('css/trix-style.css')))
+        @vite(['resources/css/app.css', 'resources/css/trix-style.css', 'resources/js/app.js'])
+    @else
+        @vite(['resources/css/app.css', 'resources/js/app.js'])
+    @endif
 </head>
 
 <body
