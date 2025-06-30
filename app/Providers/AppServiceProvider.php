@@ -7,6 +7,7 @@ use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Facades\Auth;
 use Laravolt\Avatar\Facade as Avatar;
 use Illuminate\Support\Facades\Blade;
+use Illuminate\Support\Facades\URL;
 use Illuminate\Validation\Rules\Password;
 use App\Services\PostViewService;
 
@@ -26,6 +27,11 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
+        if (env('APP_ENV') === 'production') {
+            URL::forceScheme('https');
+            URL::forceRootUrl(env('APP_URL'));
+        }
+
         Password::defaults(function () {
             $rule = Password::min(8);
 
