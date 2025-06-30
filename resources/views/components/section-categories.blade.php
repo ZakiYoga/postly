@@ -49,7 +49,7 @@
                 <span class="text-sm text-gray-600 dark:text-gray-400">Showing posts in category:</span>
                 <span class="font-bebas-neue font-semibold leading-4 tracking-wider"
                     style="color: {{ $activeCategory->color }}">{{ $activeCategory->name }}</span>
-                <a href="{{ request()->fullUrlWithQuery(['category' => null, 'category_page' => null]) }}"
+                <a href="{{ url()->current() }}"
                     class="font-bebas-neue ml-auto text-xs tracking-wide text-gray-500 underline underline-offset-2 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200">
                     Clear filter
                 </a>

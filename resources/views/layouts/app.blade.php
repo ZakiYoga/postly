@@ -22,7 +22,7 @@
 </head>
 
 <body
-    class="min-h-screen w-full bg-background dark:bg-background-foreground text-gray-900 dark:text-white antialiased font-lora">
+    class="bg-background dark:bg-background-foreground font-lora flex min-h-screen w-full items-center justify-center text-gray-900 antialiased dark:text-white">
     @yield('content')
 </body>
 

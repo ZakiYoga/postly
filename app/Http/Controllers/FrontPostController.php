@@ -127,12 +127,24 @@ class FrontPostController extends Controller
             ->paginate(9)
             ->withQueryString();
 
+        // Get all categories for filter dropdown
+        $categories = Category::orderBy('name')->get();
+
+        // Get all authors who have published posts for filter dropdown
+        $authors = User::whereHas('posts', function ($query) {
+            $query->where('visibility', 'public');
+        })
+            ->orderBy('name')
+            ->get();
+
         return view('front.postspage', [
             'title' => 'Blog',
             'heading' => 'Discover Nice Articles Here',
             'description' => 'Welcome to our blog, a friendly space where we share stories and knowledge. Feel free to browse through our articles and find something that resonates with you.',
             'posts' => $posts,
             'count' => $posts->total(),
+            'categories' => $categories,
+            'authors' => $authors,
             'currentSearch' => $request->search,
             'currentAuthor' => $request->author,
             'currentCategory' => $request->category,

@@ -59,7 +59,7 @@ button:hover {
 }
 
 .active-nav {
-    @apply text-primary bg-gray-100 dark: bg-gray-800 font-semibold;
+    @apply text-primary bg-gray-100 dark:bg-gray-800 font-semibold;
 }
 
 .shadow-gradient {
