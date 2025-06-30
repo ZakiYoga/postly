@@ -9,12 +9,12 @@
             </div>
 
             <div
-                class="md:w-md lg:w-lg bg-primary dark:bg-primary/80 flex w-full flex-col items-start justify-between gap-x-8 overflow-hidden p-6 pt-8 md:px-8">
+                class="md:w-md lg:w-lg bg-primary dark:bg-primary/80 flex w-full flex-col items-start justify-between gap-x-8 overflow-hidden p-6 pt-8 md:flex-row md:px-8">
                 <div class="w-full text-center text-xl font-bold md:max-w-[30rem] md:text-xl lg:text-left">
                     <p>Get the latest articles, tips, and exclusive content delivered straight to your inbox every
                         week.</p>
                 </div>
-                <div class="w-full">
+                <div class="w-full sm:w-fit">
                     <form action="{{ route('newsletter.subscribe') }}" method="POST" class="w-full space-y-2"
                         class="">
                         @csrf
@@ -23,13 +23,13 @@
 
                             <x-input-label for="email" :value="__('Email')" class="sr-only" />
                             <x-text-input id="email"
-                                class="font-bebas-neue !dark:bg-gray-900 block w-full rounded-e-none !border-0 !border-none !bg-slate-800 pl-8 text-sm tracking-widest !text-gray-400 !outline-0 lg:min-w-56"
+                                class="font-bebas-neue !dark:bg-gray-900 block w-full rounded-e-none !border-0 !border-none !bg-slate-800 pl-8 text-sm tracking-widest !text-gray-400 !outline-0"
                                 type="email" placeholder="enter your email" name="email" :value="old('email')"
                                 required />
                             <x-heroicon-o-envelope class="absolute left-2 mb-0.5 h-7 w-6 text-gray-500" />
 
                             <button type="submit"
-                                class="font-bebas-neue rounded-xs bg-primary dark:bg-primary group inline-flex w-full rounded-s-none px-4 py-1.5 tracking-wide transition-all duration-300 sm:w-fit">
+                                class="font-bebas-neue rounded-xs bg-primary dark:bg-primary group inline-flex w-fit rounded-s-none px-4 py-1.5 tracking-wide transition-all duration-300">
                                 <span class="transition-all duration-300 group-hover:-translate-x-0.5">Subscribe</span>
                                 <x-heroicon-o-arrow-long-right
                                     class="h-6 w-5 transition-all duration-300 group-hover:w-6 group-hover:translate-x-0.5" />
