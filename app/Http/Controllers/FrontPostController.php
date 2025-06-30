@@ -35,8 +35,23 @@ class FrontPostController extends Controller
             ->orderByRaw('FIELD(id, ' . implode(',', $mostViewedIds) . ')')
             ->get();
 
+        if ($mostViewed->isEmpty()) {
+            $mostViewed = Post::with(['category', 'author'])
+                ->where('visibility', 'public')
+                ->latest()
+                ->take(10)
+                ->get();
+        }
+
         // Most Trending Posts (berdasarkan likes + comments dalam 7 hari terakhir)
         $trending = $this->postViewService->getTrendingPosts(10, 7);
+        if ($trending->isEmpty()) {
+            $trending = Post::with(['category', 'author'])
+                ->where('visibility', 'public')
+                ->latest()
+                ->take(10)
+                ->get();
+        }
 
         // Filter untuk news slider (featured posts) - ambil 5 terbaru
         $news = Post::with(['author', 'category'])

@@ -1,3 +1,8 @@
+@php
+    $query = request()->except('category', 'category_page');
+    $url = count($query) ? url()->current() . '?' . http_build_query($query) : url()->current();
+@endphp
+
 <x-layout>
     <x-slot:title>{{ $title ?? 'Blog' }}</x-slot:title>
     <section class="mx-auto my-4 h-fit w-full px-6 sm:px-8 md:px-10 lg:my-6 lg:px-16">
@@ -41,21 +46,36 @@
                 </p>
             @endif
         </div>
-        @if (request('category') || request('search') || request('author'))
-            <p class="my-4 leading-4 text-gray-500 dark:text-white">
-                Found {{ $count }} {{ Str::plural('article', $count) }}
-                @if (request('category'))
-                    in <span class="font-bold text-gray-600">"{{ request('category') }}"</span>
-                @endif
-                @if (request('author'))
-                    by <span class="font-bold text-gray-600">"{{ request('author') }}"</span>
-                @endif
-                @if (request('search'))
-                    matching <span class="font-bold text-gray-600">"{{ request('search') }}"</span>
-                @endif
-            </p>
-        @else
-            <div></div>
+        {{-- Active Filter Display --}}
+        @if (request('category'))
+            @php
+                $activeCategory = $categories->firstWhere('slug', request('category'));
+            @endphp
+            @if ($activeCategory)
+                <div class="rounded-xs my-4 flex items-center gap-2 border-l-4 bg-gray-50 p-3 dark:bg-gray-800"
+                    style="border-left-color: {{ $activeCategory->color }}">
+                    <x-heroicon-o-funnel class="h-5 w-5 text-gray-600 dark:text-gray-400" />
+                    <span class="text-sm text-gray-600 dark:text-gray-400">Showing posts in category:</span>
+                    <span class="font-bebas-neue font-semibold leading-4 tracking-wider"
+                        style="color: {{ $activeCategory->color }}">{{ $activeCategory->name }}</span>
+                    <a href="{{ $url }}"
+                        class="font-bebas-neue ml-auto text-xs tracking-wide text-gray-500 underline underline-offset-2 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200">
+                        Clear filter
+                    </a>
+                </div>
+
+                {{-- Pagination Info --}}
+                <div class="mb-4 flex items-center justify-between">
+                    <p class="text-sm text-gray-600 dark:text-gray-400">
+                        Showing {{ $posts->firstItem() }} to {{ $posts->lastItem() }} of
+                        {{ $posts->total() }} posts
+                        @if (request('category'))
+                            in <span class="font-semibold"
+                                style="color: {{ $activeCategory->color }}">{{ $activeCategory->name }}</span>
+                        @endif
+                    </p>
+                </div>
+            @endif
         @endif
 
 

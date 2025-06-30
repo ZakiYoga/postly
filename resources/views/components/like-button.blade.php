@@ -16,7 +16,8 @@
     <button @click="toggleLike()" :disabled="loading" {{ $attributes->merge(['class' => $buttonClass]) }}>
 
         {{-- Heart Icon --}}
-        <div :class="isLiked ? '{{ $likedColor }}' : '{{ $unlikedColor }} {{ $hoverColor }} transition-color duration-300'"
+        <div :class="isLiked ? '{{ $likedColor }}' :
+            '{{ $unlikedColor }} {{ $hoverColor }} hover:scale-110 transition-color duration-300'"
             class="transition-colors">
             <template x-if="isLiked">
                 <x-eva-heart class="{{ $iconSize }}" />

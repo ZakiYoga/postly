@@ -70,7 +70,8 @@
                                     <div class="space-y-1">
                                         <span
                                             class="font-bebas-neue transition-color inline-flex w-full justify-start duration-300">
-                                            <x-like-button :post="$post" />
+                                            <x-like-button :post="$post" unlikedColor="text-white"
+                                                countUnlikedClass="text-white" />
                                             <div class="inline-flex items-center gap-4 text-white">
                                                 <x-eva-message-square-outline class="inline-block h-5 w-5" />
                                                 {{ $post->comments_count }}
@@ -99,7 +100,8 @@
                                     <div class="space-y-1">
                                         <span
                                             class="font-bebas-neue transition-color inline-flex w-full justify-start duration-300">
-                                            <x-like-button :post="$post" />
+                                            <x-like-button :post="$post" unlikedColor="text-white"
+                                                countUnlikedClass="text-white" />
                                             <div class="inline-flex items-center gap-4 text-white">
                                                 <x-eva-message-square-outline class="inline-block h-5 w-5" />
                                                 {{ $post->comments_count }}
@@ -128,7 +130,8 @@
                                     <div class="space-y-1">
                                         <span
                                             class="font-bebas-neue transition-color inline-flex w-full justify-start duration-300">
-                                            <x-like-button :post="$post" />
+                                            <x-like-button :post="$post" unlikedColor="text-white"
+                                                countUnlikedClass="text-white" />
                                             <div class="inline-flex items-center gap-4 text-white">
                                                 <x-eva-message-square-outline class="inline-block h-5 w-5" />
                                                 {{ $post->comments_count }}

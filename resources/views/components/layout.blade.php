@@ -9,7 +9,13 @@
 
     @vite(['resources/css/app.css', 'resources/js/app.js'])
     <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+
+    <!-- App Scripts -->
+    <script src="{{ asset('js/utils/sweet-alert-config.js') }}"></script>
+    <script src="{{ asset('js/utils/api-client.js') }}"></script>
+    <script src="{{ asset('js/components/post-manager.js') }}"></script>
     <script defer src="/js/toggleTheme.js"></script>
+
     @stack('styles')
     @stack('scripts')
 
@@ -40,8 +46,8 @@
             const element = document.getElementById(sectionId);
             if (element) {
                 element.scrollIntoView({
-                    behavior: 'smooth'
-                    , block: 'start'
+                    behavior: 'smooth',
+                    block: 'start'
                 });
             }
         } else {
@@ -86,13 +92,13 @@
                     }
                 });
             }, {
-                threshold: 0.6
-                , rootMargin: '-10% 0px -10% 0px'
+                threshold: 0.6,
+                rootMargin: '-10% 0px -10% 0px'
             });
 
             observer.observe(categorySection);
         }
     });
-
 </script>
+
 </html>

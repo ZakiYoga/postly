@@ -1,4 +1,4 @@
-<nav x-data="{ menuOpen: false }"
+<nav x-data="{ menuOpen: false }" x-init="menuOpen = false"
     class="bg-gray-50 dark:bg-slate-950/80 mx-auto flex w-full items-center justify-between py-2 tracking-widest z-40 flex-col-reverse lg:flex-row px-6 sm:px-8 md:px-10 lg:px-16 gap-2"
     aria-label="Global">
     <form class="flex items-center mr-auto w-full lg:w-72" action="/posts" method="GET">
@@ -33,7 +33,7 @@
             @endif
         @endforeach
 
-        <div class="relative">
+        <div class="relative" @click.outside="menuOpen = false">
             <button type="button" @click="menuOpen = !menuOpen"
                 class="flex items-center font-bebas-neue uppercase gap-x-1 text-gray-500 hover:text-gray-700 group dark:text-gray-400 dark:hover:text-gray-300 active:text-primary"
                 aria-expanded="false">
@@ -51,7 +51,8 @@
                 x-transition:enter-start="opacity-0 translate-y-1" x-transition:enter-end="opacity-100 translate-y-0"
                 x-transition:leave="transition ease-in duration-150 transform"
                 x-transition:leave-start="opacity-100 translate-y-0" x-transition:leave-end="opacity-0 translate-y-1"
-                class="absolute top-full -left-12 z-10 mt-3 overflow-hidden rounded-sm                                           bg-white ring-1 dark:bg-gray-900 shadow-lg ring-gray-900/5 border border-gray-300">
+                x-cloak
+                class="absolute top-full -left-12 z-10 mt-3 overflow-hidden rounded-sm bg-white ring-1 dark:bg-gray-900 shadow-lg ring-gray-900/5 border border-gray-300">
                 <div class="p-4">
                     <ul class="space-y-2 my-0.5 w-full text-sm">
                         <li class="w-full">
