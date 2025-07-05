@@ -82,12 +82,26 @@
                                     </div>
 
                                     <!-- Article Image -->
-                                    <div
-                                        class="flex h-48 w-full sm:h-64 md:h-80 lg:absolute lg:right-0 lg:top-0 lg:h-full lg:pl-32">
-                                        <img :src="slide.cover_image || '/images/article-1.png'"
-                                            :alt="slide.title || 'article'"
-                                            class="rounded-xs h-full w-full object-cover object-center lg:aspect-[10/8]" />
-                                    </div>
+                                    <template x-if="slide.cover_image || slide.unsplash_image_url">
+                                        <div
+                                            class="flex h-48 w-full sm:h-64 md:h-80 lg:absolute lg:right-0 lg:top-0 lg:h-full lg:pl-32">
+                                            <img :src="slide.cover_image || slide.unsplash_image_url"
+                                                :alt="slide.title || 'article'"
+                                                class="rounded-xs h-full w-full object-cover object-center lg:aspect-[10/8]" />
+                                        </div>
+                                    </template>
+
+                                    <!-- Placeholder jika gambar tidak tersedia -->
+                                    <template x-if="!slide.cover_image && !slide.unsplash_image_url">
+                                        <div
+                                            class="flex h-48 w-full sm:h-64 md:h-80 lg:absolute lg:right-0 lg:top-0 lg:h-full lg:pl-32">
+                                            <div
+                                                class="grid place-content-center rounded-xs h-full w-full object-cover object-center lg:aspect-[10/8] border-2 border-dashed border-gray-300 bg-gray-100 text-center">
+                                                <x-heroicon-o-photo class="w-24 h-24 mx-auto mb-2 text-gray-400" />
+                                                <p class="text-sm font-medium text-gray-500">No preview yet</p>
+                                            </div>
+                                        </div>
+                                    </template>
                                 </article>
                             </template>
                         </div>

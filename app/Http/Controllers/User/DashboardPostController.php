@@ -63,29 +63,27 @@ class DashboardPostController extends Controller
 
         if ($request->file('cover_image')) {
             $validatedData['cover_image'] = $request->file('cover_image')->store('cover_images');
-        }
+        } else {
+            if ($validatedData['generate_unsplash']) {
+                $category = Category::find($request->category_id);
 
-        // dd($validatedData);
+                $response = Http::withHeaders([
+                    'Authorization' => 'Client-ID ' . config('services.unsplash.access_key')
+                ])
+                    ->get('https://api.unsplash.com/photos/random', [
+                        'query' => $category->name,
+                        'orientation' => 'landscape',
+                    ]);
 
-
-        if ($validatedData['generate_unsplash']) {
-            $category = Category::find($request->category_id);
-
-            $response = Http::withHeaders([
-                'Authorization' => 'Client-ID ' . config('services.unsplash.access_key')
-            ])
-                ->get('https://api.unsplash.com/photos/random', [
-                    'query' => $category->name,
-                    'orientation' => 'landscape',
-                ]);
-
-            if ($response->successful()) {
-                $validatedData['unsplash_image_url'] = $response->json('urls.small');
-            } else {
-                $errorMessage = $response->json('errors.0') ?? 'Unknown error';
-                return back()->with('error', 'Failed to fetch image from Unsplash. ' . $errorMessage);
+                if ($response->successful()) {
+                    $validatedData['cover_image'] = $response->json('urls.small');
+                } else {
+                    $errorMessage = $response->json('errors.0') ?? 'Unknown error';
+                    return back()->with('error', 'Failed to fetch image from Unsplash. ' . $errorMessage);
+                }
             }
         }
+
 
 
 

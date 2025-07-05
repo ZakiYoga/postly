@@ -18,12 +18,12 @@ class GoogleAuthController extends Controller
 {
     public function redirectToGoogle()
     {
-        return Socialite::driver("google")->redirect();
+        return Socialite::driver('google')->redirect();
     }
 
     public function handleGoogleCallback()
     {
-        $googleUser = Socialite::driver("google")->user();
+        $googleUser = Socialite::driver('google')->user();
 
         // Cek apakah user sudah ada berdasarkan google_id
         $existingUser = User::where('google_id', $googleUser->id)->first();
@@ -34,31 +34,39 @@ class GoogleAuthController extends Controller
             return redirect(route('user.dashboard', absolute: false));
         }
 
-        // User baru, perlu membuat user baru
-        $userData = [
-            'name' => $googleUser->name,
-            'username' => 'user_' . Str::lower(Str::random(8)),
-            'email' => $googleUser->email,
-            'password' => Str::password(12),
-            'email_verified_at' => now(),
-            'google_id' => $googleUser->id,
-        ];
+        $emailUsed = User::where('email', $googleUser->email)->whereNull('google_id')->first();
 
-        // Cek apakah Google menyediakan avatar
-        if ($googleUser->getAvatar()) {
-            // Jika Google menyediakan avatar, download dan simpan
-            $userData['avatar'] = $this->downloadAndSaveGoogleAvatar($googleUser->getAvatar(), $googleUser->id);
+        if ($emailUsed) {
+            return redirect('/login')->with('error', $googleUser->email . ' is already registered.');
         }
 
-        $user = User::create($userData);
+        if (!$emailUsed) {
+            // User baru, perlu membuat user baru
+            $userData = [
+                'name' => $googleUser->name,
+                'username' => 'user_' . Str::lower(Str::random(8)),
+                'email' => $googleUser->email,
+                'password' => Str::password(12),
+                'email_verified_at' => now(),
+                'google_id' => $googleUser->id,
+            ];
 
-        // Jika tidak ada avatar dari Google, generateAvatar akan dipanggil otomatis 
-        // melalui boot method yang sudah ada di model User
+            // Cek apakah Google menyediakan avatar
+            if ($googleUser->getAvatar()) {
+                // Jika Google menyediakan avatar, download dan simpan
+                $userData['avatar'] = $this->downloadAndSaveGoogleAvatar($googleUser->getAvatar(), $googleUser->id);
+            }
 
-        event(new Registered($user));
-        Auth::login($user);
+            $user = User::create($userData);
 
-        return redirect(route('user.dashboard', absolute: false));
+            // Jika tidak ada avatar dari Google, generateAvatar akan dipanggil otomatis 
+            // melalui boot method yang sudah ada di model User
+
+            event(new Registered($user));
+            Auth::login($user);
+
+            return redirect(route('user.dashboard', absolute: false));
+        }
     }
 
     private function downloadAndSaveGoogleAvatar($avatarUrl, $googleId)
@@ -72,7 +80,7 @@ class GoogleAuthController extends Controller
             }
 
             // Generate filename unik
-            $filename = 'avatars/google_' . $googleId . '_' . time() . '.jpg';
+            $filename = 'avatars/google_' . $googleId . '_' . time() . '.png';
 
             // Simpan ke storage
             Storage::disk('public')->put($filename, $avatarContent);

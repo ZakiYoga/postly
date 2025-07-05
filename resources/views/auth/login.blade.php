@@ -5,12 +5,17 @@
     <x-auth-session-status class="mb-2" :status="session('status')" />
 
     <div class="w-ful min-h-11/12 flex flex-col item-center gap-4">
+        @if (session('error'))
+            <x-alert type="error" title="Error!" :duration="3000">
+                {{ session('error') }}
+            </x-alert>
+        @endif
         <div class="inline-flex ml-auto sm:mb-auto text-gray-400 leading-4">
             Don&backprime;t have an account?&nbsp;
             <a href="/register" class="hover:text-primary hover:underline font-bebas-neue tracking-wide">sign up</a>
         </div>
         <h1 class=" font-bebas-neue text-xl tracking-wide">Sign In</h1>
-        <a href="http://127.0.0.1:8000/auth/google/redirect"
+        <a href="/auth/google/redirect"
             class="inline-flex text-sm rounded-sm items-center justify-center gap-1.5 w-full bg-white border-gray-400 py-2 dark:bg-gray-800 border dark:border-gray-900 hover:bg-gray-200 dark:hover:bg-gray-800/60">
             <svg class="w-6 h-6" xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" viewBox="0 0 48 48">
                 <path fill="#FFC107"

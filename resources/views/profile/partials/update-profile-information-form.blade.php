@@ -36,7 +36,7 @@
                         class="cursor-pointer bg-white py-2 px-3 border border-gray-300 rounded-sm shadow-sm text-xs leading-4 font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
                         {{ __('Change Avatar') }}
                     </label>
-                    @if (Auth::user()->avatar && !Str::startsWith(Auth::user()->avatar, 'avatars/laravolt'))
+                    @if (Auth::user()->avatar && !Str::startsWith(Auth::user()->avatar, ['avatars/laravolt', 'avatars/google']))
                         <button type="button" onclick="deleteAvatar()"
                             class="bg-red-600 py-2 px-3 border border-transparent rounded-sm shadow-sm text-xs font-medium leading-4 text-white hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500">
                             {{ __('Delete') }}

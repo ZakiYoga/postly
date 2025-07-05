@@ -2,13 +2,13 @@
     'image' => null,
     'title' => '',
     'size' => 'default', // default, small, large
-    'placeholder' => 'Tidak ada gambar',
+    'placeholder' => 'No preview yet',
 ])
 
 @php
     $sizeClasses = [
         'small' => 'h-32 w-full sm:h-20 sm:w-32',
-        'default' => 'h-full w-full',
+        'default' => 'h-full min-h-36 w-full',
         'large' => 'h-64 w-full sm:h-36 sm:w-56',
     ];
 
