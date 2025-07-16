@@ -3,8 +3,8 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use App\Rules\StrongPassword;
 use Illuminate\Validation\Rules\Password;
-
 
 class RegisterRequest extends FormRequest
 {
@@ -27,7 +27,14 @@ class RegisterRequest extends FormRequest
             'name' => ['required', 'string', 'max:255'],
             'username' => ['nullable', 'string', 'min:4', 'max:12', 'unique:users'],
             'email' => ['required', 'string', 'lowercase', 'email', 'max:255', 'unique:users'],
-            'password' => ['required', 'confirmed', Password::defaults()],
+            'password' => [
+                'required',
+                'confirmed',
+                'bail', // berhenti jika satu rule gagal
+                'min:8',
+                Password::min(8),
+                new StrongPassword,
+            ],
         ];
     }
 

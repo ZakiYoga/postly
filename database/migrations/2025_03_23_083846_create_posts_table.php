@@ -23,7 +23,6 @@ return new class extends Migration
                 ->onDelete('set null');
 
             $table->string('cover_image')->nullable();
-            $table->string('unsplash_image_url')->nullable();
 
             $table->string('slug')->unique();
             $table->text('body');

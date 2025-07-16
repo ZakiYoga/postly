@@ -53,7 +53,7 @@ class DatabaseSeeder extends Seeder
                 Post::factory()->create([
                     'category_id' => $category->id,
                     'author_id' => $user->id,
-                    'unsplash_image_url' => $unsplashImageUrl
+                    'cover_image' => $unsplashImageUrl
                 ]);
 
                 if ($unsplashImageUrl) {

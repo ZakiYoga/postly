@@ -2,7 +2,7 @@
 
 <article
     class="group flex w-full flex-col gap-4 border-b border-gray-200 pb-4 sm:flex-row sm:gap-2 dark:border-gray-400">
-    <x-cover-image :image="$post['cover_image']" :title="$post['title']" size="large" />
+    <x-cover-image :image="$post['cover_image']" :title="$post['title']" size="small" />
     <div class="group flex h-full w-full flex-col gap-y-2">
         <div
             class="font-bebas-neue inline-flex items-center gap-2 text-sm/normal tracking-wider text-gray-500 dark:text-gray-400">

@@ -26,7 +26,7 @@ class StorePostRequest extends FormRequest
             'slug' => 'required|unique:posts,slug',
             'body' => 'required',
             'visibility' => 'required|in:public,private',
-            'cover_image' => 'image|file|max:1024',
+            'cover_image' => 'image|file|max:2048',
             'generated_unsplash' => 'nullable|in:on,off',
             'category_id' => 'required|exists:categories,id',
         ];
@@ -49,7 +49,7 @@ class StorePostRequest extends FormRequest
             'visibility.required' => 'The post visibility must be selected.',
             'visibility.in' => 'Post visibility can only be public or private.',
             'cover_image.image' => 'The file must be an image.',
-            'cover_image.max' => 'The image size cannot exceed 1MB.',
+            'cover_image.max' => 'The image size cannot exceed 2MB.',
             'category_id.required' => 'The category must be selected.',
             'category_id.exists' => 'The selected category is invalid.',
         ];

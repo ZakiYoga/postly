@@ -46,12 +46,12 @@
                 class="bg-background dark:bg-background-foreground flex-1 overflow-y-auto p-6 transition-all duration-300">
                 {{-- Alert Success --}}
                 @if (session('success'))
-                    <x-alert type="success" title="Sukses!" :duration="3000">
+                    <x-alert type="success" title="Sukses!" position="top" :duration="3000">
                         {{ session('success') }}
                     </x-alert>
                 @endif
                 @if (session('error'))
-                    <x-alert type="error" title="Error!" :duration="3000">
+                    <x-alert type="error" title="Error!" position="top" :duration="3000">
                         {{ session('error') }}
                     </x-alert>
                 @endif

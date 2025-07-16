@@ -7,7 +7,7 @@
 @section('content')
     <x-breadcrumb :items="[['label' => 'Dashboard', 'url' => '/dashboard'], ['label' => 'My Posts']]" />
 
-    <div class="bg-white dark:bg-slate-900 rounded-sm shadow p-4 md:p-6">
+    <div class="rounded-sm bg-white p-4 shadow md:p-6 dark:bg-slate-900">
         <x-heading textClass="text-xl lg:text-2xl">
             My Posts
         </x-heading>
@@ -16,52 +16,41 @@
             <!-- Posts -->
             <div class="space-y-2">
                 <div
-                    class="flex flex-col md:flex-row border-b py-2 border-gray-200 dark:border-gray-500 items-center justify-between group hover:bg-gray-50/50 dark:hover:bg-gray-800/20 transition duration-200 ease-in-out">
-                    <div class="flex w-full flex-col md:flex-row space-x-4">
-                        <div class="w-full h-32 lg:min-w-44 md:max-w-44">
-                            @if ($post->cover_image)
-                                <img src="{{ asset('storage/' . $post->cover_image) }}" alt="{{ $post->title }}"
-                                    class="object-cover object-center w-full h-full" />
-                            @elseif ($post->unsplash_image_url)
-                                <img src="{{ $post->unsplash_image_url }}" alt="unsplashAPI-{{ $post->category->name }}"
-                                    class="object-cover object-center w-full h-full" />
-                            @else
-                                <div
-                                    class="w-full h-full object-cover bg-gray-200 text-gray-500 dark:bg-gray-800 dark:text-gray-300 flex items-center justify-center">
-                                    <span class="font-bebas-neue text-lg tracking-wider">No Featured Image</span>
-                                </div>
-                            @endif
+                    class="group flex flex-col items-center justify-between border-b border-gray-200 py-2 transition duration-200 ease-in-out hover:bg-gray-50/50 md:flex-row dark:border-gray-500 dark:hover:bg-gray-800/20">
+                    <div class="flex w-full flex-col space-x-4 md:flex-row">
+                        <div class="h-32 w-full overflow-hidden md:max-w-44 lg:min-w-44">
+                            <x-cover-image :image="$post['cover_image']" :title="$post['title']" />
                         </div>
-                        <div class="flex flex-col w-full">
+                        <div class="flex w-full flex-col">
                             <div
-                                class="inline-flex items-center justify-between md:justify-start gap-x-4 font-bebas-neue tracking-wider leading-4 text-sm text-gray-500 dark:text-gray-400">
+                                class="font-bebas-neue inline-flex items-center justify-between gap-x-4 text-sm leading-4 tracking-wider text-gray-500 md:justify-start dark:text-gray-400">
                                 <span id="categoryTag" href="/posts?category={{ $post->category->slug }}"
-                                    class="w-fit inline-flex items-center category-title"
+                                    class="category-title inline-flex w-fit items-center"
                                     style="--text-category: {{ $post->category->color }};">
-                                    <x-css-tag class="w-4 h-4 mr-1.5 -rotate-45" />
+                                    <x-css-tag class="mr-1.5 h-4 w-4 -rotate-45" />
                                     {{ $post->category->name }}
                                 </span>
 
                                 <div class="inline-flex items-center gap-1">
-                                    <x-heroicon-o-calendar-date-range class="w-5 h-5 mb-0.5" />
+                                    <x-heroicon-o-calendar-date-range class="mb-0.5 h-5 w-5" />
                                     <p>{{ $post->created_at->diffForHumans() }}</p>
                                 </div>
                             </div>
                             <a href="/dashboard/posts/{{ $post->slug }}"
                                 style="--text-category-hover: {{ $post->category->color }}"
-                                class="category-title font-medium text-lg text-gray-800 dark:text-gray-100">
+                                class="category-title text-lg font-medium text-gray-800 dark:text-gray-100">
                                 {{ $post->title }}
                             </a>
-                            <p class="text-base text-gray-500 mt-1">
+                            <p class="mt-1 text-base text-gray-500">
                                 {!! Str::limit($post->body, 150, '...') !!}
                             </p>
-                            <div class="inline-flex gap-2 mt-auto">
-                                <div class="flex items-center font-sans gap-1 text-gray-500 mt-2">
-                                    <x-eva-heart class="w-4 h-4 text-red-500" />
+                            <div class="mt-auto inline-flex gap-2">
+                                <div class="mt-2 flex items-center gap-1 font-sans text-gray-500">
+                                    <x-eva-heart class="h-4 w-4 text-red-500" />
                                     <span>{{ $post->likes_count ?? 0 }}</span>
                                 </div>
-                                <div class="flex items-center font-sans gap-1 text-gray-500 dark:text-gray-400 mt-2">
-                                    <x-eva-message-square-outline class="w-4 h-4" />
+                                <div class="mt-2 flex items-center gap-1 font-sans text-gray-500 dark:text-gray-400">
+                                    <x-eva-message-square-outline class="h-4 w-4" />
                                     {{ $post->comments_count ?? 0 }}
                                 </div>
                             </div>
@@ -69,7 +58,7 @@
                     </div>
 
                     <div
-                        class="flex w-full md:w-fit font-bebas-neue tracking-wider text-sm items-center space-x-2 mt-4 md:mr-2 justify-between md:justify-items-start md:mt-0 ">
+                        class="font-bebas-neue mt-4 flex w-full items-center justify-between space-x-2 text-sm tracking-wider md:mr-2 md:mt-0 md:w-fit md:justify-items-start">
                         <form method="POST" action="{{ route('posts.visibility', $post) }}" x-data="{ visibility: '{{ $post->visibility }}' }"
                             class="flex items-center">
                             @csrf
@@ -79,18 +68,18 @@
 
                             <button type="submit"
                                 @click.prevent="visibility = visibility === 'public' ? 'private' : 'public'; $el.form.submit();"
-                                class="relative overflow-hidden shadow-inner inline-flex items-center justify-center rounded-full w-20 h-8 text-sm font-medium transition-colors duration-300"
+                                class="relative inline-flex h-8 w-20 items-center justify-center overflow-hidden rounded-full text-sm font-medium shadow-inner transition-colors duration-300"
                                 :class="visibility === 'public' ?
                                     'bg-blue-100 text-blue-500' :
                                     'bg-orange-100 text-orange-600'">
 
-                                <span class="absolute right-3 pt-0.5 transition-all duration-300 opacity-0"
+                                <span class="absolute right-3 pt-0.5 opacity-0 transition-all duration-300"
                                     :class="visibility === 'public' ? 'opacity-100' : 'opacity-0'">Public</span>
-                                <span class="absolute left-3 pt-0.5 transition-all duration-300 opacity-0"
+                                <span class="absolute left-3 pt-0.5 opacity-0 transition-all duration-300"
                                     :class="visibility === 'private' ? 'opacity-100' : 'opacity-0'">Private</span>
 
                                 <span
-                                    class="absolute left-1/2 w-6 h-6 bg-white rounded-full shadow transform transition-transform duration-300"
+                                    class="absolute left-1/2 h-6 w-6 transform rounded-full bg-white shadow transition-transform duration-300"
                                     :class="visibility === 'public' ? '-translate-x-9' : 'translate-x-3'"></span>
                             </button>
                         </form>
@@ -115,12 +104,12 @@
         @empty
             <div class="flex flex-col items-center justify-center">
                 <img src="/images/empty-posts.png" alt="empty" class="max-w-64 object-center text-gray-400" />
-                <div class="w-full grid place-content-center text-center text-gray-500">
+                <div class="grid w-full place-content-center text-center text-gray-500">
                     <p>Oh no, you don&#39;t have any posts yet.</p>
                     <p>Ready to create your first one?</p>
                 </div>
                 <a href="/dashboard/posts/create"
-                    class="mt-2 font-bebas-neue tracking-wide px-4 py-2 bg-primary text-white rounded-sm shadow-md hover:bg-primary/80 transition duration-200 ease-in-out">
+                    class="font-bebas-neue bg-primary hover:bg-primary/80 mt-2 rounded-sm px-4 py-2 tracking-wide text-white shadow-md transition duration-200 ease-in-out">
                     Create Post
                 </a>
             </div>

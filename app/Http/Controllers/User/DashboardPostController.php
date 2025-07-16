@@ -62,7 +62,7 @@ class DashboardPostController extends Controller
         }
 
         if ($request->file('cover_image')) {
-            $validatedData['cover_image'] = $request->file('cover_image')->store('cover_images');
+            $validatedData['cover_image'] = $request->file('cover_image')->store('cover_images', 'public');
         } else {
             if ($validatedData['generate_unsplash']) {
                 $category = Category::find($request->category_id);

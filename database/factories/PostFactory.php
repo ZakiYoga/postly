@@ -26,7 +26,6 @@ class PostFactory extends Factory
             'slug' => Str::slug($this->faker->sentence() . '-' . Str::random(5)),
             'body' => $this->faker->paragraph(10),
             'cover_image' => null,
-            'unsplash_image_url' => null, // Will be set in DatabaseSeeder
             'category_id' => Category::factory(),
             'author_id' => User::factory(),
         ];
@@ -42,7 +41,7 @@ class PostFactory extends Factory
             $searchTerm = $categoryName ?? $this->getRandomSearchTerm();
 
             return [
-                'unsplash_image_url' => $this->fetchUnsplashImage($searchTerm)
+                'cover_image' => $this->fetchUnsplashImage($searchTerm)
             ];
         });
     }
