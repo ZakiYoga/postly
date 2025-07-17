@@ -2,7 +2,7 @@
 
 <article
     class="group flex w-full flex-col gap-4 border-b border-gray-200 pb-4 sm:flex-row sm:gap-2 dark:border-gray-400">
-    <x-cover-image :image="$post['cover_image']" :title="$post['title']" size="small" />
+    <x-cover-image :image="$post['cover_image']" :title="$post['title']" size='large' class="!max-h-36" />
     <div class="group flex h-full w-full flex-col gap-y-2">
         <div
             class="font-bebas-neue inline-flex items-center gap-2 text-sm/normal tracking-wider text-gray-500 dark:text-gray-400">
@@ -13,7 +13,7 @@
             <p>{{ $post['time_ago'] }}</p>
         </div>
         <div class="text-lg font-semibold dark:text-white">
-            <a href="/dashboard/posts/{{ $post['slug'] }}" style="--text-category-hover: {{ $post['category_color'] }}"
+            <a href="/posts/{{ $post['slug'] }}" style="--text-category-hover: {{ $post['category_color'] }}"
                 class="category-title text-lg font-medium text-gray-800 dark:text-gray-100">
                 {{ Str::limit($post['title'], 60) }}
             </a>

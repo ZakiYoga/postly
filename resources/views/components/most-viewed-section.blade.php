@@ -9,7 +9,7 @@
                 @foreach ($posts->take(2) as $post)
                     <div class="group border-b border-gray-200 dark:border-gray-600">
                         <div class="relative h-32 overflow-hidden md:h-36">
-                            <x-cover-image :image="$post['unsplash_image_url']" :title="$post['title']" />
+                            <x-cover-image :image="$post['cover_image']" :title="$post['title']" />
                             <div
                                 class="font-bebas-neue absolute bottom-2 right-2 inline-flex gap-1 bg-gray-900/80 p-1 tracking-wider text-white">
                                 <x-eva-eye class="h-4 w-4" />
@@ -50,7 +50,7 @@
                 <article
                     class="rounded-xs group flex flex-col gap-4 border-b border-gray-200 pb-6 sm:flex-row dark:border-gray-600">
                     <div class="relative h-28 overflow-hidden">
-                        <x-cover-image :image="$post['unsplash_image_url']" :title="$post['title']" size="large" />
+                        <x-cover-image :image="$post['cover_image']" :title="$post['title']" size="large" />
                         <div
                             class="font-bebas-neue absolute bottom-2 right-2 inline-flex gap-1 bg-gray-900/80 p-1 tracking-wider text-white">
                             <x-eva-eye class="h-4 w-4" />

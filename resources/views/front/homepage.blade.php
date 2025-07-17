@@ -49,7 +49,7 @@
                 @if (count($news ?? []) > 0)
                     <div class="relative h-full w-full overflow-hidden">
                         <!-- Slides Container -->
-                        <div class="relative -z-10 h-full min-h-52 w-full sm:min-h-60">
+                        <div class="relative h-full min-h-52 w-full sm:min-h-60">
                             <template x-for="(slide, index) in slides" :key="index">
                                 <article class="absolute inset-0 h-full w-full transition-all duration-500 ease-in-out"
                                     :class="currentSlide === index ? 'opacity-100 translate-x-0' : 'opacity-0 translate-x-full'"
@@ -81,27 +81,31 @@
                                         </a>
                                     </div>
 
-                                    <!-- Article Image -->
-                                    <template x-if="slide.cover_image || slide.unsplash_image_url">
-                                        <div
-                                            class="flex h-48 w-full sm:h-64 md:h-80 lg:absolute lg:right-0 lg:top-0 lg:h-full lg:pl-32">
-                                            <img :src="slide.cover_image || slide.unsplash_image_url"
-                                                :alt="slide.title || 'article'"
-                                                class="rounded-xs h-full w-full object-cover object-center lg:aspect-[10/8]" />
-                                        </div>
-                                    </template>
-
-                                    <!-- Placeholder jika gambar tidak tersedia -->
-                                    <template x-if="!slide.cover_image && !slide.unsplash_image_url">
-                                        <div
-                                            class="flex h-48 w-full sm:h-64 md:h-80 lg:absolute lg:right-0 lg:top-0 lg:h-full lg:pl-32">
-                                            <div
-                                                class="grid place-content-center rounded-xs h-full w-full object-cover object-center lg:aspect-[10/8] border-2 border-dashed border-gray-300 bg-gray-100 text-center">
-                                                <x-heroicon-o-photo class="w-24 h-24 mx-auto mb-2 text-gray-400" />
-                                                <p class="text-sm font-medium text-gray-500">No preview yet</p>
+                                    <!-- Article Image using x-cover-image component -->
+                                    <div
+                                        class="flex h-48 w-full sm:h-64 md:h-80 lg:absolute lg:right-0 lg:top-0 lg:h-full lg:pl-32">
+                                        <div class="h-full w-full lg:aspect-[10/8]" x-show="currentSlide === index">
+                                            <div class="h-full w-full overflow-hidden rounded-lg">
+                                                <template x-if="slide.cover_image">
+                                                    <img :src="slide.cover_image" :alt="slide.title || 'Article'"
+                                                        class="h-full w-full object-cover object-center transition-all duration-300 group-hover:scale-110"
+                                                        loading="lazy" />
+                                                </template>
+                                                <template x-if="!slide.cover_image">
+                                                    <div
+                                                        class="flex h-full w-full items-center justify-center rounded-lg border-2 border-dashed border-gray-300 bg-gray-100 dark:border-gray-600 dark:bg-gray-800">
+                                                        <div class="text-center">
+                                                            <x-heroicon-o-photo
+                                                                class="mx-auto mb-2 h-12 w-12 text-gray-400" />
+                                                            <p
+                                                                class="text-sm font-medium text-gray-500 dark:text-gray-400">
+                                                                No preview available</p>
+                                                        </div>
+                                                    </div>
+                                                </template>
                                             </div>
                                         </div>
-                                    </template>
+                                    </div>
                                 </article>
                             </template>
                         </div>
@@ -121,7 +125,7 @@
 
                         <!-- Slide Indicators (Dots) - only show if more than 1 slide -->
                         <div x-show="totalSlides > 1"
-                            class="rounded-xs lg:backdrop-blur-xs lg:-translate-0 absolute bottom-5 left-1/2 z-20 flex -translate-x-1/2 transform space-x-2 p-2 lg:bottom-6 lg:left-auto lg:right-5 lg:bg-white/40 lg:dark:bg-gray-800/40">
+                            class="rounded-xs lg:backdrop-blur-xs lg:-translate-0 absolute bottom-5 left-1/2 flex -translate-x-1/2 transform space-x-2 p-2 lg:bottom-6 lg:left-auto lg:right-5 lg:bg-white/40 lg:dark:bg-gray-800/40">
                             <template x-for="(slide, index) in slides" :key="index">
                                 <button @click="goToSlide(index)"
                                     class="h-2 w-2 rounded-full transition-all duration-200"
@@ -132,7 +136,7 @@
 
                         <!-- Progress Bar (Optional) - only show if more than 1 slide -->
                         <div x-show="totalSlides > 1"
-                            class="absolute bottom-0 left-0 right-0 z-20 h-1 bg-gray-200 dark:bg-gray-700">
+                            class="absolute bottom-0 left-0 right-0 h-1 bg-gray-200 dark:bg-gray-700">
                             <div class="bg-primary h-full transition-all duration-500 ease-linear"
                                 :style="`width: ${((currentSlide + 1) / totalSlides) * 100}%`">
                             </div>

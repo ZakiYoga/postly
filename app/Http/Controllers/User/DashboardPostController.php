@@ -157,7 +157,6 @@ class DashboardPostController extends Controller
             }
 
             $validatedData['cover_image'] = $request->file('cover_image')->store('cover_images');
-            $validatedData['unsplash_image_url'] = null;
         } elseif ($request->has('remove_image') && $request->remove_image == '1') {
 
             // Delete old cover image if exists
@@ -166,7 +165,6 @@ class DashboardPostController extends Controller
             }
 
             $validatedData['cover_image'] = null;
-            $validatedData['unsplash_image_url'] = null;
         } else {
             // No new image uploaded and not removed - keep existing values
             unset($validatedData['cover_image']);

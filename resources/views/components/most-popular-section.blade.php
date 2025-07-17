@@ -62,7 +62,7 @@
                     @if ($index == 0)
                         {{-- First Featured Article --}}
                         <div class="rounded-xs group relative cursor-pointer overflow-hidden shadow-lg">
-                            <x-cover-image :image="$post['unsplash_image_url']" :title="$post['title']" />
+                            <x-cover-image :image="$post['cover_image']" :title="$post['title']" />
 
                             <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent">
                                 <div class="absolute bottom-0 left-0 right-0 p-4">
@@ -91,7 +91,7 @@
                     @elseif ($index == 1)
                         {{-- Second Featured Article --}}
                         <div class="rounded-xs group relative cursor-pointer overflow-hidden shadow-md">
-                            <x-cover-image :image="$post['unsplash_image_url']" :title="$post['title']" />
+                            <x-cover-image :image="$post['cover_image']" :title="$post['title']" />
                             <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent">
                                 <div class="absolute bottom-0 left-0 right-0 p-4">
                                     <div class="space-y-1">
@@ -119,7 +119,7 @@
                     @elseif ($index == 2)
                         {{-- Third Featured Article --}}
                         <div class="rounded-xs group relative cursor-pointer overflow-hidden shadow-lg sm:col-span-2">
-                            <x-cover-image :image="$post['unsplash_image_url']" :title="$post['title']" />
+                            <x-cover-image :image="$post['cover_image']" :title="$post['title']" class="max-h-52 md:max-h-72" />
 
                             <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent">
                                 <div class="absolute bottom-0 left-0 right-0 p-4">

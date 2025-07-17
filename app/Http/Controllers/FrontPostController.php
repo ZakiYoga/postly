@@ -63,7 +63,7 @@ class FrontPostController extends Controller
                     'id' => $post->id,
                     'title' => $post->title,
                     'slug' => $post->slug,
-                    'cover_image' => $post->cover_image ? 'storage/' . $post->cover_image : $post->unsplash_image_url,
+                    'cover_image' => $post->cover_image,
                     'category' => $post->category->name ?? 'Uncategorized',
                     'category_slug' => $post->category->slug ?? 'uncategorized',
                     'category_color' => $post->category->color ?? '#fff',

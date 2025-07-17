@@ -75,8 +75,8 @@
             <article
                 class="rounded-xs overflow-hidden bg-white shadow-md transition-shadow duration-300 hover:shadow-lg dark:bg-gray-900">
                 <div class="relative overflow-hidden">
-                    <x-cover-image :image="$post['cover_image'] ? $post['cover_image'] : $post['unsplash_image_url']" :title="$post->title" class=h w-full object-cover group-hover:scale-105
-                        transition-transform duration-300" />
+                    <x-cover-image :image="$post['cover_image']" :title="$post['title']" />
+
 
                     {{-- Category Badge --}}
                     <div class="absolute bottom-3 right-3">
